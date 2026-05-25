@@ -1,88 +1,277 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('recipeForm');
-    const submitBtn = document.getElementById('submitRecipeBtn');
-    const successMsg = document.getElementById('successMessage');
-    const errorMsg = document.getElementById('errorMessage');
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавить рецепт | Кулинария студента</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">🍳</span>
+                <span class="logo-text">Кулинария студента</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Главная</a></li>
+                <li><a href="recipes.html" class="nav-link">Рецепты</a></li>
+                <li><a href="calculator.html" class="nav-link">Калькулятор</a></li>
+                <li><a href="tips.html" class="nav-link">Советы</a></li>
+                <li><a href="add-recipe.html" class="nav-link active">Добавить</a></li>
+                <li><a href="about.html" class="nav-link">О проекте</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
 
-    // Добавляем поле для капчи перед кнопкой
-    const captchaDiv = document.createElement('div');
-    captchaDiv.className = 'form-group';
-    captchaDiv.innerHTML = `
-        <label>Проверка: сколько будет 2 + 3? *</label>
-        <input type="text" id="captchaAnswer" placeholder="Введите ответ цифрой" required>
-        <input type="hidden" name="Проверка" id="captchaHidden">
-    `;
-    submitBtn.parentNode.insertBefore(captchaDiv, submitBtn);
+    <div class="breadcrumbs">
+        <a href="index.html">Главная</a> → Добавить рецепт
+    </div>
 
-    if (form) {
-        form.addEventListener('submit', async function(e) {
-            e.preventDefault();
+    <section style="padding-top: 2rem;">
+        <h2 class="section-title">Поделитесь своим рецептом</h2>
+        
+        <div style="max-width: 600px; margin: 0 auto; background: white; padding: 2rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
             
-            // Проверка капчи
-            const captcha = document.getElementById('captchaAnswer');
-            const captchaHidden = document.getElementById('captchaHidden');
-            
-            if (captcha.value.trim() !== '5') {
-                alert('❌ Неправильный ответ! Попробуйте ещё раз.');
-                captcha.value = '';
-                captcha.style.borderColor = '#FF6B6B';
-                captcha.focus();
-                return;
+            <form id="recipeForm" action="https://formspree.io/f/xaqkpnrk" method="POST">
+                
+                <div id="successMessage" class="message success hidden">
+                    ✅ Рецепт успешно отправлен! Спасибо! Мы добавим его после проверки.
+                </div>
+
+                <div id="errorMessage" class="message error hidden">
+                    ❌ Ошибка отправки. Попробуйте ещё раз.
+                </div>
+
+                <div class="form-group">
+                    <label>Название блюда *</label>
+                    <input type="text" name="Название блюда" id="recipeName" placeholder="Например: Оливье по-студенчески" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Категория *</label>
+                    <select name="Категория" id="recipeCategory" required>
+                        <option value="">Выберите категорию</option>
+                        <option value="Завтрак">Завтрак</option>
+                        <option value="Обед">Обед</option>
+                        <option value="Ужин">Ужин</option>
+                        <option value="Перекус">Перекус</option>
+                        <option value="Суп">Суп</option>
+                        <option value="Салат">Салат</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Время приготовления (минут) *</label>
+                    <input type="number" name="Время приготовления" id="recipeTime" placeholder="15" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Примерная стоимость в Якутске (₽) *</label>
+                    <input type="number" name="Стоимость" id="recipePrice" placeholder="200" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Сложность</label>
+                    <select name="Сложность" id="recipeDifficulty">
+                        <option value="Легко">Легко</option>
+                        <option value="Средне">Средне</option>
+                        <option value="Сложно">Сложно</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Краткое описание *</label>
+                    <input type="text" name="Описание" id="recipeDescription" placeholder="Вкусное и бюджетное блюдо..." required>
+                </div>
+
+                <div class="form-group">
+                    <label>Ингредиенты (каждый с новой строки) *</label>
+                    <textarea name="Ингредиенты" id="recipeIngredients" placeholder="Макароны - 250 г - 45₽&#10;Тунец - 1 банка - 180₽&#10;Лук - 1 шт - 10₽" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Инструкция (каждый шаг с новой строки) *</label>
+                    <textarea name="Инструкция" id="recipeInstructions" placeholder="1. Отварите макароны&#10;2. Обжарьте лук&#10;3. Смешайте ингредиенты" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Совет по экономии</label>
+                    <input type="text" name="Совет" id="recipeTip" placeholder="Покупайте продукты на рынке...">
+                </div>
+
+                <div class="form-group">
+                    <label>Ваше имя (необязательно)</label>
+                    <input type="text" name="Имя автора" id="authorName" placeholder="Студент СВФУ">
+                </div>
+
+                <div class="form-group">
+                    <label>Ваш email (для обратной связи)</label>
+                    <input type="email" name="Email" id="authorEmail" placeholder="student@example.com">
+                </div>
+
+                <!-- КАПЧА -->
+                <div class="form-group" style="background: #f9f9f9; padding: 1rem; border-radius: 10px; border: 2px dashed #FF6B6B;">
+                    <label style="font-weight: 600; color: #FF6B6B;">🤖 Проверка на робота *</label>
+                    <p style="margin-bottom: 0.5rem; font-size: 1.1rem;">Сколько будет <strong>7 + 4</strong>?</p>
+                    <input type="text" id="captchaAnswer" placeholder="Введите ответ цифрой" required style="max-width: 200px;">
+                    <input type="hidden" name="Капча пройдена" id="captchaHidden">
+                </div>
+
+                <button type="submit" id="submitRecipeBtn" class="cta-button" style="width: 100%; justify-content: center; margin-top: 1rem;">
+                    Отправить рецепт
+                </button>
+                
+                <p style="text-align: center; margin-top: 1rem; color: #666; font-size: 0.9rem;">
+                    * Рецепт будет добавлен после проверки модератором
+                </p>
+            </form>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-info">
+                <h3>Кулинария студента</h3>
+                <p>Проект для студентов Якутска. Экономим вместе!</p>
+            </div>
+            <div class="footer-links">
+                <a href="recipes.html">Рецепты</a>
+                <a href="calculator.html">Калькулятор</a>
+                <a href="tips.html">Советы</a>
+                <a href="about.html">О проекте</a>
+            </div>
+            <div class="footer-social">
+                <p>Мы в соцсетях</p>
+                <div class="social-links">
+                    <a href="#" class="social-link">📱</a>
+                    <a href="#" class="social-link">💬</a>
+                    <a href="#" class="social-link">📧</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 Кулинария студента | Якутск</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('recipeForm');
+            const submitBtn = document.getElementById('submitRecipeBtn');
+            const successMsg = document.getElementById('successMessage');
+            const errorMsg = document.getElementById('errorMessage');
+            const captchaInput = document.getElementById('captchaAnswer');
+
+            if (form) {
+                form.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    // Проверка капчи
+                    if (captchaInput.value.trim() !== '11') {
+                        captchaInput.style.borderColor = '#FF6B6B';
+                        captchaInput.style.backgroundColor = '#FFF0F0';
+                        captchaInput.value = '';
+                        captchaInput.placeholder = 'Неверно! Попробуйте ещё раз';
+                        captchaInput.focus();
+                        
+                        // Анимация тряски
+                        captchaInput.style.animation = 'shake 0.5s ease';
+                        setTimeout(function() {
+                            captchaInput.style.animation = '';
+                        }, 500);
+                        
+                        return false;
+                    }
+                    
+                    // Капча пройдена
+                    captchaInput.style.borderColor = '#4ECDC4';
+                    captchaInput.style.backgroundColor = '#F0FFF0';
+                    document.getElementById('captchaHidden').value = 'Пройдена';
+                    
+                    // Меняем текст кнопки
+                    submitBtn.textContent = 'Отправка...';
+                    submitBtn.style.opacity = '0.7';
+                    submitBtn.disabled = true;
+                    
+                    // Скрываем старые сообщения
+                    successMsg.classList.add('hidden');
+                    errorMsg.classList.add('hidden');
+                    
+                    try {
+                        const formData = new FormData(form);
+                        const response = await fetch(form.action, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'Accept': 'application/json'
+                            }
+                        });
+                        
+                        if (response.ok) {
+                            // Успешно!
+                            successMsg.classList.remove('hidden');
+                            form.reset(); // Очищаем форму
+                            
+                            // Сбрасываем стили капчи
+                            captchaInput.style.borderColor = '';
+                            captchaInput.style.backgroundColor = '';
+                            
+                            // Скроллим вверх
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                            
+                            // Прячем сообщение через 5 секунд
+                            setTimeout(function() {
+                                successMsg.classList.add('hidden');
+                            }, 5000);
+                        } else {
+                            throw new Error('Ошибка отправки');
+                        }
+                    } catch (error) {
+                        console.error('Ошибка:', error);
+                        errorMsg.classList.remove('hidden');
+                        
+                        setTimeout(function() {
+                            errorMsg.classList.add('hidden');
+                        }, 5000);
+                    }
+                    
+                    // Возвращаем кнопку
+                    submitBtn.textContent = 'Отправить рецепт';
+                    submitBtn.style.opacity = '1';
+                    submitBtn.disabled = false;
+                });
             }
             
-            captchaHidden.value = 'Пройдена';
-            
-            submitBtn.textContent = 'Отправка...';
-            submitBtn.style.opacity = '0.7';
-            
-            successMsg.classList.add('hidden');
-            errorMsg.classList.add('hidden');
-            
-            try {
-                const formData = new FormData(form);
-                const response = await fetch(form.action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
+            // Валидация обязательных полей
+            const requiredInputs = form.querySelectorAll('[required]');
+            requiredInputs.forEach(function(input) {
+                input.addEventListener('invalid', function() {
+                    this.style.borderColor = '#FF6B6B';
                 });
                 
-                if (response.ok) {
-                    successMsg.classList.remove('hidden');
-                    form.reset();
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                    
-                    setTimeout(function() {
-                        successMsg.classList.add('hidden');
-                    }, 5000);
-                } else {
-                    throw new Error('Ошибка отправки');
-                }
-            } catch (error) {
-                console.error('Ошибка:', error);
-                errorMsg.classList.remove('hidden');
-                
-                setTimeout(function() {
-                    errorMsg.classList.add('hidden');
-                }, 5000);
-            }
-            
-            submitBtn.textContent = 'Отправить рецепт';
-            submitBtn.style.opacity = '1';
+                input.addEventListener('input', function() {
+                    if (this.validity.valid) {
+                        this.style.borderColor = '#4ECDC4';
+                    }
+                });
+            });
         });
-    }
-    
-    const requiredInputs = form.querySelectorAll('[required]');
-    requiredInputs.forEach(function(input) {
-        input.addEventListener('invalid', function() {
-            this.style.borderColor = '#FF6B6B';
-        });
-        
-        input.addEventListener('input', function() {
-            if (this.validity.valid) {
-                this.style.borderColor = '#4ECDC4';
-            }
-        });
-    });
-});
+    </script>
+
+    <style>
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+    </style>
+</body>
+</html>
