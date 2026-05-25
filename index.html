@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Кулинария студента | Бюджетные рецепты Якутск</title>
+    <title>Кулинария студента | Якутск</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Навигация -->
     <nav class="navbar">
         <div class="nav-container">
             <div class="logo">
@@ -29,7 +28,6 @@
         </div>
     </nav>
 
-    <!-- Главный экран -->
     <section id="home" class="hero">
         <div class="hero-content">
             <h1 class="hero-title">
@@ -37,7 +35,7 @@
                 <span class="title-line">Быстро,</span>
                 <span class="title-line accent">Бюджетно</span>
             </h1>
-            <p class="hero-subtitle">Рецепты для студентов Якутска, которые хотят вкусно есть и не тратить всю стипендию</p>
+            <p class="hero-subtitle">Рецепты для студентов Якутска</p>
             <div class="hero-stats">
                 <div class="stat-item">
                     <span class="stat-number">50+</span>
@@ -65,7 +63,6 @@
         </div>
     </section>
 
-    <!-- Секция с рецептами -->
     <section id="recipes" class="recipes-section">
         <h2 class="section-title">Популярные рецепты</h2>
         <div class="filter-buttons">
@@ -77,14 +74,10 @@
         </div>
         
         <div class="recipes-grid">
-            <!-- Карточка 1 -->
             <div class="recipe-card" data-category="breakfast">
                 <div class="recipe-image">
                     <span class="recipe-emoji">🥞</span>
-                    <div class="recipe-time">
-                        <span class="time-icon">⏱️</span>
-                        <span>10 мин</span>
-                    </div>
+                    <div class="recipe-time">⏱️ 10 мин</div>
                 </div>
                 <div class="recipe-content">
                     <h3 class="recipe-title">Ленивые вареники</h3>
@@ -97,14 +90,10 @@
                 </div>
             </div>
 
-            <!-- Карточка 2 -->
             <div class="recipe-card" data-category="lunch">
                 <div class="recipe-image">
                     <span class="recipe-emoji">🍝</span>
-                    <div class="recipe-time">
-                        <span class="time-icon">⏱️</span>
-                        <span>20 мин</span>
-                    </div>
+                    <div class="recipe-time">⏱️ 20 мин</div>
                 </div>
                 <div class="recipe-content">
                     <h3 class="recipe-title">Паста с тунцом</h3>
@@ -117,14 +106,10 @@
                 </div>
             </div>
 
-            <!-- Карточка 3 -->
             <div class="recipe-card" data-category="lunch">
                 <div class="recipe-image">
                     <span class="recipe-emoji">🍚</span>
-                    <div class="recipe-time">
-                        <span class="time-icon">⏱️</span>
-                        <span>25 мин</span>
-                    </div>
+                    <div class="recipe-time">⏱️ 25 мин</div>
                 </div>
                 <div class="recipe-content">
                     <h3 class="recipe-title">Рис с овощами</h3>
@@ -137,14 +122,10 @@
                 </div>
             </div>
 
-            <!-- Карточка 4 -->
             <div class="recipe-card" data-category="dinner">
                 <div class="recipe-image">
                     <span class="recipe-emoji">🥔</span>
-                    <div class="recipe-time">
-                        <span class="time-icon">⏱️</span>
-                        <span>30 мин</span>
-                    </div>
+                    <div class="recipe-time">⏱️ 30 мин</div>
                 </div>
                 <div class="recipe-content">
                     <h3 class="recipe-title">Картофельная запеканка</h3>
@@ -157,14 +138,10 @@
                 </div>
             </div>
 
-            <!-- Карточка 5 -->
             <div class="recipe-card" data-category="snack">
                 <div class="recipe-image">
                     <span class="recipe-emoji">🥪</span>
-                    <div class="recipe-time">
-                        <span class="time-icon">⏱️</span>
-                        <span>5 мин</span>
-                    </div>
+                    <div class="recipe-time">⏱️ 5 мин</div>
                 </div>
                 <div class="recipe-content">
                     <h3 class="recipe-title">Горячие бутерброды</h3>
@@ -177,14 +154,10 @@
                 </div>
             </div>
 
-            <!-- Карточка 6 -->
             <div class="recipe-card" data-category="breakfast">
                 <div class="recipe-image">
                     <span class="recipe-emoji">🍳</span>
-                    <div class="recipe-time">
-                        <span class="time-icon">⏱️</span>
-                        <span>7 мин</span>
-                    </div>
+                    <div class="recipe-time">⏱️ 7 мин</div>
                 </div>
                 <div class="recipe-content">
                     <h3 class="recipe-title">Яичница с помидорами</h3>
@@ -199,7 +172,6 @@
         </div>
     </section>
 
-    <!-- Модальное окно -->
     <div id="recipeModal" class="modal">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
@@ -207,39 +179,37 @@
         </div>
     </div>
 
-    <!-- Секция советов -->
     <section id="tips" class="tips-section">
         <h2 class="section-title">Полезные советы</h2>
         <div class="tips-grid">
             <div class="tip-card">
                 <div class="tip-icon">🛒</div>
                 <h3>Где покупать в Якутске</h3>
-                <p>На рынках и в крупных гипермаркетах часто бывают скидки. Сравнивайте цены в разных магазинах</p>
+                <p>На рынках и в крупных гипермаркетах часто бывают скидки</p>
             </div>
             <div class="tip-card">
                 <div class="tip-icon">❄️</div>
                 <h3>Заморозка — ваш друг</h3>
-                <p>Замороженные овощи и ягоды часто выгоднее свежих. Отлично подходят для супов и выпечки</p>
+                <p>Замороженные овощи и ягоды часто выгоднее свежих</p>
             </div>
             <div class="tip-card">
                 <div class="tip-icon">📝</div>
                 <h3>Планируйте меню</h3>
-                <p>Из-за высоких цен в Якутске важно составлять список покупок на неделю вперёд</p>
+                <p>Составляйте список покупок на неделю вперёд</p>
             </div>
             <div class="tip-card">
                 <div class="tip-icon">🏪</div>
                 <h3>Местные продукты</h3>
-                <p>Покупайте местную молочку и мясо — они часто дешевле привозных и очень качественные</p>
+                <p>Покупайте местную молочку и мясо</p>
             </div>
         </div>
     </section>
 
-    <!-- Подвал -->
     <footer id="about" class="footer">
         <div class="footer-content">
             <div class="footer-info">
                 <h3>Кулинария студента</h3>
-                <p>Проект создан студентами Якутска для студентов. Делимся проверенными рецептами с учётом местных цен.</p>
+                <p>Проект создан студентами Якутска для студентов</p>
             </div>
             <div class="footer-social">
                 <p>Делитесь своими рецептами!</p>
