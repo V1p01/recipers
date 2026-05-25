@@ -1,136 +1,88 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>О проекте | Кулинария студента</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="index.html" class="logo">
-                <span class="logo-icon">🍳</span>
-                <span class="logo-text">Кулинария студента</span>
-            </a>
-            <ul class="nav-menu">
-                <li><a href="index.html" class="nav-link">Главная</a></li>
-                <li><a href="recipes.html" class="nav-link">Рецепты</a></li>
-                <li><a href="calculator.html" class="nav-link">Калькулятор</a></li>
-                <li><a href="tips.html" class="nav-link">Советы</a></li>
-                <li><a href="add-recipe.html" class="nav-link">Добавить</a></li>
-                <li><a href="about.html" class="nav-link active">О проекте</a></li>
-            </ul>
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-    </nav>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('recipeForm');
+    const submitBtn = document.getElementById('submitRecipeBtn');
+    const successMsg = document.getElementById('successMessage');
+    const errorMsg = document.getElementById('errorMessage');
 
-    <div class="breadcrumbs">
-        <a href="index.html">Главная</a> → О проекте
-    </div>
+    // Добавляем поле для капчи перед кнопкой
+    const captchaDiv = document.createElement('div');
+    captchaDiv.className = 'form-group';
+    captchaDiv.innerHTML = `
+        <label>Проверка: сколько будет 2 + 3? *</label>
+        <input type="text" id="captchaAnswer" placeholder="Введите ответ цифрой" required>
+        <input type="hidden" name="Проверка" id="captchaHidden">
+    `;
+    submitBtn.parentNode.insertBefore(captchaDiv, submitBtn);
 
-    <section style="padding-top: 2rem;">
-        <h2 class="section-title">О проекте</h2>
+    if (form) {
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Проверка капчи
+            const captcha = document.getElementById('captchaAnswer');
+            const captchaHidden = document.getElementById('captchaHidden');
+            
+            if (captcha.value.trim() !== '5') {
+                alert('❌ Неправильный ответ! Попробуйте ещё раз.');
+                captcha.value = '';
+                captcha.style.borderColor = '#FF6B6B';
+                captcha.focus();
+                return;
+            }
+            
+            captchaHidden.value = 'Пройдена';
+            
+            submitBtn.textContent = 'Отправка...';
+            submitBtn.style.opacity = '0.7';
+            
+            successMsg.classList.add('hidden');
+            errorMsg.classList.add('hidden');
+            
+            try {
+                const formData = new FormData(form);
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    successMsg.classList.remove('hidden');
+                    form.reset();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    
+                    setTimeout(function() {
+                        successMsg.classList.add('hidden');
+                    }, 5000);
+                } else {
+                    throw new Error('Ошибка отправки');
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+                errorMsg.classList.remove('hidden');
+                
+                setTimeout(function() {
+                    errorMsg.classList.add('hidden');
+                }, 5000);
+            }
+            
+            submitBtn.textContent = 'Отправить рецепт';
+            submitBtn.style.opacity = '1';
+        });
+    }
+    
+    const requiredInputs = form.querySelectorAll('[required]');
+    requiredInputs.forEach(function(input) {
+        input.addEventListener('invalid', function() {
+            this.style.borderColor = '#FF6B6B';
+        });
         
-        <div class="about-content">
-            <div style="text-align: center; font-size: 4rem; margin-bottom: 2rem;">🍳</div>
-            
-            <h2 style="color: var(--primary); margin-bottom: 1rem;">Кулинария студента</h2>
-            <p style="font-size: 1.1rem; margin-bottom: 2rem;">Проект создан студентами для студентов Якутска. Наша миссия — помочь студентам вкусно и бюджетно питаться, не тратя всю стипендию на еду.</p>
-            
-            <h3>Почему мы это делаем?</h3>
-            <p>В Якутске цены на продукты выше, чем в среднем по России из-за логистики и северных надбавок. Студентам приходится особенно трудно — стипендия небольшая, а есть хочется вкусно и полезно.</p>
-            <p>Мы собрали проверенные рецепты, которые:</p>
-            <ul style="margin: 1rem 0; padding-left: 2rem;">
-                <li>Готовятся быстро (до 30 минут)</li>
-                <li>Используют доступные в Якутске продукты</li>
-                <li>Стоят недорого (в среднем до 350₽)</li>
-                <li>Действительно вкусные!</li>
-            </ul>
-            
-            <h3 style="margin-top: 2rem;">Наши возможности</h3>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin: 1.5rem 0;">
-                <div style="background: #f9f9f9; padding: 1.5rem; border-radius: 15px; text-align: center;">
-                    <span style="font-size: 2rem;">📖</span>
-                    <h4>50+ рецептов</h4>
-                    <p style="font-size: 0.9rem;">Завтраки, обеды, ужины, перекусы</p>
-                </div>
-                <div style="background: #f9f9f9; padding: 1.5rem; border-radius: 15px; text-align: center;">
-                    <span style="font-size: 2rem;">🧮</span>
-                    <h4>Калькулятор</h4>
-                    <p style="font-size: 0.9rem;">Расчёт стоимости блюда</p>
-                </div>
-                <div style="background: #f9f9f9; padding: 1.5rem; border-radius: 15px; text-align: center;">
-                    <span style="font-size: 2rem;">💡</span>
-                    <h4>Советы</h4>
-                    <p style="font-size: 0.9rem;">Как экономить в Якутске</p>
-                </div>
-                <div style="background: #f9f9f9; padding: 1.5rem; border-radius: 15px; text-align: center;">
-                    <span style="font-size: 2rem;">✍️</span>
-                    <h4>Рецепты от вас</h4>
-                    <p style="font-size: 0.9rem;">Делитесь своими находками</p>
-                </div>
-            </div>
-            
-            <h3 style="margin-top: 2rem;">Для кого этот сайт?</h3>
-            <p>Для всех студентов Якутска! Неважно, учитесь вы в СВФУ, ЯКТиД, педколледже или другом учебном заведении — наши рецепты подойдут каждому.</p>
-            
-            <h3 style="margin-top: 2rem;">Планы на будущее</h3>
-            <ul style="margin: 1rem 0; padding-left: 2rem;">
-                <li>Добавить видео-рецепты</li>
-                <li>Создать мобильное приложение</li>
-                <li>Добавить систему оценок и комментариев</li>
-                <li>Запустить Telegram-бота с ежедневными рецептами</li>
-                <li>Организовать совместные закупки продуктов</li>
-            </ul>
-            
-            <h3 style="margin-top: 2rem;">Контакты</h3>
-            <p>Есть вопросы, предложения или хотите помочь проекту? Свяжитесь с нами:</p>
-            <div style="display: flex; gap: 2rem; margin-top: 1rem; flex-wrap: wrap;">
-                <a href="mailto:student@cook.ru" style="color: var(--primary); text-decoration: none; font-weight: 500;">📧 student@cook.ru</a>
-                <a href="#" style="color: var(--primary); text-decoration: none; font-weight: 500;">📱 Telegram</a>
-                <a href="#" style="color: var(--primary); text-decoration: none; font-weight: 500;">💬 WhatsApp</a>
-            </div>
-            
-            <div style="margin-top: 3rem; padding: 2rem; background: linear-gradient(135deg, #667eea15, #764ba215); border-radius: 20px; text-align: center;">
-                <h3 style="color: var(--primary);">Поддержите проект!</h3>
-                <p>Расскажите о нас друзьям и поделитесь своими рецептами. Вместе мы сделаем студенческую жизнь вкуснее!</p>
-                <a href="add-recipe.html" class="cta-button" style="margin-top: 1rem; display: inline-flex;">Добавить рецепт</a>
-            </div>
-        </div>
-    </section>
-
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-info">
-                <h3>Кулинария студента</h3>
-                <p>Проект для студентов Якутска. Экономим вместе!</p>
-            </div>
-            <div class="footer-links">
-                <a href="recipes.html">Рецепты</a>
-                <a href="calculator.html">Калькулятор</a>
-                <a href="tips.html">Советы</a>
-                <a href="about.html">О проекте</a>
-            </div>
-            <div class="footer-social">
-                <p>Мы в соцсетях</p>
-                <div class="social-links">
-                    <a href="#" class="social-link">📱</a>
-                    <a href="#" class="social-link">💬</a>
-                    <a href="#" class="social-link">📧</a>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>© 2024 Кулинария студента | Якутск</p>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
-</body>
-</html>
+        input.addEventListener('input', function() {
+            if (this.validity.valid) {
+                this.style.borderColor = '#4ECDC4';
+            }
+        });
+    });
+});
