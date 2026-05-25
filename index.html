@@ -15,7 +15,7 @@
                 <span class="logo-text">Кулинария студента</span>
             </div>
             <ul class="nav-menu">
-                <li><a href="#home" class="nav-link active">Главная</a></li>
+                <li><a href="#home" class="nav-link">Главная</a></li>
                 <li><a href="#recipes" class="nav-link">Рецепты</a></li>
                 <li><a href="#tips" class="nav-link">Советы</a></li>
                 <li><a href="#about" class="nav-link">О проекте</a></li>
@@ -31,8 +31,8 @@
     <section id="home" class="hero">
         <div class="hero-content">
             <h1 class="hero-title">
-                <span class="title-line">Вкусно,</span>
-                <span class="title-line">Быстро,</span>
+                <span class="title-line">Вкусно</span>
+                <span class="title-line">Быстро</span>
                 <span class="title-line accent">Бюджетно</span>
             </h1>
             <p class="hero-subtitle">Рецепты для студентов Якутска</p>
@@ -42,29 +42,26 @@
                     <span class="stat-label">Рецептов</span>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-number">15</span>
-                    <span class="stat-label">Минут</span>
+                    <span class="stat-number">15мин</span>
+                    <span class="stat-label">Готовка</span>
                 </div>
                 <div class="stat-item">
                     <span class="stat-number">350₽</span>
                     <span class="stat-label">Бюджет</span>
                 </div>
             </div>
-            <a href="#recipes" class="cta-button">
-                Смотреть рецепты
-                <span class="arrow">→</span>
-            </a>
+            <a href="#recipes" class="cta-button">Смотреть рецепты →</a>
         </div>
         <div class="hero-decoration">
-            <div class="floating-element food-1">🍕</div>
-            <div class="floating-element food-2">🥑</div>
-            <div class="floating-element food-3">🍜</div>
-            <div class="floating-element food-4">🥗</div>
+            <span class="floating food-1">🍕</span>
+            <span class="floating food-2">🥑</span>
+            <span class="floating food-3">🍜</span>
+            <span class="floating food-4">🥗</span>
         </div>
     </section>
 
     <section id="recipes" class="recipes-section">
-        <h2 class="section-title">Популярные рецепты</h2>
+        <h2 class="section-title">Рецепты</h2>
         <div class="filter-buttons">
             <button class="filter-btn active" data-filter="all">Все</button>
             <button class="filter-btn" data-filter="breakfast">Завтраки</button>
@@ -72,104 +69,7 @@
             <button class="filter-btn" data-filter="dinner">Ужины</button>
             <button class="filter-btn" data-filter="snack">Перекусы</button>
         </div>
-        
-        <div class="recipes-grid">
-            <div class="recipe-card" data-category="breakfast">
-                <div class="recipe-image">
-                    <span class="recipe-emoji">🥞</span>
-                    <div class="recipe-time">⏱️ 10 мин</div>
-                </div>
-                <div class="recipe-content">
-                    <h3 class="recipe-title">Ленивые вареники</h3>
-                    <p class="recipe-description">Нежные творожные вареники за 10 минут</p>
-                    <div class="recipe-info">
-                        <span class="recipe-price">~180₽</span>
-                        <span class="recipe-difficulty">Легко</span>
-                    </div>
-                    <button class="recipe-btn" onclick="openRecipe('lazy-vareniki')">Подробнее</button>
-                </div>
-            </div>
-
-            <div class="recipe-card" data-category="lunch">
-                <div class="recipe-image">
-                    <span class="recipe-emoji">🍝</span>
-                    <div class="recipe-time">⏱️ 20 мин</div>
-                </div>
-                <div class="recipe-content">
-                    <h3 class="recipe-title">Паста с тунцом</h3>
-                    <p class="recipe-description">Сытная паста с тунцом и томатным соусом</p>
-                    <div class="recipe-info">
-                        <span class="recipe-price">~320₽</span>
-                        <span class="recipe-difficulty">Средне</span>
-                    </div>
-                    <button class="recipe-btn" onclick="openRecipe('tuna-pasta')">Подробнее</button>
-                </div>
-            </div>
-
-            <div class="recipe-card" data-category="lunch">
-                <div class="recipe-image">
-                    <span class="recipe-emoji">🍚</span>
-                    <div class="recipe-time">⏱️ 25 мин</div>
-                </div>
-                <div class="recipe-content">
-                    <h3 class="recipe-title">Рис с овощами</h3>
-                    <p class="recipe-description">Быстрый рис с замороженными овощами</p>
-                    <div class="recipe-info">
-                        <span class="recipe-price">~230₽</span>
-                        <span class="recipe-difficulty">Легко</span>
-                    </div>
-                    <button class="recipe-btn" onclick="openRecipe('rice-veggies')">Подробнее</button>
-                </div>
-            </div>
-
-            <div class="recipe-card" data-category="dinner">
-                <div class="recipe-image">
-                    <span class="recipe-emoji">🥔</span>
-                    <div class="recipe-time">⏱️ 30 мин</div>
-                </div>
-                <div class="recipe-content">
-                    <h3 class="recipe-title">Картофельная запеканка</h3>
-                    <p class="recipe-description">Сырная запеканка с картофелем и сосисками</p>
-                    <div class="recipe-info">
-                        <span class="recipe-price">~380₽</span>
-                        <span class="recipe-difficulty">Средне</span>
-                    </div>
-                    <button class="recipe-btn" onclick="openRecipe('potato-casserole')">Подробнее</button>
-                </div>
-            </div>
-
-            <div class="recipe-card" data-category="snack">
-                <div class="recipe-image">
-                    <span class="recipe-emoji">🥪</span>
-                    <div class="recipe-time">⏱️ 5 мин</div>
-                </div>
-                <div class="recipe-content">
-                    <h3 class="recipe-title">Горячие бутерброды</h3>
-                    <p class="recipe-description">Хрустящие бутерброды с сыром в микроволновке</p>
-                    <div class="recipe-info">
-                        <span class="recipe-price">~140₽</span>
-                        <span class="recipe-difficulty">Легко</span>
-                    </div>
-                    <button class="recipe-btn" onclick="openRecipe('hot-sandwiches')">Подробнее</button>
-                </div>
-            </div>
-
-            <div class="recipe-card" data-category="breakfast">
-                <div class="recipe-image">
-                    <span class="recipe-emoji">🍳</span>
-                    <div class="recipe-time">⏱️ 7 мин</div>
-                </div>
-                <div class="recipe-content">
-                    <h3 class="recipe-title">Яичница с помидорами</h3>
-                    <p class="recipe-description">Классическая глазунья с помидорами и зеленью</p>
-                    <div class="recipe-info">
-                        <span class="recipe-price">~120₽</span>
-                        <span class="recipe-difficulty">Легко</span>
-                    </div>
-                    <button class="recipe-btn" onclick="openRecipe('eggs-tomatoes')">Подробнее</button>
-                </div>
-            </div>
-        </div>
+        <div class="recipes-grid" id="recipesGrid"></div>
     </section>
 
     <div id="recipeModal" class="modal">
@@ -180,27 +80,27 @@
     </div>
 
     <section id="tips" class="tips-section">
-        <h2 class="section-title">Полезные советы</h2>
+        <h2 class="section-title">Советы</h2>
         <div class="tips-grid">
             <div class="tip-card">
-                <div class="tip-icon">🛒</div>
-                <h3>Где покупать в Якутске</h3>
-                <p>На рынках и в крупных гипермаркетах часто бывают скидки</p>
+                <span class="tip-icon">🛒</span>
+                <h3>Покупки в Якутске</h3>
+                <p>Сравнивайте цены в разных магазинах, на рынках часто дешевле</p>
             </div>
             <div class="tip-card">
-                <div class="tip-icon">❄️</div>
-                <h3>Заморозка — ваш друг</h3>
-                <p>Замороженные овощи и ягоды часто выгоднее свежих</p>
+                <span class="tip-icon">❄️</span>
+                <h3>Заморозка</h3>
+                <p>Замороженные овощи выгоднее свежих, особенно зимой</p>
             </div>
             <div class="tip-card">
-                <div class="tip-icon">📝</div>
-                <h3>Планируйте меню</h3>
-                <p>Составляйте список покупок на неделю вперёд</p>
+                <span class="tip-icon">📝</span>
+                <h3>План меню</h3>
+                <p>Планируйте покупки на неделю, чтобы избежать лишних трат</p>
             </div>
             <div class="tip-card">
-                <div class="tip-icon">🏪</div>
-                <h3>Местные продукты</h3>
-                <p>Покупайте местную молочку и мясо</p>
+                <span class="tip-icon">🏪</span>
+                <h3>Местное</h3>
+                <p>Местная молочка и мясо дешевле и качественнее привозных</p>
             </div>
         </div>
     </section>
@@ -209,10 +109,10 @@
         <div class="footer-content">
             <div class="footer-info">
                 <h3>Кулинария студента</h3>
-                <p>Проект создан студентами Якутска для студентов</p>
+                <p>Проект для студентов Якутска. Экономим вместе!</p>
             </div>
             <div class="footer-social">
-                <p>Делитесь своими рецептами!</p>
+                <p>Делитесь рецептами!</p>
                 <div class="social-links">
                     <a href="#" class="social-link">📱</a>
                     <a href="#" class="social-link">💬</a>
