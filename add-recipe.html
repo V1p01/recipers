@@ -38,77 +38,93 @@
         <h2 class="section-title">Поделитесь своим рецептом</h2>
         
         <div style="max-width: 600px; margin: 0 auto; background: white; padding: 2rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
-            <div id="successMessage" class="message success hidden">
-                ✅ Рецепт успешно отправлен! Спасибо!
-            </div>
-
-            <div class="form-group">
-                <label>Название блюда *</label>
-                <input type="text" id="recipeName" placeholder="Например: Оливье по-студенчески" required>
-            </div>
-
-            <div class="form-group">
-                <label>Категория *</label>
-                <select id="recipeCategory" required>
-                    <option value="">Выберите категорию</option>
-                    <option value="breakfast">Завтрак</option>
-                    <option value="lunch">Обед</option>
-                    <option value="dinner">Ужин</option>
-                    <option value="snack">Перекус</option>
-                    <option value="soup">Суп</option>
-                    <option value="salad">Салат</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Время приготовления (минут) *</label>
-                <input type="number" id="recipeTime" placeholder="15" required>
-            </div>
-
-            <div class="form-group">
-                <label>Примерная стоимость в Якутске (₽) *</label>
-                <input type="number" id="recipePrice" placeholder="200" required>
-            </div>
-
-            <div class="form-group">
-                <label>Сложность</label>
-                <select id="recipeDifficulty">
-                    <option value="Легко">Легко</option>
-                    <option value="Средне">Средне</option>
-                    <option value="Сложно">Сложно</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Краткое описание *</label>
-                <input type="text" id="recipeDescription" placeholder="Вкусное и бюджетное блюдо..." required>
-            </div>
-
-            <div class="form-group">
-                <label>Ингредиенты (каждый с новой строки) *</label>
-                <textarea id="recipeIngredients" placeholder="Макароны - 250 г - 45₽&#10;Тунец - 1 банка - 180₽&#10;Лук - 1 шт - 10₽" required></textarea>
-            </div>
-
-            <div class="form-group">
-                <label>Инструкция (каждый шаг с новой строки) *</label>
-                <textarea id="recipeInstructions" placeholder="1. Отварите макароны&#10;2. Обжарьте лук&#10;3. Смешайте ингредиенты" required></textarea>
-            </div>
-
-            <div class="form-group">
-                <label>Совет по экономии</label>
-                <input type="text" id="recipeTip" placeholder="Покупайте продукты на рынке...">
-            </div>
-
-            <div class="form-group">
-                <label>Ваше имя (необязательно)</label>
-                <input type="text" id="authorName" placeholder="Студент СВФУ">
-            </div>
-
-            <button onclick="submitRecipe()" class="cta-button" style="width: 100%; justify-content: center;">Отправить рецепт</button>
             
-            <p style="text-align: center; margin-top: 1rem; color: #666; font-size: 0.9rem;">
-                * Рецепт будет добавлен после проверки
-            </p>
+            <!-- СЮДА ВСТАВЬТЕ ВАШ FORMSPREE URL -->
+            <form id="recipeForm" action="https://formspree.io/f/xaqkpnrk" method="POST">
+                
+                <div id="successMessage" class="message success hidden">
+                    ✅ Рецепт успешно отправлен! Спасибо! Мы добавим его после проверки.
+                </div>
+
+                <div id="errorMessage" class="message error hidden">
+                    ❌ Ошибка отправки. Попробуйте ещё раз.
+                </div>
+
+                <div class="form-group">
+                    <label>Название блюда *</label>
+                    <input type="text" name="Название блюда" id="recipeName" placeholder="Например: Оливье по-студенчески" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Категория *</label>
+                    <select name="Категория" id="recipeCategory" required>
+                        <option value="">Выберите категорию</option>
+                        <option value="Завтрак">Завтрак</option>
+                        <option value="Обед">Обед</option>
+                        <option value="Ужин">Ужин</option>
+                        <option value="Перекус">Перекус</option>
+                        <option value="Суп">Суп</option>
+                        <option value="Салат">Салат</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Время приготовления (минут) *</label>
+                    <input type="number" name="Время приготовления" id="recipeTime" placeholder="15" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Примерная стоимость в Якутске (₽) *</label>
+                    <input type="number" name="Стоимость" id="recipePrice" placeholder="200" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Сложность</label>
+                    <select name="Сложность" id="recipeDifficulty">
+                        <option value="Легко">Легко</option>
+                        <option value="Средне">Средне</option>
+                        <option value="Сложно">Сложно</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Краткое описание *</label>
+                    <input type="text" name="Описание" id="recipeDescription" placeholder="Вкусное и бюджетное блюдо..." required>
+                </div>
+
+                <div class="form-group">
+                    <label>Ингредиенты (каждый с новой строки) *</label>
+                    <textarea name="Ингредиенты" id="recipeIngredients" placeholder="Макароны - 250 г - 45₽&#10;Тунец - 1 банка - 180₽&#10;Лук - 1 шт - 10₽" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Инструкция (каждый шаг с новой строки) *</label>
+                    <textarea name="Инструкция" id="recipeInstructions" placeholder="1. Отварите макароны&#10;2. Обжарьте лук&#10;3. Смешайте ингредиенты" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Совет по экономии</label>
+                    <input type="text" name="Совет" id="recipeTip" placeholder="Покупайте продукты на рынке...">
+                </div>
+
+                <div class="form-group">
+                    <label>Ваше имя (необязательно)</label>
+                    <input type="text" name="Имя автора" id="authorName" placeholder="Студент СВФУ">
+                </div>
+
+                <div class="form-group">
+                    <label>Ваш email (для обратной связи)</label>
+                    <input type="email" name="Email" id="authorEmail" placeholder="student@example.com">
+                </div>
+
+                <button type="submit" id="submitRecipeBtn" class="cta-button" style="width: 100%; justify-content: center;">
+                    Отправить рецепт
+                </button>
+                
+                <p style="text-align: center; margin-top: 1rem; color: #666; font-size: 0.9rem;">
+                    * Рецепт будет добавлен после проверки модератором
+                </p>
+            </form>
         </div>
     </section>
 
@@ -140,35 +156,79 @@
 
     <script src="script.js"></script>
     <script>
-        function submitRecipe() {
-            const name = document.getElementById('recipeName').value;
-            const category = document.getElementById('recipeCategory').value;
-            
-            if (!name || !category) {
-                alert('Заполните обязательные поля!');
-                return;
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('recipeForm');
+            const submitBtn = document.getElementById('submitRecipeBtn');
+            const successMsg = document.getElementById('successMessage');
+            const errorMsg = document.getElementById('errorMessage');
+
+            if (form) {
+                form.addEventListener('submit', async function(e) {
+                    e.preventDefault(); // Останавливаем стандартную отправку
+                    
+                    // Меняем текст кнопки
+                    submitBtn.textContent = 'Отправка...';
+                    submitBtn.style.opacity = '0.7';
+                    
+                    // Скрываем старые сообщения
+                    successMsg.classList.add('hidden');
+                    errorMsg.classList.add('hidden');
+                    
+                    try {
+                        // Отправляем данные на Formspree
+                        const formData = new FormData(form);
+                        const response = await fetch(form.action, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'Accept': 'application/json'
+                            }
+                        });
+                        
+                        if (response.ok) {
+                            // Успешно!
+                            successMsg.classList.remove('hidden');
+                            form.reset(); // Очищаем форму
+                            
+                            // Скроллим вверх
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                            
+                            // Прячем сообщение через 5 секунд
+                            setTimeout(function() {
+                                successMsg.classList.add('hidden');
+                            }, 5000);
+                        } else {
+                            throw new Error('Ошибка отправки');
+                        }
+                    } catch (error) {
+                        console.error('Ошибка:', error);
+                        errorMsg.classList.remove('hidden');
+                        
+                        setTimeout(function() {
+                            errorMsg.classList.add('hidden');
+                        }, 5000);
+                    }
+                    
+                    // Возвращаем кнопку
+                    submitBtn.textContent = 'Отправить рецепт';
+                    submitBtn.style.opacity = '1';
+                });
             }
             
-            // Здесь можно добавить отправку на сервер
-            // Пока просто показываем сообщение
-            document.getElementById('successMessage').classList.remove('hidden');
-            
-            // Очищаем форму
-            setTimeout(() => {
-                document.querySelectorAll('input, textarea, select').forEach(el => el.value = '');
-                document.getElementById('successMessage').classList.add('hidden');
-            }, 3000);
-            
-            // Скроллим вверх
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            
-            console.log('Рецепт отправлен:', {
-                name,
-                category,
-                time: document.getElementById('recipeTime').value,
-                price: document.getElementById('recipePrice').value
+            // Валидация: проверяем обязательные поля перед отправкой
+            const requiredInputs = form.querySelectorAll('[required]');
+            requiredInputs.forEach(function(input) {
+                input.addEventListener('invalid', function() {
+                    this.style.borderColor = '#FF6B6B';
+                });
+                
+                input.addEventListener('input', function() {
+                    if (this.validity.valid) {
+                        this.style.borderColor = '#4ECDC4';
+                    }
+                });
             });
-        }
+        });
     </script>
 </body>
 </html>
