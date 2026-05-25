@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кулинария студента | Якутск</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">🍳</span>
+                <span class="logo-text">Кулинария студента</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link active">Главная</a></li>
+                <li><a href="recipes.html" class="nav-link">Рецепты</a></li>
+                <li><a href="calculator.html" class="nav-link">Калькулятор</a></li>
+                <li><a href="tips.html" class="nav-link">Советы</a></li>
+                <li><a href="add-recipe.html" class="nav-link">Добавить</a></li>
+                <li><a href="about.html" class="nav-link">О проекте</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                <span class="title-line">Вкусно</span>
+                <span class="title-line">Быстро</span>
+                <span class="title-line accent">Бюджетно</span>
+            </h1>
+            <p class="hero-subtitle">Рецепты для студентов Якутска. Экономь с умом!</p>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-number">50+</span>
+                    <span class="stat-label">Рецептов</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">350₽</span>
+                    <span class="stat-label">Средний чек</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">15мин</span>
+                    <span class="stat-label">Готовка</span>
+                </div>
+            </div>
+            <div class="hero-buttons">
+                <a href="recipes.html" class="cta-button">Смотреть рецепты →</a>
+                <a href="calculator.html" class="cta-button secondary">Калькулятор</a>
+            </div>
+        </div>
+        <div class="hero-decoration">
+            <span class="floating food-1">🍕</span>
+            <span class="floating food-2">🥑</span>
+            <span class="floating food-3">🍜</span>
+            <span class="floating food-4">🥗</span>
+        </div>
+    </section>
+
+    <section class="features-section">
+        <h2 class="section-title">Возможности сайта</h2>
+        <div class="features-grid">
+            <a href="recipes.html" class="feature-card">
+                <span class="feature-icon">📖</span>
+                <h3>Рецепты</h3>
+                <p>50+ проверенных рецептов для студента</p>
+            </a>
+            <a href="calculator.html" class="feature-card">
+                <span class="feature-icon">🧮</span>
+                <h3>Калькулятор</h3>
+                <p>Расчитай стоимость блюда</p>
+            </a>
+            <a href="tips.html" class="feature-card">
+                <span class="feature-icon">💡</span>
+                <h3>Советы</h3>
+                <p>Как экономить в Якутске</p>
+            </a>
+            <a href="add-recipe.html" class="feature-card">
+                <span class="feature-icon">✍️</span>
+                <h3>Добавить</h3>
+                <p>Поделись своим рецептом</p>
+            </a>
+        </div>
+    </section>
+
+    <section class="popular-recipes">
+        <h2 class="section-title">Популярные рецепты</h2>
+        <div class="recipes-mini-grid" id="popularRecipes"></div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="recipes.html" class="cta-button">Все рецепты →</a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-info">
+                <h3>Кулинария студента</h3>
+                <p>Проект для студентов Якутска. Экономим вместе!</p>
+            </div>
+            <div class="footer-links">
+                <a href="recipes.html">Рецепты</a>
+                <a href="calculator.html">Калькулятор</a>
+                <a href="tips.html">Советы</a>
+                <a href="about.html">О проекте</a>
+            </div>
+            <div class="footer-social">
+                <p>Мы в соцсетях</p>
+                <div class="social-links">
+                    <a href="#" class="social-link">📱</a>
+                    <a href="#" class="social-link">💬</a>
+                    <a href="#" class="social-link">📧</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 Кулинария студента | Якутск</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Показываем 4 случайных рецепта на главной
+        const popular = document.getElementById('popularRecipes');
+        const shuffled = [...recipesData].sort(() => 0.5 - Math.random());
+        popular.innerHTML = shuffled.slice(0, 4).map(recipe => `
+            <div class="recipe-card">
+                <div class="recipe-image">
+                    <span class="recipe-emoji">${recipe.emoji}</span>
+                    <div class="recipe-time">⏱️ ${recipe.time}</div>
+                </div>
+                <div class="recipe-content">
+                    <h3 class="recipe-title">${recipe.title}</h3>
+                    <p class="recipe-description">${recipe.description}</p>
+                    <div class="recipe-info">
+                        <span class="recipe-price">~${recipe.price}</span>
+                        <span class="recipe-difficulty">${recipe.difficulty}</span>
+                    </div>
+                    <a href="recipes.html?id=${recipe.id}" class="recipe-btn">Подробнее</a>
+                </div>
+            </div>
+        `).join('');
+    </script>
+</body>
+</html>
