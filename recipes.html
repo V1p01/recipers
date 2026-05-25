@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Калькулятор стоимости | Кулинария студента</title>
+    <title>Рецепты | Кулинария студента</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -16,8 +16,8 @@
             </a>
             <ul class="nav-menu">
                 <li><a href="index.html" class="nav-link">Главная</a></li>
-                <li><a href="recipes.html" class="nav-link">Рецепты</a></li>
-                <li><a href="calculator.html" class="nav-link active">Калькулятор</a></li>
+                <li><a href="recipes.html" class="nav-link active">Рецепты</a></li>
+                <li><a href="calculator.html" class="nav-link">Калькулятор</a></li>
                 <li><a href="tips.html" class="nav-link">Советы</a></li>
                 <li><a href="add-recipe.html" class="nav-link">Добавить</a></li>
                 <li><a href="about.html" class="nav-link">О проекте</a></li>
@@ -31,47 +31,41 @@
     </nav>
 
     <div class="breadcrumbs">
-        <a href="index.html">Главная</a> → Калькулятор стоимости
+        <a href="index.html">Главная</a> → Рецепты
     </div>
 
-    <section style="padding-top: 2rem;">
-        <h2 class="section-title">Калькулятор стоимости блюда</h2>
+    <section class="recipes-page" style="padding-top: 2rem;">
+        <h2 class="section-title">Все рецепты</h2>
         
-        <div class="calculator-container">
-            <div class="form-group">
-                <label>Название блюда</label>
-                <input type="text" id="dishName" placeholder="Например: Паста с тунцом">
-            </div>
+        <div class="search-box">
+            <input type="text" id="searchInputRecipes" placeholder="🔍 Поиск рецепта...">
+        </div>
 
-            <h3 style="margin-bottom: 1rem;">Ингредиенты</h3>
-            <div id="ingredientsList">
-                <div class="ingredient-row">
-                    <input type="text" placeholder="Название" class="ing-name">
-                    <input type="number" placeholder="Количество (г/мл/шт)" class="ing-amount">
-                    <input type="number" placeholder="Цена за ед." class="ing-price">
-                    <button class="remove-ingredient" style="background: #FF6B6B; color: white; border: none; padding: 0.5rem; border-radius: 5px; cursor: pointer;">✕</button>
-                </div>
-            </div>
+        <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">Все</button>
+            <button class="filter-btn" data-filter="breakfast">Завтраки</button>
+            <button class="filter-btn" data-filter="lunch">Обеды</button>
+            <button class="filter-btn" data-filter="dinner">Ужины</button>
+            <button class="filter-btn" data-filter="snack">Перекусы</button>
+            <button class="filter-btn" data-filter="soup">Супы</button>
+            <button class="filter-btn" data-filter="salad">Салаты</button>
+        </div>
 
-            <button id="addIngredient" style="background: var(--secondary); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 25px; cursor: pointer; margin-bottom: 1.5rem; font-weight: 500;">+ Добавить ингредиент</button>
-
-            <div class="form-group">
-                <label>Количество порций</label>
-                <input type="number" id="portions" value="1" min="1">
-            </div>
-
-            <button onclick="calculate()" class="cta-button" style="width: 100%; justify-content: center;">Рассчитать</button>
-
-            <div id="result" class="hidden">
-                <h3 style="text-align: center; margin-top: 2rem;">Результат:</h3>
-                <div class="total-price" id="totalPrice">0 ₽</div>
-                <p style="text-align: center; color: #666;" id="pricePerPortion"></p>
-                <div style="background: #f0f0f0; padding: 1rem; border-radius: 10px; margin-top: 1rem;">
-                    <p id="savingTip"></p>
-                </div>
-            </div>
+        <div class="recipes-grid" id="allRecipesGrid"></div>
+        
+        <div id="noResultsRecipes" class="hidden" style="text-align: center; padding: 3rem; color: #666;">
+            <p style="font-size: 3rem;">🔍</p>
+            <p style="font-size: 1.2rem;">Рецепты не найдены</p>
+            <p>Попробуйте изменить запрос</p>
         </div>
     </section>
+
+    <div id="recipeModalRecipes" class="modal">
+        <div class="modal-content">
+            <span class="close-modal-recipes">&times;</span>
+            <div id="recipeDetailsRecipes"></div>
+        </div>
+    </div>
 
     <footer class="footer">
         <div class="footer-content">
@@ -99,59 +93,150 @@
         </div>
     </footer>
 
+    <script src="script.js"></script>
     <script>
-        // Добавление ингредиента
-        document.getElementById('addIngredient').addEventListener('click', function() {
-            const row = document.createElement('div');
-            row.className = 'ingredient-row';
-            row.innerHTML = `
-                <input type="text" placeholder="Название" class="ing-name">
-                <input type="number" placeholder="Количество" class="ing-amount">
-                <input type="number" placeholder="Цена" class="ing-price">
-                <button class="remove-ingredient" style="background: #FF6B6B; color: white; border: none; padding: 0.5rem; border-radius: 5px; cursor: pointer;">✕</button>
+        // Ждём загрузки основного скрипта
+        document.addEventListener('DOMContentLoaded', function() {
+            // Загружаем все рецепты
+            if (typeof recipesData !== 'undefined') {
+                const grid = document.getElementById('allRecipesGrid');
+                if (grid) {
+                    grid.innerHTML = recipesData.map(function(recipe) {
+                        return `
+                            <div class="recipe-card" data-category="${recipe.category}">
+                                <div class="recipe-image">
+                                    <span class="recipe-emoji">${recipe.emoji}</span>
+                                    <div class="recipe-time">⏱️ ${recipe.time}</div>
+                                </div>
+                                <div class="recipe-content">
+                                    <h3 class="recipe-title">${recipe.title}</h3>
+                                    <p class="recipe-description">${recipe.description}</p>
+                                    <div class="recipe-info">
+                                        <span class="recipe-price">~${recipe.price}</span>
+                                        <span class="recipe-difficulty">${recipe.difficulty}</span>
+                                    </div>
+                                    <button class="recipe-btn" onclick="showRecipeDetail('${recipe.id}')">Подробнее</button>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            }
+
+            // Поиск на странице рецептов
+            const searchInput = document.getElementById('searchInputRecipes');
+            if (searchInput) {
+                searchInput.addEventListener('input', function() {
+                    const query = this.value.toLowerCase();
+                    const cards = document.querySelectorAll('.recipe-card');
+                    let found = false;
+                    
+                    cards.forEach(function(card) {
+                        const title = card.querySelector('.recipe-title').textContent.toLowerCase();
+                        const desc = card.querySelector('.recipe-description').textContent.toLowerCase();
+                        
+                        if (title.includes(query) || desc.includes(query)) {
+                            card.classList.remove('hidden');
+                            found = true;
+                        } else {
+                            card.classList.add('hidden');
+                        }
+                    });
+                    
+                    const noResults = document.getElementById('noResultsRecipes');
+                    if (noResults) {
+                        noResults.classList.toggle('hidden', found);
+                    }
+                });
+            }
+
+            // Фильтрация на странице рецептов
+            document.querySelectorAll('.filter-btn').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-btn').forEach(function(b) {
+                        b.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    const filter = this.getAttribute('data-filter');
+                    document.querySelectorAll('.recipe-card').forEach(function(card) {
+                        if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                            card.classList.remove('hidden');
+                        } else {
+                            card.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            // Закрытие модального окна на странице рецептов
+            const modal = document.getElementById('recipeModalRecipes');
+            const closeBtn = document.querySelector('.close-modal-recipes');
+            
+            if (closeBtn && modal) {
+                closeBtn.addEventListener('click', function() {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                });
+            }
+            
+            if (modal) {
+                window.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        modal.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+            }
+        });
+
+        // Функция показа рецепта (глобальная)
+        function showRecipeDetail(recipeId) {
+            if (typeof recipesData === 'undefined') return;
+            
+            const recipe = recipesData.find(function(r) { return r.id === recipeId; });
+            if (!recipe) return;
+
+            const modal = document.getElementById('recipeModalRecipes');
+            const details = document.getElementById('recipeDetailsRecipes');
+            
+            if (!modal || !details) return;
+
+            details.innerHTML = `
+                <div style="text-align: center; font-size: 4rem; margin-bottom: 1rem;">${recipe.emoji}</div>
+                <h2>${recipe.title}</h2>
+                <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; color: #666; flex-wrap: wrap;">
+                    <span>⏱️ ${recipe.time}</span>
+                    <span>💰 ~${recipe.price}</span>
+                    <span>📊 ${recipe.difficulty}</span>
+                </div>
+                <h3>📝 Ингредиенты:</h3>
+                <ul>
+                    ${recipe.ingredients.map(function(item) { return '<li>' + item + '</li>'; }).join('')}
+                </ul>
+                <h3>👨‍🍳 Приготовление:</h3>
+                <ol>
+                    ${recipe.instructions.map(function(step) { return '<li>' + step + '</li>'; }).join('')}
+                </ol>
+                <div style="margin-top: 1.5rem; padding: 1rem; background: #FFF3F3; border-radius: 10px; border-left: 4px solid #FF6B6B;">
+                    <strong>💡 Совет:</strong> ${recipe.tip}
+                </div>
             `;
-            document.getElementById('ingredientsList').appendChild(row);
-            
-            row.querySelector('.remove-ingredient').addEventListener('click', function() {
-                row.remove();
-            });
-        });
 
-        // Удаление первого ингредиента
-        document.querySelector('.remove-ingredient').addEventListener('click', function() {
-            if (document.querySelectorAll('.ingredient-row').length > 1) {
-                this.parentElement.remove();
-            }
-        });
-
-        function calculate() {
-            const rows = document.querySelectorAll('.ingredient-row');
-            let total = 0;
-            
-            rows.forEach(row => {
-                const amount = parseFloat(row.querySelector('.ing-amount').value) || 0;
-                const price = parseFloat(row.querySelector('.ing-price').value) || 0;
-                total += amount * price;
-            });
-            
-            const portions = parseInt(document.getElementById('portions').value) || 1;
-            const perPortion = total / portions;
-            
-            document.getElementById('totalPrice').textContent = total.toFixed(0) + ' ₽';
-            document.getElementById('pricePerPortion').textContent = 'Цена за порцию: ' + perPortion.toFixed(0) + ' ₽';
-            
-            let tip = '';
-            if (perPortion < 150) {
-                tip = '✅ Отличная цена! Очень бюджетно!';
-            } else if (perPortion < 300) {
-                tip = '👍 Хорошая цена для Якутска.';
-            } else {
-                tip = '💡 Можно сэкономить: замените дорогие ингредиенты или покупайте по акциям.';
-            }
-            document.getElementById('savingTip').textContent = tip;
-            
-            document.getElementById('result').classList.remove('hidden');
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
         }
+
+        // Закрытие модального окна по Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('recipeModalRecipes');
+                if (modal && modal.style.display === 'block') {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            }
+        });
     </script>
 </body>
 </html>
