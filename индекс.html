@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Домашние рецепты | Готовим с душой</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>🍳 Домашние рецепты</h1>
+            <p>Готовим вкусно и просто на своей кухне</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <a href="#main">Главная</a>
+            <a href="#breakfast">Завтраки</a>
+            <a href="#soups">Супы</a>
+            <a href="#main-courses">Основные блюда</a>
+            <a href="#desserts">Десерты</a>
+        </div>
+    </nav>
+
+    <main class="container" id="main">
+        <section class="featured">
+            <h2>🍽️ Сегодня рекомендуем</h2>
+            <div class="recipe-card featured-card" onclick="openRecipeModal(0)">
+                <img src="https://via.placeholder.com/800x400/FF6B6B/white?text=Борщ" alt="Борщ">
+                <div class="recipe-content">
+                    <h3>Борщ классический</h3>
+                    <p>Наваристый украинский борщ со свеклой и мясом</p>
+                    <div class="recipe-meta">
+                        <span>⏱️ 1.5 часа</span>
+                        <span>🍽️ 6 порций</span>
+                        <span>⭐⭐⭐⭐⭐</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="breakfast">
+            <h2>🥐 Завтраки</h2>
+            <div class="recipes-grid">
+                <div class="recipe-card" onclick="openRecipeModal(1)">
+                    <img src="https://via.placeholder.com/300x200/FFD93D/white?text=Омлет" alt="Омлет">
+                    <h3>Пышный омлет</h3>
+                    <p>Нежный омлет с сыром и зеленью</p>
+                    <div class="recipe-meta">
+                        <span>⏱️ 15 мин</span>
+                        <span>🍽️ 2 порции</span>
+                    </div>
+                </div>
+                <div class="recipe-card" onclick="openRecipeModal(2)">
+                    <img src="https://via.placeholder.com/300x200/FFD93D/white?text=Каша" alt="Овсянка">
+                    <h3>Овсяная каша с ягодами</h3>
+                    <p>Полезный завтрак для энергии на весь день</p>
+                    <div class="recipe-meta">
+                        <span>⏱️ 10 мин</span>
+                        <span>🍽️ 1 порция</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="soups">
+            <h2>🥣 Супы</h2>
+            <div class="recipes-grid">
+                <div class="recipe-card" onclick="openRecipeModal(3)">
+                    <img src="https://via.placeholder.com/300x200/6BCB77/white?text=Солянка" alt="Солянка">
+                    <h3>Солянка сборная</h3>
+                    <p>Сытный суп с колбасой и маслинами</p>
+                    <div class="recipe-meta">
+                        <span>⏱️ 1 час</span>
+                        <span>🍽️ 5 порций</span>
+                    </div>
+                </div>
+                <div class="recipe-card" onclick="openRecipeModal(4)">
+                    <img src="https://via.placeholder.com/300x200/6BCB77/white?text=Крем-суп" alt="Крем-суп">
+                    <h3>Тыквенный крем-суп</h3>
+                    <p>Нежный и ароматный суп-пюре</p>
+                    <div class="recipe-meta">
+                        <span>⏱️ 40 мин</span>
+                        <span>🍽️ 4 порции</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="main-courses">
+            <h2>🍝 Основные блюда</h2>
+            <div class="recipes-grid">
+                <div class="recipe-card" onclick="openRecipeModal(5)">
+                    <img src="https://via.placeholder.com/300x200/4D96FF/white?text=Паста" alt="Паста">
+                    <h3>Паста Карбонара</h3>
+                    <p>Итальянская классика с беконом и пармезаном</p>
+                    <div class="recipe-meta">
+                        <span>⏱️ 25 мин</span>
+                        <span>🍽️ 3 порции</span>
+                    </div>
+                </div>
+                <div class="recipe-card" onclick="openRecipeModal(6)">
+                    <img src="https://via.placeholder.com/300x200/4D96FF/white?text=Плов" alt="Плов">
+                    <h3>Плов с курицей</h3>
+                    <p>Рассчетный плов с ароматными специями</p>
+                    <div class="recipe-meta">
+                        <span>⏱️ 1.5 часа</span>
+                        <span>🍽️ 6 порций</span>
+                    </div>
+                </div>
+                <div class="recipe-card" onclick="openRecipeModal(7)">
+                    <img src="https://via.placeholder.com/300x200/4D96FF/white?text=Котлеты" alt="Котлеты">
+                    <h3>Домашние котлеты</h3>
+                    <p>Сочные котлеты из фарша с хрустящей корочкой</p>
+                    <div class="recipe-meta">
+                        <span>⏱️ 45 мин</span>
+                        <span>🍽️ 8 котлет</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="desserts">
+            <h2>🍰 Десерты</h2>
+            <div class="recipes-grid">
+                <div class="recipe-card" onclick="openRecipeModal(8)">
+                    <img src="https://via.placeholder.com/300x200/FF6B9D/white?text=Блинчики" alt="Блинчики">
+                    <h3>Тонкие блинчики</h3>
+                    <p>Классические блинчики с творогом</p>
+                    <div class="recipe-meta">
+                        <span>⏱️ 40 мин</span>
+                        <span>🍽️ 15 шт</span>
+                    </div>
+                </div>
+                <div class="recipe-card" onclick="openRecipeModal(9)">
+                    <img src="https://via.placeholder.com/300x200/FF6B9D/white?text=Печенье" alt="Печенье">
+                    <h3>Овсяное печенье</h3>
+                    <p>Полезное домашнее печенье без сахара</p>
+                    <div class="recipe-meta">
+                        <span>⏱️ 30 мин</span>
+                        <span>🍽️ 12 шт</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Модальное окно с рецептом -->
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <div id="modal-body"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2026 Домашние рецепты. Готовьте с удовольствием!</p>
+            <p>Все рецепты проверены на домашней кухне ❤️</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
