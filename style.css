@@ -1,698 +1,363 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-:root {
-    --primary: #FF6B6B;
-    --secondary: #4ECDC4;
-    --dark: #2C3E50;
-    --light: #F7F9FC;
-    --white: #FFFFFF;
-    --gradient: linear-gradient(135deg, #FF6B6B, #FF8E8E);
-    --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-body {
-    font-family: 'Montserrat', sans-serif;
-    background: var(--light);
-    color: var(--dark);
-    overflow-x: hidden;
-}
-
-/* Навигация */
-.navbar {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    z-index: 1000;
-    padding: 1rem 0;
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-    animation: slideDown 0.5s ease;
-}
-
-@keyframes slideDown {
-    from { transform: translateY(-100%); }
-    to { transform: translateY(0); }
-}
-
-.nav-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 2rem;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.logo-icon {
-    font-size: 2rem;
-    animation: bounce 2s infinite;
-}
-
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-}
-
-.logo-text {
-    font-size: 1.2rem;
-    font-weight: 700;
-    background: var(--gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.nav-menu {
-    display: flex;
-    list-style: none;
-    gap: 2rem;
-}
-
-.nav-link {
-    text-decoration: none;
-    color: var(--dark);
-    font-weight: 500;
-    position: relative;
-    padding: 0.5rem 0;
-    transition: var(--transition);
-}
-
-.nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: var(--primary);
-    transition: var(--transition);
-}
-
-.nav-link:hover::after,
-.nav-link.active::after {
-    width: 100%;
-}
-
-.hamburger {
-    display: none;
-    flex-direction: column;
-    cursor: pointer;
-    gap: 5px;
-}
-
-.hamburger span {
-    width: 25px;
-    height: 3px;
-    background: var(--dark);
-    transition: var(--transition);
-}
-
-/* Главный экран */
-.hero {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    padding: 6rem 2rem 2rem;
-    background: linear-gradient(135deg, #667eea15, #764ba215);
-}
-
-.hero-content {
-    text-align: center;
-    max-width: 800px;
-}
-
-.hero-title {
-    font-size: 4rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-    line-height: 1.2;
-}
-
-.title-line {
-    display: block;
-    animation: fadeInUp 0.6s ease forwards;
-    opacity: 0;
-}
-
-.title-line:nth-child(1) { animation-delay: 0.2s; }
-.title-line:nth-child(2) { animation-delay: 0.4s; }
-.title-line:nth-child(3) { animation-delay: 0.6s; }
-
-.title-line.accent {
-    color: var(--primary);
-    font-size: 5rem;
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
+// Данные о рецептах (цены адаптированы под Якутск)
+const recipesData = {
+    'lazy-vareniki': {
+        title: 'Ленивые вареники',
+        emoji: '🥞',
+        time: '10 минут',
+        price: '~180₽',
+        difficulty: 'Легко',
+        ingredients: [
+            'Творог (местный) - 500 г (120₽)',
+            'Яйцо - 1 шт (15₽)',
+            'Мука - 5 ст. ложек (10₽)',
+            'Сахар - 2 ст. ложки (5₽)',
+            'Соль - щепотка',
+            'Сливочное масло - 30 г (30₽)'
+        ],
+        instructions: [
+            'Смешайте творог с яйцом, сахаром и солью',
+            'Добавьте муку и замесите мягкое тесто',
+            'Раскатайте колбаски и нарежьте кусочками',
+            'Варите в кипящей воде 2-3 минуты после всплытия',
+            'Подавайте со сметаной или вареньем'
+        ],
+        tip: '💡 В Якутске творог лучше брать местного производства — он дешевле и вкуснее. Не добавляйте слишком много муки, иначе вареники будут жесткими.'
+    },
+    'tuna-pasta': {
+        title: 'Паста с тунцом',
+        emoji: '🍝',
+        time: '20 минут',
+        price: '~320₽',
+        difficulty: 'Средне',
+        ingredients: [
+            'Макароны - 250 г (45₽)',
+            'Консервированный тунец - 1 банка (180₽)',
+            'Томатная паста - 2 ст. ложки (25₽)',
+            'Лук - 1 шт (10₽)',
+            'Чеснок - 2 зубчика (10₽)',
+            'Масло растительное - 2 ст. ложки (10₽)',
+            'Соль, перец - по вкусу'
+        ],
+        instructions: [
+            'Отварите макароны до состояния al dente',
+            'Обжарьте мелко нарезанный лук и чеснок',
+            'Добавьте томатную пасту и тунец, перемешайте',
+            'Тушите соус 5-7 минут',
+            'Смешайте с макаронами и прогрейте вместе'
+        ],
+        tip: '💡 Консервы тунца в Якутске можно найти по акции в крупных супермаркетах. Сохраните воду от макарон — пригодится для соуса!'
+    },
+    'rice-veggies': {
+        title: 'Рис с овощами',
+        emoji: '🍚',
+        time: '25 минут',
+        price: '~230₽',
+        difficulty: 'Легко',
+        ingredients: [
+            'Рис - 1 стакан (30₽)',
+            'Замороженные овощи - 300 г (120₽)',
+            'Соевый соус - 2 ст. ложки (20₽)',
+            'Яйцо - 2 шт (30₽)',
+            'Масло растительное - 2 ст. ложки (10₽)',
+            'Специи - по вкусу (20₽)'
+        ],
+        instructions: [
+            'Отварите рис до готовности',
+            'На сковороде обжарьте замороженные овощи 5-7 минут',
+            'Добавьте рис и соевый соус, перемешайте',
+            'По желанию добавьте яйца и обжарьте до готовности',
+            'Приправьте специями по вкусу'
+        ],
+        tip: '💡 В Якутске замороженные овощи часто дешевле свежих, особенно зимой. Используйте охлажденный рис — будет рассыпчатым!'
+    },
+    'potato-casserole': {
+        title: 'Картофельная запеканка',
+        emoji: '🥔',
+        time: '30 минут',
+        price: '~380₽',
+        difficulty: 'Средне',
+        ingredients: [
+            'Картофель - 7 шт (140₽)',
+            'Сосиски - 4 шт (120₽)',
+            'Сыр - 150 г (90₽)',
+            'Яйца - 2 шт (30₽)',
+            'Молоко - 100 мл (15₽)',
+            'Соль, перец - по вкусу'
+        ],
+        instructions: [
+            'Нарежьте картофель тонкими кружочками',
+            'Выложите слоями картофель и нарезанные сосиски',
+            'Залейте смесью яиц и молока',
+            'Посыпьте тертым сыром',
+            'Запекайте при 180°C 25-30 минут до золотистой корочки'
+        ],
+        tip: '💡 Картофель в Якутске лучше покупать на рынке мешками — выходит дешевле. Местный сыр тоже отличный вариант для экономии.'
+    },
+    'hot-sandwiches': {
+        title: 'Горячие бутерброды',
+        emoji: '🥪',
+        time: '5 минут',
+        price: '~140₽',
+        difficulty: 'Легко',
+        ingredients: [
+            'Хлеб - 4 куска (30₽)',
+            'Сыр - 100 г (60₽)',
+            'Колбаса/ветчина - 100 г (50₽)',
+            'Помидор - 1 шт (25₽)',
+            'Майонез или кетчуп - по вкусу (15₽)',
+            'Зелень - для украшения (10₽)'
+        ],
+        instructions: [
+            'Смажьте хлеб соусом',
+            'Выложите начинку: колбасу, помидоры',
+            'Сверху положите сыр',
+            'Разогрейте в микроволновке 1-2 минуты',
+            'Украсьте зеленью и подавайте'
+        ],
+        tip: '💡 Хлеб в Якутске лучше покупать в местных пекарнях — свежее и дешевле. Соус кладите между слоями, чтобы бутерброды не размокли.'
+    },
+    'eggs-tomatoes': {
+        title: 'Яичница с помидорами',
+        emoji: '🍳',
+        time: '7 минут',
+        price: '~120₽',
+        difficulty: 'Легко',
+        ingredients: [
+            'Яйца - 3 шт (45₽)',
+            'Помидор - 1 шт (25₽)',
+            'Лук - 1/2 шт (10₽)',
+            'Масло растительное - 1 ст. ложка (5₽)',
+            'Соль, перец - по вкусу',
+            'Зелень - 15₽'
+        ],
+        instructions: [
+            'Обжарьте нарезанный лук до золотистости',
+            'Добавьте нарезанный помидор, жарьте 2 минуты',
+            'Разбейте яйца прямо на сковороду',
+            'Жарьте на среднем огне до желаемой готовности',
+            'Посолите, поперчите и посыпьте зеленью'
+        ],
+        tip: '💡 Яйца в Якутске выгоднее покупать десятками на рынках. Для нежной яичницы накройте сковороду крышкой на 1-2 минуты.'
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+};
+
+// Мобильное меню
+const hamburger = document.querySelector('.hamburger');
+const navMenu = document.querySelector('.nav-menu');
+const navLinks = document.querySelectorAll('.nav-link');
+
+hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    navMenu.classList.toggle('active');
+    
+    // Анимация гамбургера
+    const spans = hamburger.querySelectorAll('span');
+    if (hamburger.classList.contains('active')) {
+        spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+        spans[1].style.opacity = '0';
+        spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+    } else {
+        spans[0].style.transform = 'none';
+        spans[1].style.opacity = '1';
+        spans[2].style.transform = 'none';
     }
-}
+});
 
-.hero-subtitle {
-    font-size: 1.2rem;
-    color: #666;
-    margin-bottom: 3rem;
-    animation: fadeInUp 0.6s ease 0.8s forwards;
-    opacity: 0;
-    line-height: 1.6;
-}
+// Закрытие меню при клике на ссылку
+navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+        navMenu.classList.remove('active');
+        hamburger.classList.remove('active');
+        const spans = hamburger.querySelectorAll('span');
+        spans[0].style.transform = 'none';
+        spans[1].style.opacity = '1';
+        spans[2].style.transform = 'none';
+    });
+});
 
-.hero-stats {
-    display: flex;
-    justify-content: center;
-    gap: 3rem;
-    margin-bottom: 3rem;
-    animation: fadeInUp 0.6s ease 1s forwards;
-    opacity: 0;
-}
+// Плавный скролл
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
 
-.stat-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+// Активная ссылка при скролле
+window.addEventListener('scroll', () => {
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    let current = '';
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        if (window.scrollY >= sectionTop - 100) {
+            current = section.getAttribute('id');
+        }
+    });
+    
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+            link.classList.add('active');
+        }
+    });
+});
 
-.stat-number {
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--primary);
-}
+// Фильтрация рецептов
+const filterButtons = document.querySelectorAll('.filter-btn');
+const recipeCards = document.querySelectorAll('.recipe-card');
 
-.stat-label {
-    font-size: 0.9rem;
-    color: #666;
-}
+filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        // Убираем активный класс у всех кнопок
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        // Добавляем активный класс нажатой кнопке
+        button.classList.add('active');
+        
+        const filter = button.getAttribute('data-filter');
+        
+        recipeCards.forEach(card => {
+            if (filter === 'all') {
+                card.classList.remove('hidden');
+                card.style.animation = 'scaleIn 0.6s ease';
+            } else {
+                if (card.getAttribute('data-category') === filter) {
+                    card.classList.remove('hidden');
+                    card.style.animation = 'scaleIn 0.6s ease';
+                } else {
+                    card.classList.add('hidden');
+                }
+            }
+        });
+    });
+});
 
-.cta-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: var(--gradient);
-    color: white;
-    text-decoration: none;
-    padding: 1rem 2.5rem;
-    border-radius: 50px;
-    font-weight: 600;
-    font-size: 1.1rem;
-    transition: var(--transition);
-    animation: fadeInUp 0.6s ease 1.2s forwards;
-    opacity: 0;
-}
-
-.cta-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
-}
-
-.arrow {
-    transition: var(--transition);
-}
-
-.cta-button:hover .arrow {
-    transform: translateX(5px);
-}
-
-/* Плавающие элементы */
-.hero-decoration {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-}
-
-.floating-element {
-    position: absolute;
-    font-size: 3rem;
-    animation: float 6s ease-in-out infinite;
-}
-
-.food-1 { top: 10%; left: 10%; animation-delay: 0s; }
-.food-2 { top: 20%; right: 15%; animation-delay: 1s; }
-.food-3 { bottom: 30%; left: 15%; animation-delay: 2s; }
-.food-4 { bottom: 20%; right: 10%; animation-delay: 3s; }
-
-@keyframes float {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-30px) rotate(10deg); }
-}
-
-/* Секция рецептов */
-.recipes-section {
-    padding: 5rem 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.section-title {
-    text-align: center;
-    font-size: 2.5rem;
-    margin-bottom: 3rem;
-    position: relative;
-}
-
-.section-title::after {
-    content: '';
-    display: block;
-    width: 60px;
-    height: 4px;
-    background: var(--gradient);
-    margin: 1rem auto 0;
-    border-radius: 2px;
-}
-
-.filter-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-bottom: 3rem;
-    flex-wrap: wrap;
-}
-
-.filter-btn {
-    padding: 0.8rem 1.5rem;
-    border: 2px solid var(--primary);
-    background: transparent;
-    color: var(--primary);
-    border-radius: 25px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: var(--transition);
-    font-size: 0.9rem;
-}
-
-.filter-btn:hover,
-.filter-btn.active {
-    background: var(--primary);
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
-}
-
-.recipes-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 2rem;
-}
-
-.recipe-card {
-    background: white;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: var(--shadow);
-    transition: var(--transition);
-    animation: scaleIn 0.6s ease;
-    cursor: default;
-}
-
-@keyframes scaleIn {
-    from {
-        opacity: 0;
-        transform: scale(0.9);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
+// Открытие модального окна с рецептом
+function openRecipe(recipeId) {
+    const modal = document.getElementById('recipeModal');
+    const recipeDetails = document.getElementById('recipeDetails');
+    const recipe = recipesData[recipeId];
+    
+    if (recipe) {
+        const detailsHTML = `
+            <div style="text-align: center; font-size: 4rem; margin-bottom: 1rem;">${recipe.emoji}</div>
+            <h2>${recipe.title}</h2>
+            <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; color: #666; flex-wrap: wrap;">
+                <span>⏱️ ${recipe.time}</span>
+                <span>💰 ${recipe.price}</span>
+                <span>📊 ${recipe.difficulty}</span>
+            </div>
+            
+            <h3>📝 Ингредиенты (цены Якутск):</h3>
+            <ul>
+                ${recipe.ingredients.map(item => `<li>${item}</li>`).join('')}
+            </ul>
+            
+            <h3>👨‍🍳 Приготовление:</h3>
+            <ol style="padding-left: 1.2rem; line-height: 2;">
+                ${recipe.instructions.map(step => `<li>${step}</li>`).join('')}
+            </ol>
+            
+            <div style="margin-top: 1.5rem; padding: 1rem; background: #FFF3F3; border-radius: 10px; border-left: 4px solid var(--primary);">
+                <p>${recipe.tip}</p>
+            </div>
+        `;
+        
+        recipeDetails.innerHTML = detailsHTML;
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
     }
 }
 
-.recipe-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-}
+// Закрытие модального окна
+const modal = document.getElementById('recipeModal');
+const closeModal = document.querySelector('.close-modal');
 
-.recipe-image {
-    background: linear-gradient(135deg, #667eea20, #764ba220);
-    padding: 3rem;
-    text-align: center;
-    position: relative;
-}
+closeModal.addEventListener('click', () => {
+    modal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+});
 
-.recipe-emoji {
-    font-size: 4rem;
-    animation: pulse 2s ease-in-out infinite;
-}
+window.addEventListener('click', (e) => {
+    if (e.target === modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+});
 
-@keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-}
+// Закрытие по Escape
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.style.display === 'block') {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+});
 
-.recipe-time {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    background: white;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    display: flex;
-    align-items: center;
-    gap: 0.3rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
+// Анимация появления карточек при скролле
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
 
-.recipe-content {
-    padding: 1.5rem;
-}
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.animation = 'scaleIn 0.6s ease forwards';
+            observer.unobserve(entry.target);
+        }
+    });
+}, observerOptions);
 
-.recipe-title {
-    font-size: 1.3rem;
-    margin-bottom: 0.5rem;
-    color: var(--dark);
-}
+document.querySelectorAll('.recipe-card, .tip-card').forEach(card => {
+    observer.observe(card);
+});
 
-.recipe-description {
-    color: #666;
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
-    line-height: 1.5;
-}
+// Эффект параллакса для плавающих элементов
+document.addEventListener('mousemove', (e) => {
+    const elements = document.querySelectorAll('.floating-element');
+    const mouseX = e.clientX / window.innerWidth;
+    const mouseY = e.clientY / window.innerHeight;
+    
+    elements.forEach((element, index) => {
+        const speed = (index + 1) * 20;
+        const x = (mouseX - 0.5) * speed;
+        const y = (mouseY - 0.5) * speed;
+        element.style.transform = `translate(${x}px, ${y}px)`;
+    });
+});
 
-.recipe-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-}
-
-.recipe-price {
-    font-weight: 700;
-    color: var(--primary);
-    font-size: 1.2rem;
-}
-
-.recipe-difficulty {
-    background: #f0f0f0;
-    padding: 0.3rem 0.8rem;
-    border-radius: 15px;
-    font-size: 0.8rem;
-}
-
-.recipe-btn {
-    width: 100%;
-    padding: 0.8rem;
-    background: var(--gradient);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--transition);
-    font-size: 0.9rem;
-}
-
-.recipe-btn:hover {
-    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
-    transform: translateY(-2px);
-}
-
-/* Модальное окно */
-.modal {
-    display: none;
+// Preloader
+const preloader = document.createElement('div');
+preloader.style.cssText = `
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    z-index: 2000;
-    backdrop-filter: blur(5px);
-    animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-.modal-content {
-    position: relative;
     background: white;
-    margin: 5% auto;
-    padding: 3rem;
-    width: 90%;
-    max-width: 600px;
-    border-radius: 20px;
-    max-height: 80vh;
-    overflow-y: auto;
-    animation: slideUp 0.5s ease;
-}
-
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(50px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.close-modal {
-    position: absolute;
-    top: 1rem;
-    right: 1.5rem;
-    font-size: 2rem;
-    cursor: pointer;
-    color: #999;
-    transition: var(--transition);
-}
-
-.close-modal:hover {
-    color: var(--primary);
-    transform: rotate(90deg);
-}
-
-#recipeDetails h2 {
-    color: var(--primary);
-    margin-bottom: 1rem;
-}
-
-#recipeDetails h3 {
-    margin: 1.5rem 0 0.5rem;
-    color: var(--dark);
-}
-
-#recipeDetails ul {
-    list-style: none;
-    padding: 0;
-}
-
-#recipeDetails ul li {
-    padding: 0.5rem 0;
-    border-bottom: 1px solid #eee;
-}
-
-#recipeDetails ul li:before {
-    content: '•';
-    color: var(--primary);
-    font-weight: bold;
-    margin-right: 0.5rem;
-}
-
-/* Секция советов */
-.tips-section {
-    padding: 5rem 2rem;
-    background: white;
-}
-
-.tips-grid {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-}
-
-.tip-card {
-    padding: 2rem;
-    text-align: center;
-    background: var(--light);
-    border-radius: 20px;
-    transition: var(--transition);
-    animation: scaleIn 0.6s ease;
-}
-
-.tip-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow);
-    background: white;
-}
-
-.tip-icon {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    display: block;
-}
-
-.tip-card h3 {
-    margin-bottom: 0.5rem;
-    color: var(--dark);
-}
-
-.tip-card p {
-    color: #666;
-    line-height: 1.6;
-}
-
-/* Подвал */
-.footer {
-    background: var(--dark);
-    color: white;
-    padding: 4rem 2rem 1rem;
-}
-
-.footer-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    margin-bottom: 2rem;
-}
-
-.footer-info h3 {
-    color: var(--primary);
-    margin-bottom: 1rem;
-}
-
-.footer-info p {
-    color: #ccc;
-    line-height: 1.6;
-}
-
-.footer-social {
-    text-align: right;
-}
-
-.social-links {
+    z-index: 9999;
     display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
-    justify-content: flex-end;
-}
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease;
+`;
+preloader.innerHTML = '<div style="font-size: 3rem; animation: pulse 1s infinite;">🍳</div>';
+document.body.appendChild(preloader);
 
-.social-link {
-    font-size: 1.5rem;
-    text-decoration: none;
-    transition: var(--transition);
-    display: inline-block;
-}
+setTimeout(() => {
+    preloader.style.opacity = '0';
+    setTimeout(() => {
+        preloader.remove();
+    }, 500);
+}, 1000);
 
-.social-link:hover {
-    transform: scale(1.3);
-}
-
-.footer-bottom {
-    text-align: center;
-    padding-top: 2rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    color: #999;
-}
-
-/* Адаптивность */
-@media (max-width: 768px) {
-    .hero-title {
-        font-size: 2.5rem;
-    }
-    
-    .title-line.accent {
-        font-size: 3rem;
-    }
-    
-    .hero-stats {
-        gap: 1.5rem;
-    }
-    
-    .hamburger {
-        display: flex;
-    }
-    
-    .nav-menu {
-        position: fixed;
-        left: -100%;
-        top: 70px;
-        flex-direction: column;
-        background: white;
-        width: 100%;
-        text-align: center;
-        transition: 0.3s;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        padding: 2rem 0;
-    }
-    
-    .nav-menu.active {
-        left: 0;
-    }
-    
-    .recipes-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .modal-content {
-        width: 95%;
-        margin: 10% auto;
-        padding: 2rem;
-    }
-    
-    .footer-content {
-        grid-template-columns: 1fr;
-        text-align: center;
-    }
-    
-    .footer-social {
-        text-align: center;
-    }
-    
-    .social-links {
-        justify-content: center;
-    }
-
-    .logo-text {
-        font-size: 1rem;
-    }
-}
-
-/* Скроллбар */
-::-webkit-scrollbar {
-    width: 10px;
-}
-
-::-webkit-scrollbar-track {
-    background: var(--light);
-}
-
-::-webkit-scrollbar-thumb {
-    background: var(--primary);
-    border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #ff5252;
-}
-
-/* Класс для скрытия карточек */
-.recipe-card.hidden {
-    display: none;
-}
+console.log('🍳 Кулинария студента | Якутск');
+console.log('💰 Все рецепты с актуальными ценами Якутска');
+console.log('👨‍🍳 Приятного аппетита!');
