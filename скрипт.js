@@ -1,390 +1,391 @@
-/**
- * КУЛИНАРНАЯ КНИГА - JavaScript
- * База рецептов, поиск, фильтрация, избранное, таймеры
- */
+// Данные о рецептах
+const recipesData = {
+    'lazy-vareniki': {
+        title: 'Ленивые вареники',
+        emoji: '🥞',
+        time: '10 минут',
+        price: '~80₽',
+        difficulty: 'Легко',
+        ingredients: [
+            'Творог - 500 г',
+            'Яйцо - 1 шт',
+            'Мука - 5 ст. ложек',
+            'Сахар - 2 ст. ложки',
+            'Соль - щепотка',
+            'Сливочное масло - для подачи'
+        ],
+        instructions: [
+            'Смешайте творог с яйцом, сахаром и солью',
+            'Добавьте муку и замесите мягкое тесто',
+            'Раскатайте колбаски и нарежьте кусочками',
+            'Варите в кипящей воде 2-3 минуты после всплытия',
+            'Подавайте со сметаной или вареньем'
+        ],
+        tip: '💡 Не добавляйте слишком много муки, иначе вареники будут жесткими. Тесто должно слегка липнуть к рукам.'
+    },
+    'tuna-pasta': {
+        title: 'Паста с тунцом',
+        emoji: '🍝',
+        time: '20 минут',
+        price: '~150₽',
+        difficulty: 'Средне',
+        ingredients: [
+            'Макароны - 250 г',
+            'Консервированный тунец - 1 банка',
+            'Томатная паста - 2 ст. ложки',
+            'Лук - 1 шт',
+            'Чеснок - 2 зубчика',
+            'Оливковое масло - 2 ст. ложки',
+            'Соль, перец - по вкусу'
+        ],
+        instructions: [
+            'Отварите макароны до состояния al dente',
+            'Обжарьте мелко нарезанный лук и чеснок',
+            'Добавьте томатную пасту и тунец, перемешайте',
+            'Тушите соус 5-7 минут',
+            'Смешайте с макаронами и прогрейте вместе'
+        ],
+        tip: '💡 Сохраните немного воды от макарон. Если соус получится густым, добавьте эту воду для лучшей консистенции.'
+    },
+    'rice-veggies': {
+        title: 'Рис с овощами',
+        emoji: '🍚',
+        time: '25 минут',
+        price: '~100₽',
+        difficulty: 'Легко',
+        ingredients: [
+            'Рис - 1 стакан',
+            'Замороженные овощи - 300 г',
+            'Соевый соус - 2 ст. ложки',
+            'Яйцо - 2 шт (по желанию)',
+            'Растительное масло - 2 ст. ложки',
+            'Соль, специи - по вкусу'
+        ],
+        instructions: [
+            'Отварите рис до готовности',
+            'На сковороде обжарьте замороженные овощи 5-7 минут',
+            'Добавьте рис и соевый соус, перемешайте',
+            'По желанию добавьте яйца и обжарьте до готовности',
+            'Приправьте специями по вкусу'
+        ],
+        tip: '💡 Используйте рис, сваренный заранее и охлажденный - так блюдо получится более рассыпчатым.'
+    },
+    'potato-casserole': {
+        title: 'Картофельная запеканка',
+        emoji: '🥔',
+        time: '30 минут',
+        price: '~180₽',
+        difficulty: 'Средне',
+        ingredients: [
+            'Картофель - 6-7 шт',
+            'Сосиски - 4 шт',
+            'Сыр - 150 г',
+            'Яйца - 2 шт',
+            'Молоко - 100 мл',
+            'Соль, перец - по вкусу'
+        ],
+        instructions: [
+            'Нарежьте картофель тонкими кружочками',
+            'Выложите слоями картофель и нарезанные сосиски',
+            'Залейте смесью яиц и молока',
+            'Посыпьте тертым сыром',
+            'Запекайте при 180°C 25-30 минут до золотистой корочки'
+        ],
+        tip: '💡 Чтобы картофель пропекся быстрее, можно предварительно отварить его до полуготовности.'
+    },
+    'hot-sandwiches': {
+        title: 'Горячие бутерброды',
+        emoji: '🥪',
+        time: '5 минут',
+        price: '~60₽',
+        difficulty: 'Легко',
+        ingredients: [
+            'Хлеб - 4 куска',
+            'Сыр - 100 г',
+            'Колбаса/ветчина - 100 г',
+            'Помидор - 1 шт',
+            'Майонез или кетчуп - по вкусу',
+            'Зелень - для украшения'
+        ],
+        instructions: [
+            'Смажьте хлеб соусом',
+            'Выложите начинку: колбасу, помидоры',
+            'Сверху положите сыр',
+            'Разогрейте в микроволновке 1-2 минуты',
+            'Украсьте зеленью и подавайте'
+        ],
+        tip: '💡 Чтобы бутерброды не размокли, кладите соус между слоями начинки, а не на сам хлеб.'
+    },
+    'eggs-tomatoes': {
+        title: 'Яичница с помидорами',
+        emoji: '🍳',
+        time: '7 минут',
+        price: '~50₽',
+        difficulty: 'Легко',
+        ingredients: [
+            'Яйца - 3 шт',
+            'Помидор - 1 шт',
+            'Лук - 1/2 шт',
+            'Растительное масло - 1 ст. ложка',
+            'Соль, перец - по вкусу',
+            'Зелень - по желанию'
+        ],
+        instructions: [
+            'Обжарьте нарезанный лук до золотистости',
+            'Добавьте нарезанный помидор, жарьте 2 минуты',
+            'Разбейте яйца прямо на сковороду',
+            'Жарьте на среднем огне до желаемой готовности',
+            'Посолите, поперчите и посыпьте зеленью'
+        ],
+        tip: '💡 Для более нежной яичницы накройте сковороду крышкой на 1-2 минуты в конце приготовления.'
+    }
+};
 
-// ========== БАЗА ДАННЫХ РЕЦЕПТОВ ==========
-const recipes = [
-    { id: 1, name: "Классический омлет", category: "breakfast", time: 10, calories: 250, difficulty: "Лёгкий", tags: ["быстро", "завтрак", "простой"], ingredients: ["4 яйца", "100 мл молока", "соль по вкусу", "перец по вкусу", "20 г сливочного масла"], steps: ["Взбить яйца с молоком, солью и перцем", "Разогреть сковороду с маслом", "Вылить яичную смесь", "Жарить под крышкой 5-7 минут", "Подавать с зеленью"] },
-    { id: 2, name: "Овсяная каша с ягодами", category: "breakfast", time: 10, calories: 320, difficulty: "Лёгкий", tags: ["полезно", "быстро", "завтрак"], ingredients: ["50 г овсяных хлопьев", "200 мл молока", "1 ч.л. мёда", "100 г замороженных ягод", "орехи по желанию"], steps: ["Довести молоко до кипения", "Добавить овсяные хлопья", "Варить 5 минут, помешивая", "Добавить мёд и ягоды", "Посыпать орехами"] },
-    { id: 3, name: "Сырники творожные", category: "breakfast", time: 25, calories: 380, difficulty: "Средний", tags: ["творог", "десерт", "завтрак"], ingredients: ["500 г творога", "2 яйца", "3 ст.л. муки", "2 ст.л. сахара", "щепотка ванилина", "растительное масло"], steps: ["Смешать творог с яйцами", "Добавить муку, сахар и ванилин", "Сформировать сырники", "Обжарить до золотистой корочки с двух сторон", "Подавать со сметаной"] },
-    { id: 4, name: "Борщ украинский", category: "soup", time: 90, calories: 210, difficulty: "Сложный", tags: ["суп", "сытный", "традиционный"], ingredients: ["2 свеклы", "300 г капусты", "4 картофелины", "1 морковь", "1 луковица", "500 г говядины", "2 ст.л. томатной пасты", "чеснок, зелень"], steps: ["Сварить бульон из говядины (1 час)", "Нарезать свеклу соломкой, потушить с томатной пастой", "Добавить в бульон нарезанный картофель и капусту", "Пассеровать лук с морковью", "Соединить всё, варить 15 минут", "Добавить чеснок и зелень"] },
-    { id: 5, name: "Тыквенный крем-суп", category: "soup", time: 40, calories: 180, difficulty: "Средний", tags: ["суп-пюре", "осенний", "полезный"], ingredients: ["500 г тыквы", "2 картофелины", "1 морковь", "1 луковица", "100 мл сливок 20%", "1 см корня имбиря", "соль, перец"], steps: ["Нарезать тыкву, картофель, лук и морковь", "Обжарить лук с морковью", "Добавить тыкву и картофель, залить водой", "Варить до мягкости (20 минут)", "Измельчить блендером до однородности", "Добавить сливки и имбирь, прогреть"] },
-    { id: 6, name: "Солянка сборная", category: "soup", time: 60, calories: 350, difficulty: "Средний", tags: ["суп", "мясной", "праздничный"], ingredients: ["200 г вареной колбасы", "200 г копченой колбасы", "300 г говядины", "3 соленых огурца", "100 г маслин", "лимон", "2 луковицы", "2 ст.л. томатной пасты"], steps: ["Сварить бульон из говядины", "Нарезать колбасу и обжарить с луком", "Добавить томатную пасту и нарезанные огурцы", "Переложить зажарку в бульон", "Добавить маслины, варить 10 минут", "Подавать с лимоном и сметаной"] },
-    { id: 7, name: "Паста Карбонара", category: "main", time: 25, calories: 580, difficulty: "Средний", tags: ["паста", "итальянская", "ужин"], ingredients: ["300 г спагетти", "150 г бекона", "3 яйца", "100 г пармезана", "2 зубчика чеснока", "соль, перец"], steps: ["Отварить спагетти до al dente", "Обжарить бекон с чесноком", "Смешать яйца с тертым пармезаном", "Соединить горячую пасту с беконом", "Добавить яичную смесь, быстро перемешать", "Подавать с черным перцем"] },
-    { id: 8, name: "Плов с курицей", category: "main", time: 80, calories: 450, difficulty: "Средний", tags: ["плов", "восточный", "сытный"], ingredients: ["600 г куриного филе", "2 стакана риса", "2 моркови", "2 луковицы", "1 головка чеснока", "1 ч.л. зиры", "растительное масло"], steps: ["Обжарить курицу до золотистой корочки", "Добавить нарезанный лук и морковь", "Залить водой, добавить специи", "Засыпать рис, разровнять", "Воткнуть головку чеснока", "Томить под крышкой 30 минут"] },
-    { id: 9, name: "Домашние котлеты", category: "main", time: 45, calories: 420, difficulty: "Средний", tags: ["мясо", "ужин", "классика"], ingredients: ["500 г фарша (свинина+говядина)", "1 луковица", "2 зубчика чеснока", "1 яйцо", "2 куска батона", "100 мл молока", "панировочные сухари"], steps: ["Замочить батон в молоке", "Смешать фарш с луком, чесноком, яйцом", "Добавить размягченный батон", "Сформировать котлеты", "Обвалять в сухарях", "Жарить по 5 минут с каждой стороны"] },
-    { id: 10, name: "Жаркое по-домашнему", category: "main", time: 70, calories: 490, difficulty: "Средний", tags: ["мясо", "сытный", "ужин"], ingredients: ["600 г свинины", "6 картофелин", "2 луковицы", "1 морковь", "3 зубчика чеснока", "лавровый лист", "специи"], steps: ["Обжарить мясо до корочки", "Добавить лук и морковь", "Залить водой, тушить 30 минут", "Добавить картофель", "Тушить до готовности картофеля", "Добавить чеснок и специи"] },
-    { id: 11, name: "Блинчики с творогом", category: "dessert", time: 40, calories: 320, difficulty: "Средний", tags: ["блины", "десерт", "завтрак"], ingredients: ["500 мл молока", "2 яйца", "200 г муки", "2 ст.л. сахара", "300 г творога", "50 г изюма", "растительное масло"], steps: ["Взбить яйца с сахаром", "Добавить молоко и муку", "Жарить тонкие блины", "Смешать творог с изюмом", "Завернуть начинку в блины", "Обжарить с двух сторон"] },
-    { id: 12, name: "Шарлотка с яблоками", category: "dessert", time: 50, calories: 280, difficulty: "Лёгкий", tags: ["пирог", "яблоки", "десерт"], ingredients: ["4 яйца", "1 стакан сахара", "1 стакан муки", "3 яблока", "1 ч.л. корицы", "щепотка ванилина"], steps: ["Взбить яйца с сахаром до пышной пены", "Аккуратно добавить муку", "Нарезать яблоки кубиками", "Добавить яблоки и корицу в тесто", "Вылить в форму, выпекать 35 минут при 180°C"] },
-    { id: 13, name: "Тирамису", category: "dessert", time: 30, calories: 450, difficulty: "Сложный", tags: ["десерт", "итальянский", "без выпечки"], ingredients: ["200 г печенья савоярди", "250 г сыра маскарпоне", "2 яйца", "50 г сахара", "200 мл крепкого кофе", "какао-порошок"], steps: ["Сварить крепкий кофе", "Отделить желтки от белков", "Взбить желтки с сахаром, добавить маскарпоне", "Взбить белки, аккуратно смешать", "Обмакнуть печенье в кофе", "Собирать слоями, пересыпая какао", "Убрать в холодильник на 2 часа"] },
-    { id: 14, name: "Цезарь с курицей", category: "salad", time: 30, calories: 380, difficulty: "Средний", tags: ["салат", "популярный", "праздничный"], ingredients: ["300 г куриного филе", "салат романо", "150 г помидоров черри", "50 г пармезана", "50 г сухариков", "соус цезарь"], steps: ["Обжарить куриное филе", "Нарвать салат руками", "Разрезать помидоры пополам", "Добавить сухарики", "Полить соусом", "Посыпать тертым пармезаном"] },
-    { id: 15, name: "Греческий салат", category: "salad", time: 15, calories: 210, difficulty: "Лёгкий", tags: ["салат", "овощной", "быстро"], ingredients: ["2 огурца", "2 помидора", "1 болгарский перец", "150 г сыра фета", "100 г маслин", "оливковое масло", "орегано"], steps: ["Нарезать огурцы и помидоры кубиками", "Нарезать перец", "Добавить фету и маслины", "Заправить маслом и орегано"] },
-    { id: 16, name: "Оливье", category: "salad", time: 40, calories: 350, difficulty: "Средний", tags: ["салат", "праздничный", "новогодний"], ingredients: ["4 картофелины", "2 моркови", "300 г вареной колбасы", "3 соленых огурца", "200 г консервированного горошка", "майонез"], steps: ["Отварить картофель и морковь", "Нарезать все ингредиенты кубиками", "Добавить горошек", "Заправить майонезом", "Посолить по вкусу"] },
-    { id: 17, name: "Домашняя пицца", category: "baking", time: 90, calories: 520, difficulty: "Средний", tags: ["пицца", "тесто", "ужин"], ingredients: ["500 г муки", "7 г сухих дрожжей", "250 мл теплой воды", "2 ст.л. оливкового масла", "томатный соус", "200 г моцареллы", "колбаса, грибы"], steps: ["Замесить дрожжевое тесто", "Дать подойти в тепле (40 минут)", "Раскатать тесто", "Намазать соусом, выложить начинку", "Посыпать сыром", "Выпекать 20 минут при 220°C"] },
-    { id: 18, name: "Банановый хлеб", category: "baking", time: 60, calories: 290, difficulty: "Лёгкий", tags: ["выпечка", "бананы", "десерт"], ingredients: ["2 спелых банана", "2 яйца", "150 г муки", "100 г сахара", "50 г сливочного масла", "1 ч.л. разрыхлителя", "щепотка соли"], steps: ["Размять бананы вилкой", "Смешать с яйцами и растопленным маслом", "Добавить сахар", "Всыпать муку и разрыхлитель", "Вылить в форму", "Выпекать 45 минут при 180°C"] },
-    { id: 19, name: "Куриный суп с лапшой", category: "soup", time: 50, calories: 190, difficulty: "Лёгкий", tags: ["суп", "курица", "быстро"], ingredients: ["400 г куриных бедер", "100 г лапши", "1 морковь", "1 луковица", "2 картофелины", "зелень"], steps: ["Сварить бульон из курицы", "Добавить нарезанный картофель", "Пассеровать лук с морковью", "Добавить зажарку в суп", "Засыпать лапшу, варить 5 минут", "Добавить зелень"] },
-    { id: 20, name: "Рис с овощами", category: "main", time: 35, calories: 280, difficulty: "Лёгкий", tags: ["вегетарианское", "гарнир", "быстро"], ingredients: ["1 стакан риса", "1 морковь", "1 болгарский перец", "100 г кукурузы", "100 г горошка", "соевый соус"], steps: ["Отварить рис до готовности", "Нарезать овощи", "Обжарить овощи на сковороде", "Смешать с рисом", "Добавить соевый соус"] },
-    { id: 21, name: "Запеченная семга", category: "main", time: 35, calories: 340, difficulty: "Средний", tags: ["рыба", "полезно", "ужин"], ingredients: ["400 г семги", "1 лимон", "веточка розмарина", "2 ст.л. оливкового масла", "соль, перец"], steps: ["Посолить и поперчить рыбу", "Сбрызнуть оливковым маслом", "Выложить дольки лимона и розмарин", "Запекать 20 минут при 200°C"] },
-    { id: 22, name: "Морковный торт", category: "dessert", time: 80, calories: 420, difficulty: "Сложный", tags: ["торт", "морковь", "десерт"], ingredients: ["300 г моркови", "200 г муки", "200 г сахара", "3 яйца", "150 мл растительного масла", "100 г грецких орехов", "200 г сливочного сыра для крема"], steps: ["Натереть морковь на мелкой терке", "Взбить яйца с сахаром", "Добавить масло, муку и разрыхлитель", "Добавить морковь и орехи", "Выпекать 35 минут при 180°C", "Остудить и пропитать кремом"] },
-    { id: 23, name: "Смузи клубничный", category: "drinks", time: 5, calories: 150, difficulty: "Лёгкий", tags: ["напиток", "быстро", "полезно"], ingredients: ["200 г клубники (свежей или замороженной)", "1 банан", "100 мл йогурта", "50 мл апельсинового сока"], steps: ["Смешать все ингредиенты в блендере", "Взбить до однородности", "Разлить по стаканам"] },
-    { id: 24, name: "Какао с маршмеллоу", category: "drinks", time: 10, calories: 180, difficulty: "Лёгкий", tags: ["напиток", "десерт", "уютный"], ingredients: ["500 мл молока", "2 ст.л. какао-порошка", "2 ст.л. сахара", "зефирки маршмеллоу"], steps: ["Подогреть молоко", "Смешать какао с сахаром", "Добавить немного молока, перемешать", "Влить в кастрюлю с молоком", "Варить 2-3 минуты", "Подавать с маршмеллоу"] },
-    { id: 25, name: "Лимонный лимонад", category: "drinks", time: 10, calories: 120, difficulty: "Лёгкий", tags: ["напиток", "освежающий", "лето"], ingredients: ["2 лимона", "1 л воды", "3 ст.л. сахара", "мята", "лед"], steps: ["Выжать сок из лимонов", "Смешать с водой и сахаром", "Добавить мяту", "Подавать со льдом"] }
-];
+// Мобильное меню
+const hamburger = document.querySelector('.hamburger');
+const navMenu = document.querySelector('.nav-menu');
+const navLinks = document.querySelectorAll('.nav-link');
 
-// ========== СОСТОЯНИЕ ==========
-let favorites = JSON.parse(localStorage.getItem('cookbook_favorites')) || [];
-let currentCategory = 'all';
-let currentSearch = '';
-let currentSort = 'name';
-
-// ========== DOM ЭЛЕМЕНТЫ ==========
-const recipesContainer = document.getElementById('recipesContainer');
-const searchInput = document.getElementById('searchInput');
-const searchBtn = document.getElementById('searchBtn');
-const sortSelect = document.getElementById('sortSelect');
-const emptyState = document.getElementById('emptyState');
-const categoryTitle = document.getElementById('categoryTitle');
-const recipeCountSpan = document.getElementById('recipeCount');
-const favCountSpan = document.getElementById('favCount');
-const modal = document.getElementById('recipeModal');
-const modalContent = document.getElementById('modalContent');
-const closeModalBtn = document.getElementById('closeModalBtn');
-
-let activeTimer = null;
-let timerInterval = null;
-
-// ========== ФУНКЦИИ ==========
-
-// Сохранение избранного
-function saveFavorites() {
-    localStorage.setItem('cookbook_favorites', JSON.stringify(favorites));
-    updateStats();
-}
-
-// Переключение избранного
-function toggleFavorite(recipeId) {
-    const index = favorites.indexOf(recipeId);
-    if (index === -1) {
-        favorites.push(recipeId);
+hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    navMenu.classList.toggle('active');
+    
+    // Анимация гамбургера
+    const spans = hamburger.querySelectorAll('span');
+    if (hamburger.classList.contains('active')) {
+        spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+        spans[1].style.opacity = '0';
+        spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
     } else {
-        favorites.splice(index, 1);
+        spans[0].style.transform = 'none';
+        spans[1].style.opacity = '1';
+        spans[2].style.transform = 'none';
     }
-    saveFavorites();
-    renderRecipes();
-    updateStats();
-}
+});
 
-// Проверка в избранном
-function isFavorite(recipeId) {
-    return favorites.includes(recipeId);
-}
-
-// Обновление статистики
-function updateStats() {
-    recipeCountSpan.textContent = recipes.length;
-    favCountSpan.textContent = favorites.length;
-}
-
-// Поиск
-function searchRecipes() {
-    currentSearch = searchInput.value.toLowerCase();
-    renderRecipes();
-}
-
-// Фильтрация по категории
-function filterCategory(category, btnElement = null) {
-    currentCategory = category;
-    currentSearch = '';
-    searchInput.value = '';
-    
-    // Обновить активную кнопку
-    document.querySelectorAll('.nav__btn').forEach(btn => {
-        btn.classList.remove('active');
+// Закрытие меню при клике на ссылку
+navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+        navMenu.classList.remove('active');
+        hamburger.classList.remove('active');
+        const spans = hamburger.querySelectorAll('span');
+        spans[0].style.transform = 'none';
+        spans[1].style.opacity = '1';
+        spans[2].style.transform = 'none';
     });
-    if (btnElement) {
-        btnElement.classList.add('active');
-    }
-    
-    // Обновить заголовок
-    const categoryNames = {
-        all: 'Все рецепты',
-        breakfast: 'Завтраки 🍳',
-        soup: 'Супы 🥣',
-        main: 'Основные блюда 🍝',
-        dessert: 'Десерты 🍰',
-        salad: 'Салаты 🥗',
-        baking: 'Выпечка 🥖',
-        drinks: 'Напитки 🥤',
-        favorites: 'Избранное ⭐'
-    };
-    categoryTitle.textContent = categoryNames[currentCategory] || 'Рецепты';
-    
-    renderRecipes();
-}
+});
 
-// Показать избранное
-function showFavorites() {
-    currentCategory = 'favorites';
-    currentSearch = '';
-    searchInput.value = '';
-    
-    document.querySelectorAll('.nav__btn').forEach(btn => {
-        btn.classList.remove('active');
-    });
-    document.getElementById('favoritesBtn').classList.add('active');
-    categoryTitle.textContent = 'Избранное ⭐';
-    renderRecipes();
-}
-
-// Сортировка
-function applySort(recipesToSort) {
-    const [field, order] = currentSort.split('-');
-    const sorted = [...recipesToSort];
-    
-    if (field === 'name') {
-        sorted.sort((a, b) => a.name.localeCompare(b.name));
-    } else if (field === 'time') {
-        sorted.sort((a, b) => order === 'asc' ? a.time - b.time : b.time - a.time);
-    } else if (field === 'calories') {
-        sorted.sort((a, b) => order === 'asc' ? a.calories - b.calories : b.calories - a.calories);
-    }
-    return sorted;
-}
-
-// Рендер рецептов
-function renderRecipes() {
-    let filtered = [...recipes];
-    
-    // Фильтрация
-    if (currentCategory !== 'all' && currentCategory !== 'favorites') {
-        filtered = filtered.filter(r => r.category === currentCategory);
-    } else if (currentCategory === 'favorites') {
-        filtered = filtered.filter(r => favorites.includes(r.id));
-    }
-    
-    // Поиск
-    if (currentSearch) {
-        filtered = filtered.filter(r => 
-            r.name.toLowerCase().includes(currentSearch) ||
-            r.tags.some(tag => tag.toLowerCase().includes(currentSearch))
-        );
-    }
-    
-    // Сортировка
-    filtered = applySort(filtered);
-    
-    // Пустое состояние
-    if (filtered.length === 0) {
-        recipesContainer.style.display = 'none';
-        emptyState.style.display = 'block';
-        return;
-    }
-    
-    recipesContainer.style.display = 'grid';
-    emptyState.style.display = 'none';
-    
-    // Рендер карточек
-    recipesContainer.innerHTML = filtered.map(recipe => `
-        <div class="recipe-card" data-id="${recipe.id}">
-            <div class="recipe-card__badge">${getDifficultyIcon(recipe.difficulty)} ${recipe.difficulty}</div>
-            <div class="recipe-card__fav" onclick="event.stopPropagation(); toggleFavorite(${recipe.id})">
-                ${isFavorite(recipe.id) ? '❤️' : '🤍'}
-            </div>
-            <div class="recipe-card__image" style="background-image: url('https://picsum.photos/id/${recipe.id + 100}/400/250')"></div>
-            <div class="recipe-card__info">
-                <h3 class="recipe-card__title">${recipe.name}</h3>
-                <div class="recipe-card__meta">
-                    <span>⏱️ ${recipe.time} мин</span>
-                    <span>🔥 ${recipe.calories} ккал</span>
-                </div>
-                <div class="recipe-card__tags">
-                    ${recipe.tags.map(tag => `<span class="tag">#${tag}</span>`).join('')}
-                </div>
-            </div>
-        </div>
-    `).join('');
-    
-    // Добавить обработчики кликов
-    document.querySelectorAll('.recipe-card').forEach(card => {
-        card.addEventListener('click', () => {
-            const id = parseInt(card.dataset.id);
-            openModal(id);
-        });
-    });
-}
-
-// Получить иконку сложности
-function getDifficultyIcon(difficulty) {
-    if (difficulty === 'Лёгкий') return '🟢';
-    if (difficulty === 'Средний') return '🟡';
-    return '🔴';
-}
-
-// Открыть модальное окно
-function openModal(recipeId) {
-    const recipe = recipes.find(r => r.id === recipeId);
-    if (!recipe) return;
-    
-    stopTimer();
-    
-    modalContent.innerHTML = `
-        <div class="modal-header">
-            <h2>${recipe.name}</h2>
-            <div class="recipe-card__meta">
-                <span>⏱️ ${recipe.time} минут</span>
-                <span>🔥 ${recipe.calories} ккал</span>
-                <span>${getDifficultyIcon(recipe.difficulty)} ${recipe.difficulty}</span>
-            </div>
-        </div>
-        <div class="modal-body">
-            <div class="nutrition">
-                <div class="nutrition-item">
-                    <div class="nutrition-value">${recipe.calories}</div>
-                    <div>калорий</div>
-                </div>
-                <div class="nutrition-item">
-                    <div class="nutrition-value">${recipe.time}</div>
-                    <div>минут</div>
-                </div>
-                <div class="nutrition-item">
-                    <div class="nutrition-value">${recipe.ingredients.length}</div>
-                    <div>ингредиентов</div>
-                </div>
-                <div class="nutrition-item">
-                    <div class="nutrition-value">${recipe.steps.length}</div>
-                    <div>шагов</div>
-                </div>
-            </div>
-            
-            <h3>🛒 Ингредиенты</h3>
-            <ul class="ingredients-list">
-                ${recipe.ingredients.map(ing => `<li>${ing}</li>`).join('')}
-            </ul>
-            
-            <h3>👩‍🍳 Пошаговое приготовление</h3>
-            <ol class="steps-list">
-                ${recipe.steps.map(step => `<li>${step}</li>`).join('')}
-            </ol>
-            
-            <div class="timer-section">
-                <strong>⏰ Таймер для этого рецепта:</strong>
-                <div class="timer-buttons">
-                    <button class="timer-btn" onclick="startTimer(${recipe.time * 60})">▶️ Запустить таймер (${recipe.time} мин)</button>
-                    <button class="timer-btn" onclick="stopTimer()">⏹️ Остановить</button>
-                    <span id="modalTimerDisplay" class="timer-display"></span>
-                </div>
-            </div>
-            
-            <div class="recipe-card__tags">
-                ${recipe.tags.map(tag => `<span class="tag">#${tag}</span>`).join('')}
-            </div>
-            
-            <button class="fav-modal-btn" id="modalFavBtn" style="background: ${isFavorite(recipe.id) ? '#e74c3c' : '#2c3e50'}; color: white;">
-                ${isFavorite(recipe.id) ? '❤️ Убрать из избранного' : '🤍 Добавить в избранное'}
-            </button>
-        </div>
-    `;
-    
-    modal.style.display = 'block';
-    
-    // Обработчик для кнопки избранного в модальном окне
-    const modalFavBtn = document.getElementById('modalFavBtn');
-    if (modalFavBtn) {
-        modalFavBtn.addEventListener('click', () => {
-            toggleFavorite(recipe.id);
-            openModal(recipe.id);
-        });
-    }
-}
-
-// Таймер
-function startTimer(seconds) {
-    stopTimer();
-    let remaining = seconds;
-    const timerDisplay = document.getElementById('modalTimerDisplay');
-    if (!timerDisplay) return;
-    
-    timerDisplay.textContent = formatTime(remaining);
-    
-    timerInterval = setInterval(() => {
-        if (remaining <= 0) {
-            stopTimer();
-            timerDisplay.textContent = '✅ Время вышло!';
-            alert('⏰ Время приготовления истекло! Приятного аппетита!');
-        } else {
-            remaining--;
-            timerDisplay.textContent = formatTime(remaining);
-        }
-    }, 1000);
-}
-
-function stopTimer() {
-    if (timerInterval) {
-        clearInterval(timerInterval);
-        timerInterval = null;
-    }
-    const timerDisplay = document.getElementById('modalTimerDisplay');
-    if (timerDisplay) timerDisplay.textContent = '';
-}
-
-function formatTime(seconds) {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
-}
-
-// Закрытие модального окна
-function closeModal() {
-    stopTimer();
-    modal.style.display = 'none';
-}
-
-// Сортировка
-function handleSortChange() {
-    currentSort = sortSelect.value;
-    renderRecipes();
-}
-
-// Инициализация событий
-function init() {
-    updateStats();
-    renderRecipes();
-    
-    // Поиск
-    searchBtn.addEventListener('click', searchRecipes);
-    searchInput.addEventListener('keyup', (e) => {
-        if (e.key === 'Enter') searchRecipes();
-    });
-    
-    // Сортировка
-    sortSelect.addEventListener('change', handleSortChange);
-    
-    // Навигация
-    document.querySelectorAll('.nav__btn').forEach(btn => {
-        if (btn.id === 'favoritesBtn') {
-            btn.addEventListener('click', showFavorites);
-        } else if (btn.dataset.category) {
-            btn.addEventListener('click', () => filterCategory(btn.dataset.category, btn));
-        }
-    });
-    
-    // Закрытие модального окна
-    closeModalBtn.addEventListener('click', closeModal);
-    window.addEventListener('click', (e) => {
-        if (e.target === modal) closeModal();
-    });
-    
-    // Ссылки в подвале
-    document.querySelectorAll('.footer__col a').forEach(link => {
-        if (link.dataset.category) {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                filterCategory(link.dataset.category);
+// Плавный скролл
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
             });
         }
     });
+});
+
+// Активная ссылка при скролле
+window.addEventListener('scroll', () => {
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    let current = '';
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        if (window.scrollY >= sectionTop - 100) {
+            current = section.getAttribute('id');
+        }
+    });
+    
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+            link.classList.add('active');
+        }
+    });
+});
+
+// Фильтрация рецептов
+const filterButtons = document.querySelectorAll('.filter-btn');
+const recipeCards = document.querySelectorAll('.recipe-card');
+
+filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        // Убираем активный класс у всех кнопок
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        // Добавляем активный класс нажатой кнопке
+        button.classList.add('active');
+        
+        const filter = button.getAttribute('data-filter');
+        
+        recipeCards.forEach(card => {
+            if (filter === 'all') {
+                card.classList.remove('hidden');
+                card.style.animation = 'scaleIn 0.6s ease';
+            } else {
+                if (card.getAttribute('data-category') === filter) {
+                    card.classList.remove('hidden');
+                    card.style.animation = 'scaleIn 0.6s ease';
+                } else {
+                    card.classList.add('hidden');
+                }
+            }
+        });
+    });
+});
+
+// Открытие модального окна с рецептом
+function openRecipe(recipeId) {
+    const modal = document.getElementById('recipeModal');
+    const recipeDetails = document.getElementById('recipeDetails');
+    const recipe = recipesData[recipeId];
+    
+    if (recipe) {
+        const detailsHTML = `
+            <div style="text-align: center; font-size: 4rem; margin-bottom: 1rem;">${recipe.emoji}</div>
+            <h2>${recipe.title}</h2>
+            <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; color: #666;">
+                <span>⏱️ ${recipe.time}</span>
+                <span>💰 ${recipe.price}</span>
+                <span>📊 ${recipe.difficulty}</span>
+            </div>
+            
+            <h3>📝 Ингредиенты:</h3>
+            <ul>
+                ${recipe.ingredients.map(item => `<li>${item}</li>`).join('')}
+            </ul>
+            
+            <h3>👨‍🍳 Приготовление:</h3>
+            <ol style="padding-left: 1.2rem; line-height: 2;">
+                ${recipe.instructions.map(step => `<li>${step}</li>`).join('')}
+            </ol>
+            
+            <div style="margin-top: 1.5rem; padding: 1rem; background: #f9f9f9; border-radius: 10px;">
+                <p>${recipe.tip}</p>
+            </div>
+        `;
+        
+        recipeDetails.innerHTML = detailsHTML;
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
 }
 
-// Запуск при загрузке
-document.addEventListener('DOMContentLoaded', init);
+// Закрытие модального окна
+const modal = document.getElementById('recipeModal');
+const closeModal = document.querySelector('.close-modal');
+
+closeModal.addEventListener('click', () => {
+    modal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+});
+
+window.addEventListener('click', (e) => {
+    if (e.target === modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+});
+
+// Закрытие по Escape
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.style.display === 'block') {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+});
+
+// Анимация появления карточек при скролле
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.animation = 'scaleIn 0.6s ease forwards';
+            observer.unobserve(entry.target);
+        }
+    });
+}, observerOptions);
+
+document.querySelectorAll('.recipe-card, .tip-card').forEach(card => {
+    observer.observe(card);
+});
+
+// Эффект параллакса для плавающих элементов
+document.addEventListener('mousemove', (e) => {
+    const elements = document.querySelectorAll('.floating-element');
+    const mouseX = e.clientX / window.innerWidth;
+    const mouseY = e.clientY / window.innerHeight;
+    
+    elements.forEach((element, index) => {
+        const speed = (index + 1) * 20;
+        const x = (mouseX - 0.5) * speed;
+        const y = (mouseY - 0.5) * speed;
+        element.style.transform = `translate(${x}px, ${y}px)`;
+    });
+});
+
+// Анимация счетчиков статистики
+function animateStats() {
+    const stats = document.querySelectorAll('.stat-number');
+    stats.forEach(stat => {
+        const target = stat.textContent;
+        stat.style.opacity = '0';
+        stat.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+            stat.style.transition = 'all 0.6s ease';
+            stat.style.opacity = '1';
+            stat.style.transform = 'translateY(0)';
+        }, 200);
+    });
+}
+
+// Запуск анимации при загрузке
+window.addEventListener('load', () => {
+    animateStats();
+    
+    // Добавляем класс для анимации загрузки
+    document.body.style.opacity = '0';
+    document.body.style.transition = 'opacity 0.5s ease';
+    setTimeout(() => {
+        document.body.style.opacity = '1';
+    }, 100);
+});
+
+// Preloader (опционально)
+const preloader = document.createElement('div');
+preloader.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: white;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease;
+`;
+preloader.innerHTML = '<div style="font-size: 3rem; animation: pulse 1s infinite;">🍳</div>';
+document.body.appendChild(preloader);
+
+setTimeout(() => {
+    preloader.style.opacity = '0';
+    setTimeout(() => {
+        preloader.remove();
+    }, 500);
+}, 1000);
+
+console.log('🍳 СтудентКулинар готов к работе!');
+console.log('💰 Все рецепты экономичные и проверенные');
+console.log('👨‍🍳 Приятного аппетита!');
