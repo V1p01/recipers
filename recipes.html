@@ -85,31 +85,41 @@
         </div>
     </footer>
 
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
-<script>
-    const firebaseConfig = {
-        apiKey: "AIzaSyDoE18PySgZcwUSV1zGNU1a4ql9IDxaNGI",
-        authDomain: "kulinariastudenta.firebaseapp.com",
-        projectId: "kulinariastudenta",
-        storageBucket: "kulinariastudenta.firebasestorage.app",
-        messagingSenderId: "712553246230",
-        appId: "1:712553246230:web:6940e365ae83f678270f37"
-    };
+    <script>
+        // Конфиг Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyDoE18PySgZcwUSV1zGNU1a4ql9IDxaNGI",
+            authDomain: "kulinariastudenta.firebaseapp.com",
+            projectId: "kulinariastudenta",
+            storageBucket: "kulinariastudenta.firebasestorage.app",
+            messagingSenderId: "712553246230",
+            appId: "1:712553246230:web:6940e365ae83f678270f37"
+        };
 
-    // Проверяем, не инициализирован ли уже Firebase
-    if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
-    }
-</script>
-    ="script.js"></script>
+        // Инициализация Firebase (проверяем, не запущен ли уже)
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+    </script>
+
+    <script src="script.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const grid = document.getElementById('allRecipesGrid');
             
+            // Проверяем, есть ли рецепты
+            if (typeof recipesData === 'undefined') {
+                grid.innerHTML = '<p style="text-align: center; color: red;">Ошибка загрузки рецептов</p>';
+                return;
+            }
+
+            // Создаём карточки
             recipesData.forEach(function(recipe) {
                 const card = document.createElement('div');
                 card.className = 'recipe-card';
@@ -138,7 +148,7 @@
                 grid.appendChild(card);
             });
 
-            // Проверяем избранное после загрузки
+            // Проверяем избранное для вошедшего пользователя
             firebase.auth().onAuthStateChanged(function(user) {
                 if (user && typeof checkFavorites === 'function') {
                     checkFavorites();
@@ -205,6 +215,14 @@
         document.querySelector('.close-modal-recipes').addEventListener('click', function() {
             document.getElementById('recipeModalRecipes').style.display = 'none';
             document.body.style.overflow = 'auto';
+        });
+
+        // Закрытие по Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.getElementById('recipeModalRecipes').style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
         });
     </script>
 </body>
