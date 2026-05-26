@@ -19,7 +19,6 @@
                 <li><a href="recipes.html" class="nav-link active">Рецепты</a></li>
                 <li><a href="calculator.html" class="nav-link">Калькулятор</a></li>
                 <li><a href="tips.html" class="nav-link">Советы</a></li>
-                <li><a href="add-recipe.html" class="nav-link">Добавить</a></li>
                 <li><a href="about.html" class="nav-link">О проекте</a></li>
                 <li><a href="auth.html" class="nav-link">Вход</a></li>
             </ul>
@@ -35,7 +34,7 @@
         <a href="index.html">Главная</a> → Рецепты
     </div>
 
-    <section class="recipes-page" style="padding-top: 2rem;">
+    <section style="padding-top: 2rem;">
         <h2 class="section-title">Все рецепты</h2>
         
         <div class="search-box">
@@ -57,7 +56,6 @@
         <div id="noResultsRecipes" class="hidden" style="text-align: center; padding: 3rem; color: #666;">
             <p style="font-size: 3rem;">🔍</p>
             <p style="font-size: 1.2rem;">Рецепты не найдены</p>
-            <p>Попробуйте изменить запрос</p>
         </div>
     </section>
 
@@ -81,163 +79,131 @@
                 <a href="about.html">О проекте</a>
                 <a href="auth.html">Вход</a>
             </div>
-            <div class="footer-social">
-                <p>Мы в соцсетях</p>
-                <div class="social-links">
-                    <a href="#" class="social-link">📱</a>
-                    <a href="#" class="social-link">💬</a>
-                    <a href="#" class="social-link">📧</a>
-                </div>
-            </div>
         </div>
         <div class="footer-bottom">
-            <p>© 2026 Кулинария студента | Якутск</p>
+            <p>© 2024 Кулинария студента | Якутск</p>
         </div>
     </footer>
 
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
     <script src="script.js"></script>
     <script>
-        // Ждём загрузки основного скрипта
+        // Конфиг Firebase
+        const firebaseConfig = {
+            apiKey: "ВАШ_API_KEY",
+            authDomain: "kulinariastudenta.firebaseapp.com",
+            projectId: "kulinariastudenta",
+            storageBucket: "kulinariastudenta.appspot.com",
+            messagingSenderId: "ВАШ_SENDER_ID",
+            appId: "ВАШ_APP_ID"
+        };
+        firebase.initializeApp(firebaseConfig);
+
         document.addEventListener('DOMContentLoaded', function() {
-            // Загружаем все рецепты
-            if (typeof recipesData !== 'undefined') {
-                const grid = document.getElementById('allRecipesGrid');
-                if (grid) {
-                    grid.innerHTML = recipesData.map(function(recipe) {
-                        return `
-                            <div class="recipe-card" data-category="${recipe.category}">
-                                <div class="recipe-image">
-                                    <span class="recipe-emoji">${recipe.emoji}</span>
-                                    <div class="recipe-time">⏱️ ${recipe.time}</div>
-                                </div>
-                                <div class="recipe-content">
-                                    <h3 class="recipe-title">${recipe.title}</h3>
-                                    <p class="recipe-description">${recipe.description}</p>
-                                    <div class="recipe-info">
-                                        <span class="recipe-price">~${recipe.price}</span>
-                                        <span class="recipe-difficulty">${recipe.difficulty}</span>
-                                    </div>
-                                    <button class="recipe-btn" onclick="showRecipeDetail('${recipe.id}')">Подробнее</button>
-                                </div>
-                            </div>
-                        `;
-                    }).join('');
-                }
-            }
-
-            // Поиск на странице рецептов
-            const searchInput = document.getElementById('searchInputRecipes');
-            if (searchInput) {
-                searchInput.addEventListener('input', function() {
-                    const query = this.value.toLowerCase();
-                    const cards = document.querySelectorAll('.recipe-card');
-                    let found = false;
-                    
-                    cards.forEach(function(card) {
-                        const title = card.querySelector('.recipe-title').textContent.toLowerCase();
-                        const desc = card.querySelector('.recipe-description').textContent.toLowerCase();
-                        
-                        if (title.includes(query) || desc.includes(query)) {
-                            card.classList.remove('hidden');
-                            found = true;
-                        } else {
-                            card.classList.add('hidden');
-                        }
-                    });
-                    
-                    const noResults = document.getElementById('noResultsRecipes');
-                    if (noResults) {
-                        noResults.classList.toggle('hidden', found);
-                    }
-                });
-            }
-
-            // Фильтрация на странице рецептов
-            document.querySelectorAll('.filter-btn').forEach(function(btn) {
-                btn.addEventListener('click', function() {
-                    document.querySelectorAll('.filter-btn').forEach(function(b) {
-                        b.classList.remove('active');
-                    });
-                    this.classList.add('active');
-                    
-                    const filter = this.getAttribute('data-filter');
-                    document.querySelectorAll('.recipe-card').forEach(function(card) {
-                        if (filter === 'all' || card.getAttribute('data-category') === filter) {
-                            card.classList.remove('hidden');
-                        } else {
-                            card.classList.add('hidden');
-                        }
-                    });
-                });
+            const grid = document.getElementById('allRecipesGrid');
+            
+            // Создаём карточки
+            recipesData.forEach(function(recipe) {
+                const card = document.createElement('div');
+                card.className = 'recipe-card';
+                card.setAttribute('data-category', recipe.category);
+                card.innerHTML = `
+                    <div class="recipe-image">
+                        <span class="recipe-emoji">${recipe.emoji}</span>
+                        <div class="recipe-time">⏱️ ${recipe.time}</div>
+                        <button data-fav="${recipe.id}" onclick="toggleFavorite('${recipe.id}')" 
+                            style="position: absolute; top: 1rem; left: 1rem; background: white; border: none; 
+                            border-radius: 50%; width: 40px; height: 40px; font-size: 1.2rem; cursor: pointer;
+                            box-shadow: 0 2px 10px rgba(0,0,0,0.1); transition: 0.3s; display: flex; 
+                            align-items: center; justify-content: center;">
+                            🤍
+                        </button>
+                    </div>
+                    <div class="recipe-content">
+                        <h3 class="recipe-title">${recipe.title}</h3>
+                        <p class="recipe-description">${recipe.description}</p>
+                        <div class="recipe-info">
+                            <span class="recipe-price">~${recipe.price}</span>
+                            <span class="recipe-difficulty">${recipe.difficulty}</span>
+                        </div>
+                        <button class="recipe-btn" onclick="showRecipeDetail('${recipe.id}')">Подробнее</button>
+                    </div>
+                `;
+                grid.appendChild(card);
             });
 
-            // Закрытие модального окна на странице рецептов
-            const modal = document.getElementById('recipeModalRecipes');
-            const closeBtn = document.querySelector('.close-modal-recipes');
-            
-            if (closeBtn && modal) {
-                closeBtn.addEventListener('click', function() {
-                    modal.style.display = 'none';
-                    document.body.style.overflow = 'auto';
-                });
-            }
-            
-            if (modal) {
-                window.addEventListener('click', function(e) {
-                    if (e.target === modal) {
-                        modal.style.display = 'none';
-                        document.body.style.overflow = 'auto';
-                    }
-                });
-            }
+            // Проверяем избранное
+            firebase.auth().onAuthStateChanged(function(user) {
+                if (user && typeof checkFavorites === 'function') {
+                    checkFavorites();
+                }
+            });
         });
 
-        // Функция показа рецепта (глобальная)
-        function showRecipeDetail(recipeId) {
-            if (typeof recipesData === 'undefined') return;
-            
-            const recipe = recipesData.find(function(r) { return r.id === recipeId; });
+        // Поиск
+        document.getElementById('searchInputRecipes').addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            let found = false;
+            document.querySelectorAll('.recipe-card').forEach(function(card) {
+                const title = card.querySelector('.recipe-title').textContent.toLowerCase();
+                if (title.includes(query)) {
+                    card.classList.remove('hidden');
+                    found = true;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+            document.getElementById('noResultsRecipes').classList.toggle('hidden', found);
+        });
+
+        // Фильтры
+        document.querySelectorAll('.filter-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                const filter = this.getAttribute('data-filter');
+                document.querySelectorAll('.recipe-card').forEach(function(card) {
+                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+            });
+        });
+
+        // Модальное окно
+        window.showRecipeDetail = function(recipeId) {
+            const recipe = recipesData.find(r => r.id === recipeId);
             if (!recipe) return;
-
-            const modal = document.getElementById('recipeModalRecipes');
             const details = document.getElementById('recipeDetailsRecipes');
-            
-            if (!modal || !details) return;
-
             details.innerHTML = `
-                <div style="text-align: center; font-size: 4rem; margin-bottom: 1rem;">${recipe.emoji}</div>
+                <div style="text-align: center; font-size: 4rem;">${recipe.emoji}</div>
                 <h2>${recipe.title}</h2>
-                <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; color: #666; flex-wrap: wrap;">
+                <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; color: #666;">
                     <span>⏱️ ${recipe.time}</span>
                     <span>💰 ~${recipe.price}</span>
-                    <span>📊 ${recipe.difficulty}</span>
                 </div>
                 <h3>📝 Ингредиенты:</h3>
-                <ul>
-                    ${recipe.ingredients.map(function(item) { return '<li>' + item + '</li>'; }).join('')}
-                </ul>
+                <ul>${recipe.ingredients.map(i => '<li>' + i + '</li>').join('')}</ul>
                 <h3>👨‍🍳 Приготовление:</h3>
-                <ol>
-                    ${recipe.instructions.map(function(step) { return '<li>' + step + '</li>'; }).join('')}
-                </ol>
+                <ol>${recipe.instructions.map(s => '<li>' + s + '</li>').join('')}</ol>
                 <div style="margin-top: 1.5rem; padding: 1rem; background: #FFF3F3; border-radius: 10px; border-left: 4px solid #FF6B6B;">
                     <strong>💡 Совет:</strong> ${recipe.tip}
                 </div>
             `;
-
-            modal.style.display = 'block';
+            document.getElementById('recipeModalRecipes').style.display = 'block';
             document.body.style.overflow = 'hidden';
-        }
+        };
 
-        // Закрытие модального окна по Escape
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                const modal = document.getElementById('recipeModalRecipes');
-                if (modal && modal.style.display === 'block') {
-                    modal.style.display = 'none';
-                    document.body.style.overflow = 'auto';
-                }
-            }
+        // Закрытие модального окна
+        document.querySelector('.close-modal-recipes').addEventListener('click', function() {
+            document.getElementById('recipeModalRecipes').style.display = 'none';
+            document.body.style.overflow = 'auto';
         });
     </script>
 </body>
