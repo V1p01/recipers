@@ -85,22 +85,26 @@
         </div>
     </footer>
 
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyCulR0j5GnUxapZ5-1K9wPhN5Mm8nG5XjE",
-            authDomain: "kulinariastudenta.firebaseapp.com",
-            projectId: "kulinariastudenta",
-            storageBucket: "kulinariastudenta.firebasestorage.app",
-            messagingSenderId: "672353646050",
-            appId: "1:672353646050:web:18d23a4df5c6b5b45e58bb"
-        };
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyDoE18PySgZcwUSV1zGNU1a4ql9IDxaNGI",
+        authDomain: "kulinariastudenta.firebaseapp.com",
+        projectId: "kulinariastudenta",
+        storageBucket: "kulinariastudenta.firebasestorage.app",
+        messagingSenderId: "712553246230",
+        appId: "1:712553246230:web:6940e365ae83f678270f37"
+    };
+
+    // Проверяем, не инициализирован ли уже Firebase
+    if (!firebase.apps.length) {
         firebase.initializeApp(firebaseConfig);
-    </script>
-    <script src="script.js"></script>
+    }
+</script>
+    ="script.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
