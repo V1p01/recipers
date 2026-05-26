@@ -299,23 +299,14 @@
             });
         });
 
-        // Результат редиректа Google
-        auth.getRedirectResult().then((result) => {
-            if (result && result.user) {
-                showUserBlock();
-            }
-        }).catch((error) => {
-            console.error('Ошибка редиректа:', error);
-        });
-
-        // Отслеживание состояния
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                showUserBlock();
-            } else {
-                showLogin();
-            }
-        });
+       // Отслеживание состояния пользователя (главное!)
+auth.onAuthStateChanged((user) => {
+    if (user) {
+        showUserBlock();
+    } else {
+        showLogin();
+    }
+});
     </script>
 
     <script src="script.js"></script>
