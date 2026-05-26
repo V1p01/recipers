@@ -49,6 +49,7 @@
             <button class="filter-btn" data-filter="snack">Перекусы</button>
             <button class="filter-btn" data-filter="soup">Супы</button>
             <button class="filter-btn" data-filter="salad">Салаты</button>
+            <button class="filter-btn" data-filter="favorites" style="background: #FFF3F3; border-color: #FF6B6B; color: #FF6B6B;">❤️ Избранное</button>
         </div>
 
         <div class="recipes-grid" id="allRecipesGrid"></div>
@@ -91,7 +92,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
     <script>
-        // Конфиг Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyDoE18PySgZcwUSV1zGNU1a4ql9IDxaNGI",
             authDomain: "kulinariastudenta.firebaseapp.com",
@@ -101,7 +101,6 @@
             appId: "1:712553246230:web:6940e365ae83f678270f37"
         };
 
-        // Инициализация Firebase (проверяем, не запущен ли уже)
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
         }
@@ -110,10 +109,11 @@
     <script src="script.js"></script>
 
     <script>
+        let userFavorites = []; // Массив избранных рецептов пользователя
+
         document.addEventListener('DOMContentLoaded', function() {
             const grid = document.getElementById('allRecipesGrid');
             
-            // Проверяем, есть ли рецепты
             if (typeof recipesData === 'undefined') {
                 grid.innerHTML = '<p style="text-align: center; color: red;">Ошибка загрузки рецептов</p>';
                 return;
@@ -124,6 +124,7 @@
                 const card = document.createElement('div');
                 card.className = 'recipe-card';
                 card.setAttribute('data-category', recipe.category);
+                card.setAttribute('data-recipe-id', recipe.id);
                 card.innerHTML = `
                     <div class="recipe-image">
                         <span class="recipe-emoji">${recipe.emoji}</span>
@@ -148,13 +149,30 @@
                 grid.appendChild(card);
             });
 
-            // Проверяем избранное для вошедшего пользователя
+            // Загружаем избранное пользователя
             firebase.auth().onAuthStateChanged(function(user) {
-                if (user && typeof checkFavorites === 'function') {
-                    checkFavorites();
+                if (user) {
+                    loadUserFavorites(user.uid);
+                    if (typeof checkFavorites === 'function') {
+                        checkFavorites();
+                    }
                 }
             });
         });
+
+        // Загрузка избранного пользователя из Firestore
+        async function loadUserFavorites(uid) {
+            try {
+                const db = firebase.firestore();
+                const snapshot = await db.collection('users').doc(uid).collection('favorites').get();
+                userFavorites = [];
+                snapshot.forEach((doc) => {
+                    userFavorites.push(doc.id);
+                });
+            } catch (error) {
+                console.error('Ошибка загрузки избранного:', error);
+            }
+        }
 
         // Поиск
         document.getElementById('searchInputRecipes').addEventListener('input', function() {
@@ -172,17 +190,46 @@
             document.getElementById('noResultsRecipes').classList.toggle('hidden', found);
         });
 
-        // Фильтры
+        // Фильтры (включая избранное)
         document.querySelectorAll('.filter-btn').forEach(function(btn) {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
+                
                 const filter = this.getAttribute('data-filter');
+                
                 document.querySelectorAll('.recipe-card').forEach(function(card) {
-                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                    if (filter === 'all') {
                         card.classList.remove('hidden');
+                    } else if (filter === 'favorites') {
+                        // Показываем только избранные
+                        const recipeId = card.getAttribute('data-recipe-id');
+                        if (userFavorites.includes(recipeId)) {
+                            card.classList.remove('hidden');
+                        } else {
+                            card.classList.add('hidden');
+                        }
+                        
+                        // Если нет избранных — показываем сообщение
+                        const visibleCards = document.querySelectorAll('.recipe-card:not(.hidden)');
+                        if (visibleCards.length === 0) {
+                            document.getElementById('noResultsRecipes').classList.remove('hidden');
+                            document.getElementById('noResultsRecipes').innerHTML = `
+                                <p style="font-size: 3rem;">💔</p>
+                                <p style="font-size: 1.2rem;">У вас пока нет избранных рецептов</p>
+                                <p style="color: #999;">Нажимайте 🤍 на рецептах, чтобы добавить в избранное</p>
+                            `;
+                        } else {
+                            document.getElementById('noResultsRecipes').classList.add('hidden');
+                        }
                     } else {
-                        card.classList.add('hidden');
+                        // Обычная фильтрация по категории
+                        if (card.getAttribute('data-category') === filter) {
+                            card.classList.remove('hidden');
+                        } else {
+                            card.classList.add('hidden');
+                        }
+                        document.getElementById('noResultsRecipes').classList.add('hidden');
                     }
                 });
             });
@@ -217,7 +264,6 @@
             document.body.style.overflow = 'auto';
         });
 
-        // Закрытие по Escape
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 document.getElementById('recipeModalRecipes').style.display = 'none';
