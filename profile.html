@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль | Кулинария студента</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">🍳</span>
+                <span class="logo-text">Кулинария студента</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Главная</a></li>
+                <li><a href="recipes.html" class="nav-link">Рецепты</a></li>
+                <li><a href="calculator.html" class="nav-link">Калькулятор</a></li>
+                <li><a href="tips.html" class="nav-link">Советы</a></li>
+                <li><a href="about.html" class="nav-link">О проекте</a></li>
+                <li><a href="auth.html" class="nav-link" id="authNavLink">Вход</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="breadcrumbs">
+        <a href="index.html">Главная</a> → Профиль
+    </div>
+
+    <section style="padding-top: 2rem; min-height: 70vh;">
+        <h2 class="section-title">Мой профиль</h2>
+        
+        <div style="max-width: 500px; margin: 0 auto;">
+
+            <!-- Не вошёл -->
+            <div id="needLogin" style="text-align: center; padding: 2rem; background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                <p style="font-size: 4rem;">🔐</p>
+                <p style="font-size: 1.2rem; margin-bottom: 1.5rem;">Войдите, чтобы увидеть профиль</p>
+                <a href="auth.html" class="cta-button" style="display: inline-flex;">Войти</a>
+            </div>
+
+            <!-- Профиль -->
+            <div id="profileBlock" style="display: none;">
+                <div style="background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden;">
+                    
+                    <!-- Шапка профиля -->
+                    <div style="background: linear-gradient(135deg, #FF6B6B, #FF8E8E); padding: 2rem; text-align: center; color: white;">
+                        <div style="font-size: 5rem; margin-bottom: 0.5rem;">👨‍🍳</div>
+                        <h2 style="margin-bottom: 0.3rem;" id="profileName">Студент</h2>
+                        <p style="opacity: 0.9;" id="profileEmail">email@example.com</p>
+                        <p style="font-size: 0.8rem; opacity: 0.7;" id="profileDate"></p>
+                    </div>
+
+                    <!-- Статистика -->
+                    <div style="display: flex; border-bottom: 1px solid #eee;">
+                        <div style="flex: 1; text-align: center; padding: 1.5rem 0.5rem;">
+                            <div style="font-size: 2rem; font-weight: 700; color: #FF6B6B;" id="favCount">0</div>
+                            <div style="font-size: 0.8rem; color: #999;">избранных</div>
+                        </div>
+                        <div style="flex: 1; text-align: center; padding: 1.5rem 0.5rem; border-left: 1px solid #eee;">
+                            <div style="font-size: 2rem; font-weight: 700; color: #4ECDC4;" id="recipesCount">0</div>
+                            <div style="font-size: 0.8rem; color: #999;">добавлено</div>
+                        </div>
+                    </div>
+
+                    <!-- Кнопки -->
+                    <div style="padding: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem;">
+                        <a href="favorites.html" class="cta-button" style="width: 100%; justify-content: center; display: flex;">
+                            ⭐ Мои избранные рецепты
+                        </a>
+                        
+                        <a href="add-recipe.html" class="cta-button secondary" style="width: 100%; justify-content: center; display: flex;">
+                            ✍️ Добавить свой рецепт
+                        </a>
+                        
+                        <button onclick="logout()" style="width: 100%; padding: 0.8rem; background: #f0f0f0; border: none; border-radius: 25px; cursor: pointer; font-weight: 500; font-family: 'Montserrat', sans-serif; font-size: 0.9rem; transition: 0.3s;">
+                            🚪 Выйти из аккаунта
+                        </button>
+                        
+                        <button onclick="deleteAccount()" style="width: 100%; padding: 0.8rem; background: none; border: 1px solid #FF6B6B; color: #FF6B6B; border-radius: 25px; cursor: pointer; font-weight: 500; font-family: 'Montserrat', sans-serif; font-size: 0.8rem; transition: 0.3s;">
+                            🗑️ Удалить аккаунт
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-info">
+                <h3>Кулинария студента</h3>
+                <p>Проект для студентов Якутска. Экономим вместе!</p>
+            </div>
+            <div class="footer-links">
+                <a href="recipes.html">Рецепты</a>
+                <a href="calculator.html">Калькулятор</a>
+                <a href="tips.html">Советы</a>
+                <a href="about.html">О проекте</a>
+                <a href="auth.html">Вход</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 Кулинария студента | Якутск</p>
+        </div>
+    </footer>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDoE18PySgZcwUSV1zGNU1a4ql9IDxaNGI",
+            authDomain: "kulinariastudenta.firebaseapp.com",
+            projectId: "kulinariastudenta",
+            storageBucket: "kulinariastudenta.firebasestorage.app",
+            messagingSenderId: "712553246230",
+            appId: "1:712553246230:web:6940e365ae83f678270f37"
+        };
+
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Обновление меню
+        auth.onAuthStateChanged(function(user) {
+            const authLink = document.getElementById('authNavLink');
+            
+            if (user) {
+                document.getElementById('needLogin').style.display = 'none';
+                document.getElementById('profileBlock').style.display = 'block';
+                
+                // Заполняем профиль
+                document.getElementById('profileName').textContent = user.displayName || 'Студент';
+                document.getElementById('profileEmail').textContent = user.email;
+                
+                // Дата регистрации
+                const created = new Date(user.metadata.creationTime);
+                document.getElementById('profileDate').textContent = 
+                    'На сайте с ' + created.toLocaleDateString('ru-RU');
+                
+                // Считаем избранное
+                loadFavoritesCount(user.uid);
+                
+                // Обновляем меню
+                if (authLink) {
+                    authLink.innerHTML = '👤 ' + (user.displayName || 'Профиль');
+                    authLink.href = 'profile.html';
+                }
+            } else {
+                document.getElementById('needLogin').style.display = 'block';
+                document.getElementById('profileBlock').style.display = 'none';
+                
+                if (authLink) {
+                    authLink.innerHTML = 'Вход';
+                    authLink.href = 'auth.html';
+                }
+            }
+        });
+
+        // Загрузка количества избранных
+        async function loadFavoritesCount(uid) {
+            try {
+                const snapshot = await db.collection('users').doc(uid).collection('favorites').get();
+                document.getElementById('favCount').textContent = snapshot.size;
+            } catch (error) {
+                console.error('Ошибка:', error);
+            }
+        }
+
+        // Выход
+        function logout() {
+            auth.signOut().then(function() {
+                window.location.href = 'index.html';
+            });
+        }
+
+        // Удаление аккаунта
+        function deleteAccount() {
+            if (!confirm('Вы уверены? Все ваши данные (избранное) будут удалены безвозвратно!')) return;
+            
+            if (!confirm('Точно? Это действие нельзя отменить.')) return;
+
+            const user = auth.currentUser;
+            
+            // Удаляем данные из Firestore
+            db.collection('users').doc(user.uid).collection('favorites').get()
+                .then(function(snapshot) {
+                    const batch = db.batch();
+                    snapshot.forEach(function(doc) {
+                        batch.delete(doc.ref);
+                    });
+                    return batch.commit();
+                })
+                .then(function() {
+                    // Удаляем аккаунт
+                    return user.delete();
+                })
+                .then(function() {
+                    alert('Аккаунт удалён.');
+                    window.location.href = 'index.html';
+                })
+                .catch(function(error) {
+                    alert('Ошибка: ' + error.message);
+                });
+        }
+    </script>
+
+    <script src="script.js"></script>
+</body>
+</html>
