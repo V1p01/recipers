@@ -4,81 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Калькулятор | Кулинария студента</title>
+    <link rel="icon" type="image/png" href="https://em-content.zobj.net/thumbs/120/apple/325/cooking_1f373.png">
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        .ingredient-block {
-            background: #f9f9f9;
-            border-radius: 15px;
-            padding: 1rem;
-            margin-bottom: 0.8rem;
-            display: flex;
-            gap: 0.8rem;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        .ingredient-block input {
-            padding: 0.8rem 1rem;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-family: 'Montserrat', sans-serif;
-            min-width: 0;
-        }
-        .ingredient-block input:focus {
-            border-color: #FF6B6B;
-            outline: none;
-        }
-        .ing-name-input {
-            flex: 2;
-            min-width: 120px;
-        }
-        .ing-amount-input {
-            flex: 1;
-            min-width: 80px;
-        }
-        .ing-price-input {
-            flex: 1;
-            min-width: 80px;
-        }
-        .ing-total {
-            font-weight: 700;
-            color: #FF6B6B;
-            min-width: 70px;
-            text-align: center;
-            font-size: 1.1rem;
-        }
-        .ing-delete {
-            background: #FF6B6B;
-            color: white;
-            border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.1rem;
-            flex-shrink: 0;
-        }
-        .result-box {
-            background: #f9f9f9;
-            border-radius: 20px;
-            padding: 2rem;
-            text-align: center;
-        }
-        .result-box .big-number {
-            font-size: 3rem;
-            font-weight: 700;
-            color: #4ECDC4;
-        }
+        .ing-block{background:#f9f9f9;border-radius:15px;padding:1rem;margin-bottom:0.8rem;display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;}
+        .ing-block input{padding:0.7rem;border:2px solid #e0e0e0;border-radius:10px;font-size:0.95rem;font-family:'Montserrat',sans-serif;}
+        .ing-block input:focus{border-color:#FF6B6B;outline:none;}
+        .ing-name{flex:2;min-width:100px;}
+        .ing-amount{flex:0 0 80px;text-align:center;}
+        .ing-price{flex:0 0 90px;text-align:center;}
+        .ing-sum{font-weight:700;color:#FF6B6B;min-width:70px;text-align:center;font-size:1rem;}
+        .ing-del{background:#FF6B6B;color:white;border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;flex-shrink:0;}
+        .result-box{background:#f9f9f9;border-radius:20px;padding:2rem;text-align:center;}
+        .big-price{font-size:3rem;font-weight:700;color:#4ECDC4;}
     </style>
 </head>
 <body>
     <nav class="navbar">
         <div class="nav-container">
-            <a href="index.html" class="logo">
-                <span class="logo-icon">🍳</span>
-                <span class="logo-text">Кулинария студента</span>
-            </a>
+            <a href="index.html" class="logo"><span class="logo-icon">🍳</span><span class="logo-text">Кулинария студента</span></a>
             <ul class="nav-menu">
                 <li><a href="index.html" class="nav-link">Главная</a></li>
                 <li><a href="recipes.html" class="nav-link">Рецепты</a></li>
@@ -92,43 +37,19 @@
         </div>
     </nav>
 
-    <div class="breadcrumbs">
-        <a href="index.html">Главная</a> → Калькулятор
-    </div>
+    <div class="breadcrumbs"><a href="index.html">Главная</a> → Калькулятор</div>
 
-    <section style="padding-top: 2rem;">
+    <section style="padding-top:2rem;">
         <h2 class="section-title">🧮 Калькулятор стоимости</h2>
-        
-        <div style="max-width: 550px; margin: 0 auto; background: white; padding: 2rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
-            
-            <p style="text-align: center; color: #666; margin-bottom: 1.5rem; font-size: 0.95rem;">
-                Укажите цену за то количество, которое используете
-            </p>
-
+        <div style="max-width:550px;margin:0 auto;background:white;padding:2rem;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.1);">
+            <p style="text-align:center;color:#666;margin-bottom:1.5rem;">Укажите цену за то количество, которое используете</p>
             <div id="ingredientsList"></div>
-
-            <button id="addBtn" style="width: 100%; padding: 0.8rem; background: #e8f5e9; color: #4CAF50; border: 2px dashed #4CAF50; border-radius: 12px; cursor: pointer; font-weight: 600; font-size: 1rem; font-family: 'Montserrat', sans-serif; margin-bottom: 1.5rem;">
-                + Добавить ингредиент
-            </button>
-
-            <div style="margin-bottom: 1.5rem;">
-                <label style="font-weight: 600; display: block; margin-bottom: 0.5rem;">🍽️ Количество порций</label>
-                <input type="number" id="portions" value="2" min="1" style="width: 100%; padding: 0.8rem 1rem; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 1rem; font-family: 'Montserrat', sans-serif;">
-            </div>
-
-            <button onclick="calculate()" class="cta-button" style="width: 100%; justify-content: center; font-size: 1.1rem; padding: 1rem;">
-                Рассчитать стоимость
-            </button>
-
-            <div id="resultBlock" class="hidden" style="margin-top: 2rem;">
-                <div class="result-box">
-                    <p style="color: #999; margin-bottom: 0.5rem;">Цена за одну порцию</p>
-                    <div class="big-number" id="portionPrice">0 ₽</div>
-                    <p style="color: #666; margin-top: 0.5rem;">
-                        Общая стоимость: <strong id="totalCost">0 ₽</strong> | Порций: <strong id="portionsOut">2</strong>
-                    </p>
-                </div>
-                <div id="advice" style="text-align: center; padding: 1rem; border-radius: 12px; margin-top: 1rem; font-weight: 500; font-size: 0.95rem;"></div>
+            <button id="addBtn" style="width:100%;padding:0.8rem;background:#e8f5e9;color:#4CAF50;border:2px dashed #4CAF50;border-radius:12px;cursor:pointer;font-weight:600;font-size:1rem;font-family:'Montserrat',sans-serif;margin-bottom:1.5rem;">+ Добавить ингредиент</button>
+            <div style="margin-bottom:1.5rem;"><label style="font-weight:600;display:block;margin-bottom:0.5rem;">🍽️ Количество порций</label><input type="number" id="portions" value="2" min="1" style="width:100%;padding:0.8rem;border:2px solid #e0e0e0;border-radius:10px;font-size:1rem;font-family:'Montserrat',sans-serif;"></div>
+            <button onclick="calculate()" class="cta-button" style="width:100%;justify-content:center;font-size:1.1rem;padding:1rem;">Рассчитать стоимость</button>
+            <div id="resultBlock" class="hidden" style="margin-top:2rem;">
+                <div class="result-box"><p style="color:#999;margin-bottom:0.5rem;">Цена за одну порцию</p><div class="big-price" id="portionPrice">0 ₽</div><p style="color:#666;margin-top:0.5rem;">Общая стоимость: <strong id="totalCost">0 ₽</strong> | Порций: <strong id="portionsOut">2</strong></p></div>
+                <div id="advice" style="text-align:center;padding:1rem;border-radius:12px;margin-top:1rem;font-weight:500;font-size:0.95rem;"></div>
             </div>
         </div>
     </section>
@@ -136,99 +57,18 @@
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-info"><h3>Кулинария студента</h3><p>Проект для студентов Якутска.</p></div>
-            <div class="footer-links"><a href="recipes.html">Рецепты</a><a href="calculator.html">Калькулятор</a><a href="tips.html">Советы</a><a href="about.html">О проекте</a><a href="auth.html">Вход</a></div>
+            <div class="footer-links"><a href="recipes.html">Рецепты</a><a href="calculator.html">Калькулятор</a><a href="tips.html">Советы</a><a href="add-recipe.html">Добавить</a><a href="about.html">О проекте</a></div>
         </div>
-        <div class="footer-bottom"><p>© 2026 Кулинария студента | Якутск</p></div>
+        <div class="footer-bottom"><p>© 2024 Кулинария студента | Якутск</p></div>
     </footer>
 
     <script>
-        const list = document.getElementById('ingredientsList');
-        let rowCount = 0;
-
-        // Создать строку ингредиента
-        function createRow() {
-            rowCount++;
-            const div = document.createElement('div');
-            div.className = 'ingredient-block';
-            div.innerHTML = `
-                <input type="text" placeholder="Название" class="ing-name-input" value="${rowCount === 1 ? 'Макароны' : ''}">
-                <input type="number" placeholder="Кол-во" class="ing-amount-input" value="${rowCount === 1 ? '250' : ''}" min="0">
-                <span style="color: #999;">×</span>
-                <input type="number" placeholder="Цена" class="ing-price-input" value="${rowCount === 1 ? '45' : ''}" min="0">
-                <span class="ing-total">0 ₽</span>
-                <button class="ing-delete">✕</button>
-            `;
-            
-            // Автоподсчёт
-            const amountInput = div.querySelector('.ing-amount-input');
-            const priceInput = div.querySelector('.ing-price-input');
-            const totalSpan = div.querySelector('.ing-total');
-            
-            const update = () => {
-                const a = parseFloat(amountInput.value) || 0;
-                const p = parseFloat(priceInput.value) || 0;
-                totalSpan.textContent = (a * p).toFixed(0) + ' ₽';
-            };
-            
-            amountInput.addEventListener('input', update);
-            priceInput.addEventListener('input', update);
-            
-            // Удаление
-            div.querySelector('.ing-delete').addEventListener('click', () => {
-                if (document.querySelectorAll('.ingredient-block').length > 1) {
-                    div.remove();
-                }
-            });
-            
-            list.appendChild(div);
-            update();
-        }
-
-        // Первая строка
-        createRow();
-
-        // Кнопка добавления
-        document.getElementById('addBtn').addEventListener('click', createRow);
-
-        // Расчёт
-        function calculate() {
-            const blocks = document.querySelectorAll('.ingredient-block');
-            let total = 0;
-            
-            blocks.forEach(b => {
-                const a = parseFloat(b.querySelector('.ing-amount-input').value) || 0;
-                const p = parseFloat(b.querySelector('.ing-price-input').value) || 0;
-                total += a * p;
-            });
-
-            const portions = parseInt(document.getElementById('portions').value) || 1;
-            const perPortion = total / portions;
-
-            document.getElementById('portionPrice').textContent = perPortion.toFixed(0) + ' ₽';
-            document.getElementById('totalCost').textContent = total.toFixed(0) + ' ₽';
-            document.getElementById('portionsOut').textContent = portions;
-
-            // Совет
-            const advice = document.getElementById('advice');
-            if (perPortion <= 100) {
-                advice.textContent = '🟢 Отлично! Очень бюджетное блюдо!';
-                advice.style.background = '#e8f5e9';
-            } else if (perPortion <= 200) {
-                advice.textContent = '🟡 Хорошая цена для Якутска';
-                advice.style.background = '#fff8e1';
-            } else if (perPortion <= 350) {
-                advice.textContent = '🟠 Средняя цена. Можно заменить часть продуктов';
-                advice.style.background = '#fff3e0';
-            } else {
-                advice.textContent = '🔴 Дороговато. Попробуйте рынки, акции, аналоги';
-                advice.style.background = '#ffebee';
-            }
-
-            document.getElementById('resultBlock').classList.remove('hidden');
-            document.getElementById('resultBlock').scrollIntoView({ behavior: 'smooth' });
-        }
+        const list=document.getElementById('ingredientsList');let rc=0;
+        function cr(){rc++;const d=document.createElement('div');d.className='ing-block';d.innerHTML=`<input type="text" placeholder="Название" class="ing-name" value="${rc===1?'Макароны':''}"><input type="number" placeholder="Кол-во" class="ing-amount" value="${rc===1?'250':''}" min="0"><span style="color:#999;">×</span><input type="number" placeholder="Цена" class="ing-price" value="${rc===1?'45':''}" min="0"><span class="ing-sum">0 ₽</span><button class="ing-del">✕</button>`;const ai=d.querySelector('.ing-amount'),pi=d.querySelector('.ing-price'),ts=d.querySelector('.ing-sum');const u=()=>{ts.textContent=((parseFloat(ai.value)||0)*(parseFloat(pi.value)||0)).toFixed(0)+' ₽';};ai.addEventListener('input',u);pi.addEventListener('input',u);d.querySelector('.ing-del').addEventListener('click',()=>{if(document.querySelectorAll('.ing-block').length>1)d.remove();});list.appendChild(d);u();}
+        cr();
+        document.getElementById('addBtn').addEventListener('click',cr);
+        function calculate(){let t=0;document.querySelectorAll('.ing-block').forEach(b=>{t+=(parseFloat(b.querySelector('.ing-amount').value)||0)*(parseFloat(b.querySelector('.ing-price').value)||0);});const p=parseInt(document.getElementById('portions').value)||1,pp=t/p;document.getElementById('portionPrice').textContent=pp.toFixed(0)+' ₽';document.getElementById('totalCost').textContent=t.toFixed(0)+' ₽';document.getElementById('portionsOut').textContent=p;const a=document.getElementById('advice');if(pp<=100){a.textContent='🟢 Отлично! Очень бюджетное блюдо!';a.style.background='#e8f5e9';}else if(pp<=200){a.textContent='🟡 Хорошая цена для Якутска';a.style.background='#fff8e1';}else if(pp<=350){a.textContent='🟠 Средняя цена. Можно заменить часть продуктов';a.style.background='#fff3e0';}else{a.textContent='🔴 Дороговато. Попробуйте рынки, акции, аналоги';a.style.background='#ffebee';}document.getElementById('resultBlock').classList.remove('hidden');document.getElementById('resultBlock').scrollIntoView({behavior:'smooth'});}
     </script>
-
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script>
