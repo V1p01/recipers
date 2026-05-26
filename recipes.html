@@ -85,28 +85,27 @@
         </div>
     </footer>
 
-    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
-    <script src="script.js"></script>
     <script>
-        // Конфиг Firebase
         const firebaseConfig = {
-            apiKey: "ВАШ_API_KEY",
+            apiKey: "AIzaSyCulR0j5GnUxapZ5-1K9wPhN5Mm8nG5XjE",
             authDomain: "kulinariastudenta.firebaseapp.com",
             projectId: "kulinariastudenta",
-            storageBucket: "kulinariastudenta.appspot.com",
-            messagingSenderId: "ВАШ_SENDER_ID",
-            appId: "ВАШ_APP_ID"
+            storageBucket: "kulinariastudenta.firebasestorage.app",
+            messagingSenderId: "672353646050",
+            appId: "1:672353646050:web:18d23a4df5c6b5b45e58bb"
         };
         firebase.initializeApp(firebaseConfig);
+    </script>
+    <script src="script.js"></script>
 
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             const grid = document.getElementById('allRecipesGrid');
             
-            // Создаём карточки
             recipesData.forEach(function(recipe) {
                 const card = document.createElement('div');
                 card.className = 'recipe-card';
@@ -118,8 +117,7 @@
                         <button data-fav="${recipe.id}" onclick="toggleFavorite('${recipe.id}')" 
                             style="position: absolute; top: 1rem; left: 1rem; background: white; border: none; 
                             border-radius: 50%; width: 40px; height: 40px; font-size: 1.2rem; cursor: pointer;
-                            box-shadow: 0 2px 10px rgba(0,0,0,0.1); transition: 0.3s; display: flex; 
-                            align-items: center; justify-content: center;">
+                            box-shadow: 0 2px 10px rgba(0,0,0,0.1); transition: 0.3s;">
                             🤍
                         </button>
                     </div>
@@ -136,7 +134,7 @@
                 grid.appendChild(card);
             });
 
-            // Проверяем избранное
+            // Проверяем избранное после загрузки
             firebase.auth().onAuthStateChanged(function(user) {
                 if (user && typeof checkFavorites === 'function') {
                     checkFavorites();
@@ -200,7 +198,6 @@
             document.body.style.overflow = 'hidden';
         };
 
-        // Закрытие модального окна
         document.querySelector('.close-modal-recipes').addEventListener('click', function() {
             document.getElementById('recipeModalRecipes').style.display = 'none';
             document.body.style.overflow = 'auto';
