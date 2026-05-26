@@ -1,583 +1,229 @@
-// База рецептов (цены для Якутска)
-const recipesData = [
-    {
-        id: 'lazy-vareniki',
-        title: 'Ленивые вареники',
-        emoji: '🥞',
-        time: '10 мин',
-        price: '180₽',
-        difficulty: 'Легко',
-        category: 'breakfast',
-        description: 'Нежные творожные вареники за 10 минут',
-        ingredients: [
-            'Творог местный - 500 г - 120₽',
-            'Яйцо - 1 шт - 15₽',
-            'Мука - 5 ст. ложек - 10₽',
-            'Сахар - 2 ст. ложки - 5₽',
-            'Соль - щепотка',
-            'Масло сливочное - 30 г - 30₽'
-        ],
-        instructions: [
-            'Смешайте творог с яйцом, сахаром и солью',
-            'Добавьте муку и замесите мягкое тесто',
-            'Раскатайте колбаски и нарежьте кусочками',
-            'Варите в кипящей воде 2-3 минуты после всплытия',
-            'Подавайте со сметаной или вареньем'
-        ],
-        tip: 'Творог лучше брать местного производства — дешевле и вкуснее'
-    },
-    {
-        id: 'tuna-pasta',
-        title: 'Паста с тунцом',
-        emoji: '🍝',
-        time: '20 мин',
-        price: '320₽',
-        difficulty: 'Средне',
-        category: 'lunch',
-        description: 'Сытная паста с консервированным тунцом',
-        ingredients: [
-            'Макароны - 250 г - 45₽',
-            'Тунец консервированный - 1 банка - 180₽',
-            'Томатная паста - 2 ст. ложки - 25₽',
-            'Лук - 1 шт - 10₽',
-            'Чеснок - 2 зубчика - 10₽',
-            'Масло растительное - 20₽',
-            'Соль, перец - по вкусу'
-        ],
-        instructions: [
-            'Отварите макароны до готовности',
-            'Обжарьте мелко нарезанный лук и чеснок',
-            'Добавьте томатную пасту и тунец, перемешайте',
-            'Тушите соус 5-7 минут',
-            'Смешайте с макаронами и прогрейте'
-        ],
-        tip: 'Консервы тунца можно найти по акции в крупных супермаркетах'
-    },
-    {
-        id: 'rice-veggies',
-        title: 'Рис с овощами',
-        emoji: '🍚',
-        time: '25 мин',
-        price: '230₽',
-        difficulty: 'Легко',
-        category: 'lunch',
-        description: 'Быстрый рис с замороженными овощами',
-        ingredients: [
-            'Рис - 1 стакан - 30₽',
-            'Замороженные овощи - 300 г - 120₽',
-            'Соевый соус - 2 ст. ложки - 20₽',
-            'Яйца - 2 шт - 30₽',
-            'Масло растительное - 10₽',
-            'Специи - 20₽'
-        ],
-        instructions: [
-            'Отварите рис до готовности',
-            'Обжарьте замороженные овощи 5-7 минут',
-            'Добавьте рис и соевый соус, перемешайте',
-            'По желанию добавьте яйца и обжарьте',
-            'Приправьте специями по вкусу'
-        ],
-        tip: 'Замороженные овощи в Якутске часто дешевле свежих, особенно зимой'
-    },
-    {
-        id: 'potato-casserole',
-        title: 'Картофельная запеканка',
-        emoji: '🥔',
-        time: '30 мин',
-        price: '380₽',
-        difficulty: 'Средне',
-        category: 'dinner',
-        description: 'Сырная запеканка с картофелем и сосисками',
-        ingredients: [
-            'Картофель - 7 шт - 140₽',
-            'Сосиски - 4 шт - 120₽',
-            'Сыр - 150 г - 90₽',
-            'Яйца - 2 шт - 30₽',
-            'Молоко - 100 мл - 15₽',
-            'Соль, перец - по вкусу'
-        ],
-        instructions: [
-            'Нарежьте картофель тонкими кружочками',
-            'Выложите слоями картофель и нарезанные сосиски',
-            'Залейте смесью яиц и молока',
-            'Посыпьте тертым сыром',
-            'Запекайте при 180°C 25-30 минут'
-        ],
-        tip: 'Картофель выгоднее покупать мешками на рынке'
-    },
-    {
-        id: 'hot-sandwiches',
-        title: 'Горячие бутерброды',
-        emoji: '🥪',
-        time: '5 мин',
-        price: '140₽',
-        difficulty: 'Легко',
-        category: 'snack',
-        description: 'Хрустящие бутерброды с сыром',
-        ingredients: [
-            'Хлеб - 4 куска - 30₽',
-            'Сыр - 100 г - 60₽',
-            'Колбаса - 100 г - 50₽',
-            'Помидор - 1 шт - 25₽',
-            'Майонез или кетчуп - 15₽'
-        ],
-        instructions: [
-            'Смажьте хлеб соусом',
-            'Выложите начинку: колбасу, помидоры',
-            'Сверху положите сыр',
-            'Разогрейте в микроволновке 1-2 минуты',
-            'Подавайте горячими'
-        ],
-        tip: 'Хлеб лучше покупать в местных пекарнях — свежее и дешевле'
-    },
-    {
-        id: 'eggs-tomatoes',
-        title: 'Яичница с помидорами',
-        emoji: '🍳',
-        time: '7 мин',
-        price: '120₽',
-        difficulty: 'Легко',
-        category: 'breakfast',
-        description: 'Классическая глазунья с помидорами',
-        ingredients: [
-            'Яйца - 3 шт - 45₽',
-            'Помидор - 1 шт - 25₽',
-            'Лук - 1/2 шт - 10₽',
-            'Масло растительное - 5₽',
-            'Соль, перец - по вкусу',
-            'Зелень - 15₽'
-        ],
-        instructions: [
-            'Обжарьте нарезанный лук до золотистости',
-            'Добавьте нарезанный помидор, жарьте 2 минуты',
-            'Разбейте яйца на сковороду',
-            'Жарьте на среднем огне до готовности',
-            'Посолите, поперчите и посыпьте зеленью'
-        ],
-        tip: 'Для нежной яичницы накройте сковороду крышкой на 1-2 минуты'
-    },
-    {
-        id: 'pancakes',
-        title: 'Тонкие блины',
-        emoji: '🥞',
-        time: '20 мин',
-        price: '130₽',
-        difficulty: 'Средне',
-        category: 'breakfast',
-        description: 'Тонкие блинчики на молоке',
-        ingredients: [
-            'Молоко - 500 мл - 50₽',
-            'Яйца - 2 шт - 30₽',
-            'Мука - 200 г - 20₽',
-            'Сахар - 2 ст. ложки - 5₽',
-            'Масло растительное - 20₽',
-            'Соль - щепотка'
-        ],
-        instructions: [
-            'Смешайте яйца с сахаром и солью',
-            'Добавьте молоко, постепенно всыпайте муку',
-            'Влейте масло, перемешайте',
-            'Жарьте на раскаленной сковороде',
-            'Подавайте со сметаной или вареньем'
-        ],
-        tip: 'Местное молоко в Якутске вкусное и недорогое'
-    },
-    {
-        id: 'buckwheat-meat',
-        title: 'Гречка с мясом',
-        emoji: '🍛',
-        time: '35 мин',
-        price: '350₽',
-        difficulty: 'Средне',
-        category: 'dinner',
-        description: 'Сытная гречка с мясом и луком',
-        ingredients: [
-            'Гречка - 1 стакан - 40₽',
-            'Мясо - 300 г - 250₽',
-            'Лук - 2 шт - 20₽',
-            'Морковь - 1 шт - 15₽',
-            'Масло растительное - 15₽',
-            'Соль, перец - по вкусу'
-        ],
-        instructions: [
-            'Отварите гречку до готовности',
-            'Обжарьте мясо кусочками до румяной корочки',
-            'Добавьте лук и морковь, жарьте 5 минут',
-            'Смешайте с гречкой, добавьте специи',
-            'Тушите под крышкой 5-7 минут'
-        ],
-        tip: 'Мясо на рынке часто дешевле, чем в супермаркетах'
-    },
-    {
-        id: 'omelette',
-        title: 'Пышный омлет',
-        emoji: '🥚',
-        time: '10 мин',
-        price: '100₽',
-        difficulty: 'Легко',
-        category: 'breakfast',
-        description: 'Воздушный омлет с молоком',
-        ingredients: [
-            'Яйца - 4 шт - 60₽',
-            'Молоко - 100 мл - 10₽',
-            'Мука - 1 ст. ложка - 5₽',
-            'Масло сливочное - 20 г - 20₽',
-            'Соль - по вкусу',
-            'Зелень - 5₽'
-        ],
-        instructions: [
-            'Взбейте яйца с молоком и мукой',
-            'Посолите по вкусу',
-            'Вылейте на разогретую сковороду с маслом',
-            'Жарьте под крышкой 5-7 минут',
-            'Посыпьте зеленью и подавайте'
-        ],
-        tip: 'Яйца выгоднее покупать десятками на рынках Якутска'
-    },
-    {
-        id: 'veggie-soup',
-        title: 'Овощной суп',
-        emoji: '🍲',
-        time: '30 мин',
-        price: '280₽',
-        difficulty: 'Легко',
-        category: 'soup',
-        description: 'Легкий суп с замороженными овощами',
-        ingredients: [
-            'Замороженные овощи - 400 г - 160₽',
-            'Картофель - 3 шт - 60₽',
-            'Лук - 1 шт - 10₽',
-            'Морковь - 1 шт - 15₽',
-            'Масло растительное - 10₽',
-            'Соль, специи - 25₽'
-        ],
-        instructions: [
-            'Нарежьте картофель кубиками, залейте водой',
-            'Доведите до кипения, варите 10 минут',
-            'Обжарьте лук с морковью',
-            'Добавьте замороженные овощи и зажарку',
-            'Варите еще 10-15 минут до готовности'
-        ],
-        tip: 'Можно добавить куриный кубик для вкуса'
-    },
-    {
-        id: 'macaroni-cheese',
-        title: 'Макароны с сыром',
-        emoji: '🧀',
-        time: '15 мин',
-        price: '200₽',
-        difficulty: 'Легко',
-        category: 'dinner',
-        description: 'Макароны с сыром по-студенчески',
-        ingredients: [
-            'Макароны - 250 г - 45₽',
-            'Сыр - 150 г - 90₽',
-            'Молоко - 100 мл - 10₽',
-            'Масло сливочное - 30 г - 30₽',
-            'Соль - по вкусу',
-            'Панировочные сухари - 25₽'
-        ],
-        instructions: [
-            'Отварите макароны до готовности',
-            'Смешайте с маслом и молоком',
-            'Добавьте тертый сыр, перемешайте',
-            'Посыпьте сухарями',
-            'По желанию запеките 5 минут в духовке'
-        ],
-        tip: 'Местный сыр в Якутске отличного качества и доступный по цене'
-    },
-    {
-        id: 'curd-pancakes',
-        title: 'Сырники',
-        emoji: '🧇',
-        time: '15 мин',
-        price: '170₽',
-        difficulty: 'Средне',
-        category: 'breakfast',
-        description: 'Золотистые сырники из творога',
-        ingredients: [
-            'Творог - 400 г - 100₽',
-            'Яйцо - 1 шт - 15₽',
-            'Мука - 3 ст. ложки - 10₽',
-            'Сахар - 2 ст. ложки - 5₽',
-            'Масло растительное - 20₽',
-            'Ванилин - 20₽'
-        ],
-        instructions: [
-            'Смешайте творог с яйцом и сахаром',
-            'Добавьте муку и ванилин, замесите тесто',
-            'Сформируйте сырники',
-            'Обваляйте в муке',
-            'Жарьте на среднем огне до золотистой корочки'
-        ],
-        tip: 'Покупайте творог на рынке — там он вкуснее и дешевле'
-    }
-];
-
-// Функция открытия модального окна с рецептом
-function openRecipe(recipeId) {
-    const recipe = recipesData.find(r => r.id === recipeId);
-    if (!recipe) return;
-
-    const modal = document.getElementById('recipeModal');
-    const details = document.getElementById('recipeDetails');
-
-    details.innerHTML = `
-        <div style="text-align: center; font-size: 4rem; margin-bottom: 1rem;">${recipe.emoji}</div>
-        <h2>${recipe.title}</h2>
-        <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; color: #666; flex-wrap: wrap;">
-            <span>⏱️ ${recipe.time}</span>
-            <span>💰 ~${recipe.price}</span>
-            <span>📊 ${recipe.difficulty}</span>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Рецепты | Кулинария студента</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">🍳</span>
+                <span class="logo-text">Кулинария студента</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Главная</a></li>
+                <li><a href="recipes.html" class="nav-link active">Рецепты</a></li>
+                <li><a href="calculator.html" class="nav-link">Калькулятор</a></li>
+                <li><a href="tips.html" class="nav-link">Советы</a></li>
+                <li><a href="about.html" class="nav-link">О проекте</a></li>
+                <li><a href="auth.html" class="nav-link">Вход</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
+    </nav>
+
+    <div class="breadcrumbs">
+        <a href="index.html">Главная</a> → Рецепты
+    </div>
+
+    <section style="padding-top: 2rem;">
+        <h2 class="section-title">Все рецепты</h2>
         
-        <h3>📝 Ингредиенты:</h3>
-        <ul>
-            ${recipe.ingredients.map(item => `<li>${item}</li>`).join('')}
-        </ul>
-        
-        <h3>👨‍🍳 Приготовление:</h3>
-        <ol>
-            ${recipe.instructions.map(step => `<li>${step}</li>`).join('')}
-        </ol>
-        
-        <div style="margin-top: 1.5rem; padding: 1rem; background: #FFF3F3; border-radius: 10px; border-left: 4px solid #FF6B6B;">
-            <strong>💡 Совет:</strong> ${recipe.tip}
+        <div class="search-box">
+            <input type="text" id="searchInputRecipes" placeholder="🔍 Поиск рецепта...">
         </div>
-    `;
 
-    modal.style.display = 'block';
-    document.body.style.overflow = 'hidden';
-}
+        <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">Все</button>
+            <button class="filter-btn" data-filter="breakfast">Завтраки</button>
+            <button class="filter-btn" data-filter="lunch">Обеды</button>
+            <button class="filter-btn" data-filter="dinner">Ужины</button>
+            <button class="filter-btn" data-filter="snack">Перекусы</button>
+            <button class="filter-btn" data-filter="soup">Супы</button>
+            <button class="filter-btn" data-filter="salad">Салаты</button>
+        </div>
 
-// Мобильное меню (работает на всех страницах)
-document.addEventListener('DOMContentLoaded', function() {
-    const hamburger = document.querySelector('.hamburger');
-    const navMenu = document.querySelector('.nav-menu');
+        <div class="recipes-grid" id="allRecipesGrid"></div>
+        
+        <div id="noResultsRecipes" class="hidden" style="text-align: center; padding: 3rem; color: #666;">
+            <p style="font-size: 3rem;">🔍</p>
+            <p style="font-size: 1.2rem;">Рецепты не найдены</p>
+        </div>
+    </section>
 
-    if (hamburger && navMenu) {
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
-            navMenu.classList.toggle('active');
+    <div id="recipeModalRecipes" class="modal">
+        <div class="modal-content">
+            <span class="close-modal-recipes">&times;</span>
+            <div id="recipeDetailsRecipes"></div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-info">
+                <h3>Кулинария студента</h3>
+                <p>Проект для студентов Якутска. Экономим вместе!</p>
+            </div>
+            <div class="footer-links">
+                <a href="recipes.html">Рецепты</a>
+                <a href="calculator.html">Калькулятор</a>
+                <a href="tips.html">Советы</a>
+                <a href="about.html">О проекте</a>
+                <a href="auth.html">Вход</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 Кулинария студента | Якутск</p>
+        </div>
+    </footer>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        // Конфиг Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyDoE18PySgZcwUSV1zGNU1a4ql9IDxaNGI",
+            authDomain: "kulinariastudenta.firebaseapp.com",
+            projectId: "kulinariastudenta",
+            storageBucket: "kulinariastudenta.firebasestorage.app",
+            messagingSenderId: "712553246230",
+            appId: "1:712553246230:web:6940e365ae83f678270f37"
+        };
+
+        // Инициализация Firebase (проверяем, не запущен ли уже)
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+    </script>
+
+    <script src="script.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const grid = document.getElementById('allRecipesGrid');
             
-            const spans = hamburger.querySelectorAll('span');
-            if (hamburger.classList.contains('active')) {
-                spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-                spans[1].style.opacity = '0';
-                spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
-            } else {
-                spans[0].style.transform = 'none';
-                spans[1].style.opacity = '1';
-                spans[2].style.transform = 'none';
+            // Проверяем, есть ли рецепты
+            if (typeof recipesData === 'undefined') {
+                grid.innerHTML = '<p style="text-align: center; color: red;">Ошибка загрузки рецептов</p>';
+                return;
             }
-        });
 
-        // Закрытие меню при клике на ссылку
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                navMenu.classList.remove('active');
-                hamburger.classList.remove('active');
-                const spans = hamburger.querySelectorAll('span');
-                spans[0].style.transform = 'none';
-                spans[1].style.opacity = '1';
-                spans[2].style.transform = 'none';
+            // Создаём карточки
+            recipesData.forEach(function(recipe) {
+                const card = document.createElement('div');
+                card.className = 'recipe-card';
+                card.setAttribute('data-category', recipe.category);
+                card.innerHTML = `
+                    <div class="recipe-image">
+                        <span class="recipe-emoji">${recipe.emoji}</span>
+                        <div class="recipe-time">⏱️ ${recipe.time}</div>
+                        <button data-fav="${recipe.id}" onclick="toggleFavorite('${recipe.id}')" 
+                            style="position: absolute; top: 1rem; left: 1rem; background: white; border: none; 
+                            border-radius: 50%; width: 40px; height: 40px; font-size: 1.2rem; cursor: pointer;
+                            box-shadow: 0 2px 10px rgba(0,0,0,0.1); transition: 0.3s;">
+                            🤍
+                        </button>
+                    </div>
+                    <div class="recipe-content">
+                        <h3 class="recipe-title">${recipe.title}</h3>
+                        <p class="recipe-description">${recipe.description}</p>
+                        <div class="recipe-info">
+                            <span class="recipe-price">~${recipe.price}</span>
+                            <span class="recipe-difficulty">${recipe.difficulty}</span>
+                        </div>
+                        <button class="recipe-btn" onclick="showRecipeDetail('${recipe.id}')">Подробнее</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            // Проверяем избранное для вошедшего пользователя
+            firebase.auth().onAuthStateChanged(function(user) {
+                if (user && typeof checkFavorites === 'function') {
+                    checkFavorites();
+                }
             });
         });
-    }
 
-    // Закрытие модального окна
-    const modal = document.getElementById('recipeModal');
-    const closeModal = document.querySelector('.close-modal');
-
-    if (closeModal) {
-        closeModal.addEventListener('click', () => {
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        });
-    }
-
-    if (modal) {
-        window.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }
-        });
-    }
-
-    // Закрытие по Escape
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && modal && modal.style.display === 'block') {
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-    });
-
-    // Параллакс эффект
-    document.addEventListener('mousemove', (e) => {
-        const elements = document.querySelectorAll('.floating');
-        const mouseX = e.clientX / window.innerWidth;
-        const mouseY = e.clientY / window.innerHeight;
-        
-        elements.forEach((el, i) => {
-            const speed = (i + 1) * 20;
-            const x = (mouseX - 0.5) * speed;
-            const y = (mouseY - 0.5) * speed;
-            el.style.transform = `translate(${x}px, ${y}px)`;
-        });
-    });
-
-    // Фильтрация рецептов (если есть на странице)
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            
-            const filter = btn.getAttribute('data-filter');
-            document.querySelectorAll('.recipe-card').forEach(card => {
-                if (filter === 'all' || card.getAttribute('data-category') === filter) {
+        // Поиск
+        document.getElementById('searchInputRecipes').addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            let found = false;
+            document.querySelectorAll('.recipe-card').forEach(function(card) {
+                const title = card.querySelector('.recipe-title').textContent.toLowerCase();
+                if (title.includes(query)) {
                     card.classList.remove('hidden');
+                    found = true;
                 } else {
                     card.classList.add('hidden');
                 }
             });
+            document.getElementById('noResultsRecipes').classList.toggle('hidden', found);
         });
-    });
-});
 
-console.log('🍳 Кулинария студента | Якутск');
-console.log('📚 Загружено рецептов:', recipesData.length);
-console.log('📄 Страниц: 6');
-console.log('💰 Все цены актуальны для Якутска');
-// ИЗБРАННОЕ (Firebase)
-// Проверяем, есть ли Firebase
-if (typeof firebase !== 'undefined' && firebase.apps.length > 0) {
-    const db = firebase.firestore();
-    
-    // Добавить в избранное
-    window.toggleFavorite = function(recipeId) {
-        const user = firebase.auth().currentUser;
-        if (!user) {
-            alert('Войдите в аккаунт, чтобы добавлять в избранное!');
-            window.location.href = 'auth.html';
-            return;
-        }
-        
-        const favRef = db.collection('users').doc(user.uid).collection('favorites').doc(recipeId);
-        
-        favRef.get().then((doc) => {
-            if (doc.exists) {
-                // Удаляем из избранного
-                favRef.delete();
-                updateFavButton(recipeId, false);
-            } else {
-                // Добавляем в избранное
-                favRef.set({
-                    recipeId: recipeId,
-                    addedAt: new Date().toISOString()
+        // Фильтры
+        document.querySelectorAll('.filter-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                const filter = this.getAttribute('data-filter');
+                document.querySelectorAll('.recipe-card').forEach(function(card) {
+                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
                 });
-                updateFavButton(recipeId, true);
+            });
+        });
+
+        // Модальное окно
+        window.showRecipeDetail = function(recipeId) {
+            const recipe = recipesData.find(r => r.id === recipeId);
+            if (!recipe) return;
+            const details = document.getElementById('recipeDetailsRecipes');
+            details.innerHTML = `
+                <div style="text-align: center; font-size: 4rem;">${recipe.emoji}</div>
+                <h2>${recipe.title}</h2>
+                <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; color: #666;">
+                    <span>⏱️ ${recipe.time}</span>
+                    <span>💰 ~${recipe.price}</span>
+                </div>
+                <h3>📝 Ингредиенты:</h3>
+                <ul>${recipe.ingredients.map(i => '<li>' + i + '</li>').join('')}</ul>
+                <h3>👨‍🍳 Приготовление:</h3>
+                <ol>${recipe.instructions.map(s => '<li>' + s + '</li>').join('')}</ol>
+                <div style="margin-top: 1.5rem; padding: 1rem; background: #FFF3F3; border-radius: 10px; border-left: 4px solid #FF6B6B;">
+                    <strong>💡 Совет:</strong> ${recipe.tip}
+                </div>
+            `;
+            document.getElementById('recipeModalRecipes').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        };
+
+        document.querySelector('.close-modal-recipes').addEventListener('click', function() {
+            document.getElementById('recipeModalRecipes').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+
+        // Закрытие по Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.getElementById('recipeModalRecipes').style.display = 'none';
+                document.body.style.overflow = 'auto';
             }
         });
-    };
-    
-    // Обновить вид кнопки
-    function updateFavButton(recipeId, isFav) {
-        const btn = document.querySelector(`[data-fav="${recipeId}"]`);
-        if (btn) {
-            btn.textContent = isFav ? '❤️' : '🤍';
-        }
-    }
-    
-    // Проверить избранное при загрузке
-    window.checkFavorites = function() {
-        const user = firebase.auth().currentUser;
-        if (!user) return;
-        
-        db.collection('users').doc(user.uid).collection('favorites').get()
-            .then((snapshot) => {
-                snapshot.forEach((doc) => {
-                    updateFavButton(doc.id, true);
-                });
-            });
-    };
-}
-// ========== ИЗБРАННОЕ (Firebase Firestore) ==========
-if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length > 0) {
-    const db = firebase.firestore();
-
-   window.toggleFavorite = async function(recipeId) {
-    // Ждём готовности Firebase
-    const user = firebase.auth().currentUser;
-    
-    if (!user) {
-        if (confirm('Чтобы добавить в избранное, нужно войти. Перейти ко входу?')) {
-            window.location.href = 'auth.html';
-        }
-        return;
-    }
-
-    const db = firebase.firestore();
-    const btn = document.querySelector(`[data-fav="${recipeId}"]`);
-    const favRef = db.collection('users').doc(user.uid).collection('favorites').doc(recipeId);
-
-    try {
-        const doc = await favRef.get();
-        if (doc.exists) {
-            await favRef.delete();
-            if (btn) btn.textContent = '🤍';
-            showToast('Удалено из избранного');
-        } else {
-            await favRef.set({
-                recipeId: recipeId,
-                addedAt: new Date().toISOString()
-            });
-            if (btn) btn.textContent = '❤️';
-            showToast('Добавлено в избранное! ⭐');
-        }
-    } catch (error) {
-        console.error('Ошибка:', error);
-        showToast('Ошибка. Попробуйте ещё раз.');
-    }
-};
-    // Проверить избранное при загрузке
-    window.checkFavorites = async function() {
-        const user = firebase.auth().currentUser;
-        if (!user) return;
-
-        try {
-            const snapshot = await db.collection('users').doc(user.uid).collection('favorites').get();
-            snapshot.forEach((doc) => {
-                const btn = document.querySelector(`[data-fav="${doc.id}"]`);
-                if (btn) btn.textContent = '❤️';
-            });
-        } catch (error) {
-            console.error('Ошибка проверки избранного:', error);
-        }
-    };
-
-    // Всплывающее уведомление
-    function showToast(message) {
-        const toast = document.createElement('div');
-        toast.style.cssText = `
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #2C3E50;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 25px;
-            font-size: 14px;
-            z-index: 9999;
-            animation: fadeInUp 0.3s ease;
-            white-space: nowrap;
-        `;
-        toast.textContent = message;
-        document.body.appendChild(toast);
-        setTimeout(() => {
-            toast.style.animation = 'fadeOut 0.3s ease';
-            setTimeout(() => toast.remove(), 300);
-        }, 2000);
-    }
-}
+    </script>
+</body>
+</html>
