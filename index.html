@@ -150,5 +150,43 @@
             </div>
         `).join('');
     </script>
+    <!-- Firebase Auth (для отображения профиля в меню) -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+
+<script>
+    // Конфиг Firebase (тот же, что везде)
+    const firebaseConfig = {
+        apiKey: "AIzaSyDoE18PySgZcwUSV1zGNU1a4ql9IDxaNGI",
+        authDomain: "kulinariastudenta.firebaseapp.com",
+        projectId: "kulinariastudenta",
+        storageBucket: "kulinariastudenta.firebasestorage.app",
+        messagingSenderId: "712553246230",
+        appId: "1:712553246230:web:6940e365ae83f678270f37"
+    };
+
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
+
+    // Обновление пункта меню "Вход"
+    firebase.auth().onAuthStateChanged(function(user) {
+        const authLink = document.getElementById('authNavLink');
+        if (!authLink) return;
+
+        if (user) {
+            // Пользователь вошёл — показываем имя и аватар
+            const name = user.displayName || 'Профиль';
+            authLink.innerHTML = '👤 ' + name;
+            authLink.href = 'auth.html';
+            authLink.title = 'Перейти в профиль';
+        } else {
+            // Не вошёл — показываем "Вход"
+            authLink.innerHTML = 'Вход';
+            authLink.href = 'auth.html';
+            authLink.title = 'Войти в аккаунт';
+        }
+    });
+</script>
 </body>
 </html>
