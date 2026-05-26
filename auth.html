@@ -39,93 +39,62 @@
         
         <div style="max-width: 400px; margin: 0 auto; background: white; padding: 2rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
             
-            <!-- Форма входа -->
             <div id="loginForm">
                 <div class="form-group">
                     <label>Email</label>
                     <input type="email" id="loginEmail" placeholder="student@example.com">
                 </div>
-
                 <div class="form-group">
                     <label>Пароль</label>
                     <input type="password" id="loginPassword" placeholder="Введите пароль">
                 </div>
-
-                <button id="loginBtn" class="cta-button" style="width: 100%; justify-content: center; margin-bottom: 0.5rem;">
-                    Войти
-                </button>
-
+                <button id="loginBtn" class="cta-button" style="width: 100%; justify-content: center; margin-bottom: 0.5rem;">Войти</button>
                 <p style="text-align: center; margin-bottom: 0.5rem;">
                     <a href="#" id="showForgotLink" style="color: #999; font-size: 0.85rem;">Забыли пароль?</a>
                 </p>
-
                 <p style="text-align: center; color: #666; margin-top: 1rem;">
-                    Нет аккаунта? 
-                    <a href="#" id="showRegisterLink" style="color: #FF6B6B; font-weight: 600;">Зарегистрироваться</a>
+                    Нет аккаунта? <a href="#" id="showRegisterLink" style="color: #FF6B6B; font-weight: 600;">Зарегистрироваться</a>
                 </p>
             </div>
 
-            <!-- Форма восстановления пароля -->
             <div id="forgotForm" style="display: none;">
-                <p style="text-align: center; color: #666; margin-bottom: 1.5rem;">
-                    Введите email, и мы отправим ссылку для сброса пароля
-                </p>
-
+                <p style="text-align: center; color: #666; margin-bottom: 1.5rem;">Введите email для сброса пароля</p>
                 <div class="form-group">
                     <label>Email</label>
                     <input type="email" id="forgotEmail" placeholder="student@example.com">
                 </div>
-
-                <button id="forgotBtn" class="cta-button" style="width: 100%; justify-content: center; margin-bottom: 1rem;">
-                    Отправить ссылку
-                </button>
-
+                <button id="forgotBtn" class="cta-button" style="width: 100%; justify-content: center; margin-bottom: 1rem;">Отправить ссылку</button>
                 <p style="text-align: center;">
                     <a href="#" id="showLoginFromForgot" style="color: #FF6B6B; font-weight: 600;">← Вернуться ко входу</a>
                 </p>
             </div>
 
-            <!-- Форма регистрации -->
             <div id="registerForm" style="display: none;">
                 <div class="form-group">
                     <label>Имя</label>
                     <input type="text" id="registerName" placeholder="Ваше имя">
                 </div>
-
                 <div class="form-group">
                     <label>Email</label>
                     <input type="email" id="registerEmail" placeholder="student@example.com">
                 </div>
-
                 <div class="form-group">
                     <label>Пароль (минимум 6 символов)</label>
                     <input type="password" id="registerPassword" placeholder="Придумайте пароль">
                 </div>
-
-                <button id="registerBtn" class="cta-button" style="width: 100%; justify-content: center; margin-bottom: 1rem;">
-                    Зарегистрироваться
-                </button>
-
+                <button id="registerBtn" class="cta-button" style="width: 100%; justify-content: center; margin-bottom: 1rem;">Зарегистрироваться</button>
                 <p style="text-align: center; color: #666;">
-                    Уже есть аккаунт? 
-                    <a href="#" id="showLoginLink" style="color: #FF6B6B; font-weight: 600;">Войти</a>
+                    Уже есть аккаунт? <a href="#" id="showLoginLink" style="color: #FF6B6B; font-weight: 600;">Войти</a>
                 </p>
             </div>
 
-            <!-- Блок пользователя -->
             <div id="userBlock" style="display: none; text-align: center;">
                 <div style="font-size: 4rem; margin-bottom: 1rem;">👨‍🍳</div>
                 <h3 style="color: #4ECDC4; margin-bottom: 0.5rem;">Вы вошли!</h3>
                 <p style="margin-bottom: 0.5rem;">Добро пожаловать, <strong id="userName"></strong>!</p>
                 <p style="color: #666; font-size: 0.9rem; margin-bottom: 1.5rem;" id="userEmail"></p>
-                
-                <a href="add-recipe.html" class="cta-button" style="width: 100%; justify-content: center; margin-bottom: 1rem; display: flex;">
-                    Добавить рецепт
-                </a>
-                
-                <button id="logoutBtn" style="background: #FF6B6B; color: white; border: none; padding: 0.8rem 2rem; border-radius: 25px; cursor: pointer; font-weight: 500; transition: 0.3s; font-family: 'Montserrat', sans-serif; font-size: 0.9rem;">
-                    Выйти
-                </button>
+                <a href="add-recipe.html" class="cta-button" style="width: 100%; justify-content: center; margin-bottom: 1rem; display: flex;">Добавить рецепт</a>
+                <button id="logoutBtn" style="background: #FF6B6B; color: white; border: none; padding: 0.8rem 2rem; border-radius: 25px; cursor: pointer; font-weight: 500; font-family: 'Montserrat', sans-serif; font-size: 0.9rem;">Выйти</button>
             </div>
 
             <div id="authMessage" style="text-align: center; margin-top: 1rem; display: none;"></div>
@@ -134,21 +103,12 @@
 
     <footer class="footer">
         <div class="footer-content">
-            <div class="footer-info">
-                <h3>Кулинария студента</h3>
-                <p>Проект для студентов Якутска. Экономим вместе!</p>
-            </div>
+            <div class="footer-info"><h3>Кулинария студента</h3><p>Проект для студентов Якутска.</p></div>
             <div class="footer-links">
-                <a href="recipes.html">Рецепты</a>
-                <a href="calculator.html">Калькулятор</a>
-                <a href="tips.html">Советы</a>
-                <a href="about.html">О проекте</a>
-                <a href="auth.html">Вход</a>
+                <a href="recipes.html">Рецепты</a><a href="calculator.html">Калькулятор</a><a href="tips.html">Советы</a><a href="about.html">О проекте</a><a href="auth.html">Вход</a>
             </div>
         </div>
-        <div class="footer-bottom">
-            <p>© 2024 Кулинария студента | Якутск</p>
-        </div>
+        <div class="footer-bottom"><p>© 2024 Кулинария студента | Якутск</p></div>
     </footer>
 
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -156,14 +116,13 @@
 
     <script>
         const firebaseConfig = {
-            apiKey: "AIzaSyCulR0j5GnUxapZ5-1K9wPhN5Mm8nG5XjE",
+            apiKey: "AIzaSyDoE18PySgZcwUSV1zGNU1a4ql9IDxaNGI",
             authDomain: "kulinariastudenta.firebaseapp.com",
             projectId: "kulinariastudenta",
             storageBucket: "kulinariastudenta.firebasestorage.app",
-            messagingSenderId: "672353646050",
-            appId: "1:672353646050:web:18d23a4df5c6b5b45e58bb"
+            messagingSenderId: "712553246230",
+            appId: "1:712553246230:web:6940e365ae83f678270f37"
         };
-
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
 
@@ -174,7 +133,6 @@
             document.getElementById('userBlock').style.display = 'none';
             document.getElementById('authTitle').textContent = 'Вход в аккаунт';
         }
-
         function showRegister() {
             document.getElementById('loginForm').style.display = 'none';
             document.getElementById('registerForm').style.display = 'block';
@@ -182,7 +140,6 @@
             document.getElementById('userBlock').style.display = 'none';
             document.getElementById('authTitle').textContent = 'Регистрация';
         }
-
         function showForgot() {
             document.getElementById('loginForm').style.display = 'none';
             document.getElementById('registerForm').style.display = 'none';
@@ -190,7 +147,6 @@
             document.getElementById('userBlock').style.display = 'none';
             document.getElementById('authTitle').textContent = 'Восстановление пароля';
         }
-
         function showUserBlock() {
             const user = auth.currentUser;
             if (!user) return;
@@ -203,125 +159,54 @@
             document.getElementById('userEmail').textContent = user.email;
             document.getElementById('authMessage').style.display = 'none';
         }
-
         function showMessage(text, color) {
             const msg = document.getElementById('authMessage');
             msg.style.display = 'block';
             msg.style.color = color || '#FF6B6B';
             msg.textContent = text;
         }
-
-        // Регистрация
         function register() {
             const name = document.getElementById('registerName').value.trim();
             const email = document.getElementById('registerEmail').value.trim();
             const password = document.getElementById('registerPassword').value;
-
-            if (!name || !email || !password) {
-                showMessage('Заполните все поля', 'red');
-                return;
-            }
-            if (password.length < 6) {
-                showMessage('Пароль не менее 6 символов', 'red');
-                return;
-            }
-
+            if (!name || !email || !password) { showMessage('Заполните все поля', 'red'); return; }
+            if (password.length < 6) { showMessage('Пароль не менее 6 символов', 'red'); return; }
             auth.createUserWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    return userCredential.user.updateProfile({ displayName: name });
-                })
+                .then((cred) => cred.user.updateProfile({ displayName: name }))
                 .then(() => showUserBlock())
-                .catch((error) => {
-                    if (error.code === 'auth/email-already-in-use') {
-                        showMessage('Этот email уже зарегистрирован', 'red');
-                    } else {
-                        showMessage('❌ ' + error.message, 'red');
-                    }
-                });
+                .catch((e) => showMessage('❌ ' + (e.code === 'auth/email-already-in-use' ? 'Email уже занят' : e.message), 'red'));
         }
-
-        // Вход
         function login() {
             const email = document.getElementById('loginEmail').value.trim();
             const password = document.getElementById('loginPassword').value;
-
-            if (!email || !password) {
-                showMessage('Заполните все поля', 'red');
-                return;
-            }
-
+            if (!email || !password) { showMessage('Заполните все поля', 'red'); return; }
             auth.signInWithEmailAndPassword(email, password)
                 .then(() => showUserBlock())
-                .catch(() => {
-                    showMessage('❌ Неверный email или пароль', 'red');
-                });
+                .catch(() => showMessage('❌ Неверный email или пароль', 'red'));
         }
-
-        // Восстановление пароля
         function resetPassword() {
             const email = document.getElementById('forgotEmail').value.trim();
-
-            if (!email) {
-                showMessage('Введите email', 'red');
-                return;
-            }
-
+            if (!email) { showMessage('Введите email', 'red'); return; }
             auth.sendPasswordResetEmail(email)
-                .then(() => {
-                    showMessage('✅ Ссылка отправлена на почту! Проверьте email.', 'green');
-                    document.getElementById('forgotEmail').value = '';
-                })
-                .catch(() => {
-                    showMessage('❌ Email не найден', 'red');
-                });
+                .then(() => { showMessage('✅ Ссылка отправлена! Проверьте почту.', 'green'); document.getElementById('forgotEmail').value = ''; })
+                .catch(() => showMessage('❌ Email не найден', 'red'));
         }
-
-        // Выход
         function logout() {
-            auth.signOut().then(() => {
-                showLogin();
-                document.getElementById('authMessage').style.display = 'none';
-            });
+            auth.signOut().then(() => { showLogin(); document.getElementById('authMessage').style.display = 'none'; });
         }
 
-        // Все обработчики
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('loginBtn').addEventListener('click', login);
             document.getElementById('registerBtn').addEventListener('click', register);
             document.getElementById('forgotBtn').addEventListener('click', resetPassword);
             document.getElementById('logoutBtn').addEventListener('click', logout);
-            
-            document.getElementById('showRegisterLink').addEventListener('click', function(e) {
-                e.preventDefault();
-                showRegister();
-            });
-            
-            document.getElementById('showLoginLink').addEventListener('click', function(e) {
-                e.preventDefault();
-                showLogin();
-            });
-            
-            document.getElementById('showForgotLink').addEventListener('click', function(e) {
-                e.preventDefault();
-                showForgot();
-            });
-            
-            document.getElementById('showLoginFromForgot').addEventListener('click', function(e) {
-                e.preventDefault();
-                showLogin();
-            });
+            document.getElementById('showRegisterLink').addEventListener('click', (e) => { e.preventDefault(); showRegister(); });
+            document.getElementById('showLoginLink').addEventListener('click', (e) => { e.preventDefault(); showLogin(); });
+            document.getElementById('showForgotLink').addEventListener('click', (e) => { e.preventDefault(); showForgot(); });
+            document.getElementById('showLoginFromForgot').addEventListener('click', (e) => { e.preventDefault(); showLogin(); });
         });
-
-        // Отслеживание входа
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                showUserBlock();
-            } else {
-                showLogin();
-            }
-        });
+        auth.onAuthStateChanged((user) => { user ? showUserBlock() : showLogin(); });
     </script>
-
     <script src="script.js"></script>
 </body>
 </html>
