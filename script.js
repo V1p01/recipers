@@ -502,3 +502,83 @@ if (typeof firebase !== 'undefined' && firebase.apps.length > 0) {
             });
     };
 }
+// ========== ИЗБРАННОЕ (Firebase Firestore) ==========
+if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length > 0) {
+    const db = firebase.firestore();
+
+    // Добавить/удалить из избранного
+    window.toggleFavorite = async function(recipeId) {
+        const user = firebase.auth().currentUser;
+        if (!user) {
+            if (confirm('Чтобы добавить в избранное, нужно войти. Перейти ко входу?')) {
+                window.location.href = 'auth.html';
+            }
+            return;
+        }
+
+        const btn = document.querySelector(`[data-fav="${recipeId}"]`);
+        const favRef = db.collection('users').doc(user.uid).collection('favorites').doc(recipeId);
+
+        try {
+            const doc = await favRef.get();
+            if (doc.exists) {
+                // Удаляем
+                await favRef.delete();
+                if (btn) btn.textContent = '🤍';
+                showToast('Удалено из избранного');
+            } else {
+                // Добавляем
+                await favRef.set({
+                    recipeId: recipeId,
+                    addedAt: new Date().toISOString()
+                });
+                if (btn) btn.textContent = '❤️';
+                showToast('Добавлено в избранное! ⭐');
+            }
+        } catch (error) {
+            console.error('Ошибка избранного:', error);
+            showToast('Ошибка. Попробуйте ещё раз.');
+        }
+    };
+
+    // Проверить избранное при загрузке
+    window.checkFavorites = async function() {
+        const user = firebase.auth().currentUser;
+        if (!user) return;
+
+        try {
+            const snapshot = await db.collection('users').doc(user.uid).collection('favorites').get();
+            snapshot.forEach((doc) => {
+                const btn = document.querySelector(`[data-fav="${doc.id}"]`);
+                if (btn) btn.textContent = '❤️';
+            });
+        } catch (error) {
+            console.error('Ошибка проверки избранного:', error);
+        }
+    };
+
+    // Всплывающее уведомление
+    function showToast(message) {
+        const toast = document.createElement('div');
+        toast.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2C3E50;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 14px;
+            z-index: 9999;
+            animation: fadeInUp 0.3s ease;
+            white-space: nowrap;
+        `;
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            toast.style.animation = 'fadeOut 0.3s ease';
+            setTimeout(() => toast.remove(), 300);
+        }, 2000);
+    }
+}
