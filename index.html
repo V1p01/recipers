@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Кулинария студента | Якутск</title>
+    <link rel="icon" type="image/png" href="https://em-content.zobj.net/thumbs/120/apple/325/cooking_1f373.png">
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -24,9 +25,7 @@
                 <li><a href="auth.html" class="nav-link" id="authNavLink">Вход</a></li>
             </ul>
             <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
+                <span></span><span></span><span></span>
             </div>
         </div>
     </nav>
@@ -40,18 +39,9 @@
             </h1>
             <p class="hero-subtitle">Рецепты для студентов Якутска. Экономь с умом!</p>
             <div class="hero-stats">
-                <div class="stat-item">
-                    <span class="stat-number">10+</span>
-                    <span class="stat-label">Рецептов</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number">350₽</span>
-                    <span class="stat-label">Средний чек</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number">15мин</span>
-                    <span class="stat-label">Готовка</span>
-                </div>
+                <div class="stat-item"><span class="stat-number">50+</span><span class="stat-label">Рецептов</span></div>
+                <div class="stat-item"><span class="stat-number">350₽</span><span class="stat-label">Средний чек</span></div>
+                <div class="stat-item"><span class="stat-number">15мин</span><span class="stat-label">Готовка</span></div>
             </div>
             <div class="hero-buttons">
                 <a href="recipes.html" class="cta-button">Смотреть рецепты →</a>
@@ -69,73 +59,28 @@
     <section class="features-section">
         <h2 class="section-title">Возможности сайта</h2>
         <div class="features-grid">
-            <a href="recipes.html" class="feature-card">
-                <span class="feature-icon">📖</span>
-                <h3>Рецепты</h3>
-                <p>12+ проверенных рецептов</p>
-            </a>
-            <a href="calculator.html" class="feature-card">
-                <span class="feature-icon">🧮</span>
-                <h3>Калькулятор</h3>
-                <p>Расчитай стоимость блюда</p>
-            </a>
-            <a href="tips.html" class="feature-card">
-                <span class="feature-icon">💡</span>
-                <h3>Советы</h3>
-                <p>Как экономить в Якутске</p>
-            </a>
-            <a href="add-recipe.html" class="feature-card">
-                <span class="feature-icon">✍️</span>
-                <h3>Добавить</h3>
-                <p>Поделись своим рецептом</p>
-            </a>
+            <a href="recipes.html" class="feature-card"><span class="feature-icon">📖</span><h3>Рецепты</h3><p>12+ проверенных рецептов</p></a>
+            <a href="calculator.html" class="feature-card"><span class="feature-icon">🧮</span><h3>Калькулятор</h3><p>Расчитай стоимость блюда</p></a>
+            <a href="tips.html" class="feature-card"><span class="feature-icon">💡</span><h3>Советы</h3><p>Как экономить в Якутске</p></a>
+            <a href="add-recipe.html" class="feature-card"><span class="feature-icon">✍️</span><h3>Добавить</h3><p>Поделись своим рецептом</p></a>
         </div>
     </section>
 
     <footer class="footer">
         <div class="footer-content">
-            <div class="footer-info">
-                <h3>Кулинария студента</h3>
-                <p>Проект для студентов Якутска. Экономим вместе!</p>
-            </div>
-            <div class="footer-links">
-                <a href="recipes.html">Рецепты</a>
-                <a href="calculator.html">Калькулятор</a>
-                <a href="tips.html">Советы</a>
-                <a href="about.html">О проекте</a>
-                <a href="auth.html">Вход</a>
-            </div>
+            <div class="footer-info"><h3>Кулинария студента</h3><p>Проект для студентов Якутска.</p></div>
+            <div class="footer-links"><a href="recipes.html">Рецепты</a><a href="calculator.html">Калькулятор</a><a href="tips.html">Советы</a><a href="add-recipe.html">Добавить</a><a href="about.html">О проекте</a></div>
         </div>
-        <div class="footer-bottom">
-            <p>© 2026 Кулинария студента | Якутск</p>
-        </div>
+        <div class="footer-bottom"><p>© 2024 Кулинария студента | Якутск</p></div>
     </footer>
 
     <script src="script.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyDoE18PySgZcwUSV1zGNU1a4ql9IDxaNGI",
-            authDomain: "kulinariastudenta.firebaseapp.com",
-            projectId: "kulinariastudenta",
-            storageBucket: "kulinariastudenta.firebasestorage.app",
-            messagingSenderId: "712553246230",
-            appId: "1:712553246230:web:6940e365ae83f678270f37"
-        };
-        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-
-        firebase.auth().onAuthStateChanged(function(user) {
-            const authLink = document.getElementById('authNavLink');
-            if (!authLink) return;
-            if (user) {
-                authLink.innerHTML = '👤 ' + (user.displayName || 'Профиль');
-                authLink.href = 'profile.html';
-            } else {
-                authLink.innerHTML = 'Вход';
-                authLink.href = 'auth.html';
-            }
-        });
+        const fc={apiKey:"AIzaSyDoE18PySgZcwUSV1zGNU1a4ql9IDxaNGI",authDomain:"kulinariastudenta.firebaseapp.com",projectId:"kulinariastudenta",storageBucket:"kulinariastudenta.firebasestorage.app",messagingSenderId:"712553246230",appId:"1:712553246230:web:6940e365ae83f678270f37"};
+        if(!firebase.apps.length)firebase.initializeApp(fc);
+        firebase.auth().onAuthStateChanged(u=>{const l=document.getElementById('authNavLink');if(!l)return;if(u){l.innerHTML='👤 '+(u.displayName||'Профиль');l.href='profile.html';}else{l.innerHTML='Вход';l.href='auth.html';}});
     </script>
 </body>
 </html>
