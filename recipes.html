@@ -149,15 +149,31 @@
                 grid.appendChild(card);
             });
 
-            // Загружаем избранное пользователя
             firebase.auth().onAuthStateChanged(function(user) {
-                if (user) {
-                    loadUserFavorites(user.uid);
-                    if (typeof checkFavorites === 'function') {
-                        checkFavorites();
-                    }
-                }
-            });
+    // Обновляем кнопку входа в меню
+    const authLink = document.getElementById('authNavLink');
+    
+    if (user) {
+        // Загружаем избранное
+        loadUserFavorites(user.uid);
+        if (typeof checkFavorites === 'function') {
+            checkFavorites();
+        }
+        
+        // Обновляем меню
+        if (authLink) {
+            const name = user.displayName || 'Профиль';
+            authLink.innerHTML = '👤 ' + name;
+            authLink.href = 'auth.html';
+        }
+    } else {
+        // Не вошёл
+        if (authLink) {
+            authLink.innerHTML = 'Вход';
+            authLink.href = 'auth.html';
+        }
+    }
+});
         });
 
         // Загрузка избранного пользователя из Firestore
