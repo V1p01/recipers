@@ -10,16 +10,15 @@
 <body>
     <nav class="navbar">
         <div class="nav-container">
-            <div class="logo">
+            <a href="index.html" class="logo">
                 <span class="logo-icon">🍳</span>
                 <span class="logo-text">Кулинария студента</span>
-            </div>
+            </a>
             <ul class="nav-menu">
                 <li><a href="index.html" class="nav-link active">Главная</a></li>
                 <li><a href="recipes.html" class="nav-link">Рецепты</a></li>
                 <li><a href="calculator.html" class="nav-link">Калькулятор</a></li>
                 <li><a href="tips.html" class="nav-link">Советы</a></li>
-                <li><a href="add-recipe.html" class="nav-link">Добавить</a></li>
                 <li><a href="about.html" class="nav-link">О проекте</a></li>
                 <li><a href="auth.html" class="nav-link" id="authNavLink">Вход</a></li>
             </ul>
@@ -72,7 +71,7 @@
             <a href="recipes.html" class="feature-card">
                 <span class="feature-icon">📖</span>
                 <h3>Рецепты</h3>
-                <p>50+ проверенных рецептов для студента</p>
+                <p>12+ проверенных рецептов</p>
             </a>
             <a href="calculator.html" class="feature-card">
                 <span class="feature-icon">🧮</span>
@@ -92,14 +91,6 @@
         </div>
     </section>
 
-    <section class="popular-recipes">
-        <h2 class="section-title">Популярные рецепты</h2>
-        <div class="recipes-mini-grid" id="popularRecipes"></div>
-        <div style="text-align: center; margin-top: 2rem;">
-            <a href="recipes.html" class="cta-button">Все рецепты →</a>
-        </div>
-    </section>
-
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-info">
@@ -113,14 +104,6 @@
                 <a href="about.html">О проекте</a>
                 <a href="auth.html">Вход</a>
             </div>
-            <div class="footer-social">
-                <p>Мы в соцсетях</p>
-                <div class="social-links">
-                    <a href="#" class="social-link">📱</a>
-                    <a href="#" class="social-link">💬</a>
-                    <a href="#" class="social-link">📧</a>
-                </div>
-            </div>
         </div>
         <div class="footer-bottom">
             <p>© 2026 Кулинария студента | Якутск</p>
@@ -128,65 +111,30 @@
     </footer>
 
     <script src="script.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script>
-        // Показываем 4 случайных рецепта на главной
-        const popular = document.getElementById('popularRecipes');
-        const shuffled = [...recipesData].sort(() => 0.5 - Math.random());
-        popular.innerHTML = shuffled.slice(0, 4).map(recipe => `
-            <div class="recipe-card">
-                <div class="recipe-image">
-                    <span class="recipe-emoji">${recipe.emoji}</span>
-                    <div class="recipe-time">⏱️ ${recipe.time}</div>
-                </div>
-                <div class="recipe-content">
-                    <h3 class="recipe-title">${recipe.title}</h3>
-                    <p class="recipe-description">${recipe.description}</p>
-                    <div class="recipe-info">
-                        <span class="recipe-price">~${recipe.price}</span>
-                        <span class="recipe-difficulty">${recipe.difficulty}</span>
-                    </div>
-                    <a href="recipes.html?id=${recipe.id}" class="recipe-btn">Подробнее</a>
-                </div>
-            </div>
-        `).join('');
+        const firebaseConfig = {
+            apiKey: "AIzaSyDoE18PySgZcwUSV1zGNU1a4ql9IDxaNGI",
+            authDomain: "kulinariastudenta.firebaseapp.com",
+            projectId: "kulinariastudenta",
+            storageBucket: "kulinariastudenta.firebasestorage.app",
+            messagingSenderId: "712553246230",
+            appId: "1:712553246230:web:6940e365ae83f678270f37"
+        };
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+
+        firebase.auth().onAuthStateChanged(function(user) {
+            const authLink = document.getElementById('authNavLink');
+            if (!authLink) return;
+            if (user) {
+                authLink.innerHTML = '👤 ' + (user.displayName || 'Профиль');
+                authLink.href = 'profile.html';
+            } else {
+                authLink.innerHTML = 'Вход';
+                authLink.href = 'auth.html';
+            }
+        });
     </script>
-    <!-- Firebase Auth (для отображения профиля в меню) -->
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-
-<script>
-    // Конфиг Firebase (тот же, что везде)
-    const firebaseConfig = {
-        apiKey: "AIzaSyDoE18PySgZcwUSV1zGNU1a4ql9IDxaNGI",
-        authDomain: "kulinariastudenta.firebaseapp.com",
-        projectId: "kulinariastudenta",
-        storageBucket: "kulinariastudenta.firebasestorage.app",
-        messagingSenderId: "712553246230",
-        appId: "1:712553246230:web:6940e365ae83f678270f37"
-    };
-
-    if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
-    }
-
-    // Обновление пункта меню "Вход"
-    firebase.auth().onAuthStateChanged(function(user) {
-        const authLink = document.getElementById('authNavLink');
-        if (!authLink) return;
-
-        if (user) {
-            // Пользователь вошёл — показываем имя и аватар
-            const name = user.displayName || 'Профиль';
-            authLink.innerHTML = '👤 ' + name;
-            authLink.href = 'auth.html';
-            authLink.title = 'Перейти в профиль';
-        } else {
-            // Не вошёл — показываем "Вход"
-            authLink.innerHTML = 'Вход';
-            authLink.href = 'auth.html';
-            authLink.title = 'Войти в аккаунт';
-        }
-    });
-</script>
 </body>
 </html>
