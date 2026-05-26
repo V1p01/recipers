@@ -24,9 +24,7 @@
                 <li><a href="auth.html" class="nav-link" id="authNavLink">Вход</a></li>
             </ul>
             <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
+                <span></span><span></span><span></span>
             </div>
         </div>
     </nav>
@@ -122,69 +120,41 @@
 
     <footer class="footer">
         <div class="footer-content">
-            <div class="footer-info">
-                <h3>Кулинария студента</h3>
-                <p>Проект для студентов Якутска. Экономим вместе!</p>
-            </div>
+            <div class="footer-info"><h3>Кулинария студента</h3><p>Проект для студентов Якутска.</p></div>
             <div class="footer-links">
-                <a href="recipes.html">Рецепты</a>
-                <a href="calculator.html">Калькулятор</a>
-                <a href="tips.html">Советы</a>
-                <a href="about.html">О проекте</a>
-                 <a href="auth.html">Вход</a>
-            </div>
-            <div class="footer-social">
-                <p>Мы в соцсетях</p>
-                <div class="social-links">
-                    <a href="#" class="social-link">📱</a>
-                    <a href="#" class="social-link">💬</a>
-                    <a href="#" class="social-link">📧</a>
-                </div>
+                <a href="recipes.html">Рецепты</a><a href="calculator.html">Калькулятор</a><a href="tips.html">Советы</a><a href="about.html">О проекте</a><a href="auth.html">Вход</a>
             </div>
         </div>
-        <div class="footer-bottom">
-            <p>© 2026 Кулинария студента | Якутск</p>
-        </div>
+        <div class="footer-bottom"><p>© 2024 Кулинария студента | Якутск</p></div>
     </footer>
 
     <script src="script.js"></script>
-    <!-- Firebase Auth (для отображения профиля в меню) -->
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-
-<script>
-    // Конфиг Firebase (тот же, что везде)
-    const firebaseConfig = {
-        apiKey: "AIzaSyDoE18PySgZcwUSV1zGNU1a4ql9IDxaNGI",
-        authDomain: "kulinariastudenta.firebaseapp.com",
-        projectId: "kulinariastudenta",
-        storageBucket: "kulinariastudenta.firebasestorage.app",
-        messagingSenderId: "712553246230",
-        appId: "1:712553246230:web:6940e365ae83f678270f37"
-    };
-
-    if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
-    }
-
-    // Обновление пункта меню "Вход"
-    firebase.auth().onAuthStateChanged(function(user) {
-        const authLink = document.getElementById('authNavLink');
-        if (!authLink) return;
-
-        if (user) {
-            // Пользователь вошёл — показываем имя и аватар
-            const name = user.displayName || 'Профиль';
-            authLink.innerHTML = '👤 ' + name;
-            authLink.href = 'auth.html';
-            authLink.title = 'Перейти в профиль';
-        } else {
-            // Не вошёл — показываем "Вход"
-            authLink.innerHTML = 'Вход';
-            authLink.href = 'auth.html';
-            authLink.title = 'Войти в аккаунт';
-        }
-    });
-</script>
+    
+    <!-- Firebase для профиля в меню -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDoE18PySgZcwUSV1zGNU1a4ql9IDxaNGI",
+            authDomain: "kulinariastudenta.firebaseapp.com",
+            projectId: "kulinariastudenta",
+            storageBucket: "kulinariastudenta.firebasestorage.app",
+            messagingSenderId: "712553246230",
+            appId: "1:712553246230:web:6940e365ae83f678270f37"
+        };
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        
+        firebase.auth().onAuthStateChanged(function(user) {
+            const authLink = document.getElementById('authNavLink');
+            if (!authLink) return;
+            if (user) {
+                authLink.innerHTML = '👤 ' + (user.displayName || 'Профиль');
+                authLink.href = 'profile.html';
+            } else {
+                authLink.innerHTML = 'Вход';
+                authLink.href = 'auth.html';
+            }
+        });
+    </script>
 </body>
 </html>
