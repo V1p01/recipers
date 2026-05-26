@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Калькулятор стоимости | Кулинария студента</title>
+    <title>Калькулятор | Кулинария студента</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -19,7 +19,6 @@
                 <li><a href="recipes.html" class="nav-link">Рецепты</a></li>
                 <li><a href="calculator.html" class="nav-link active">Калькулятор</a></li>
                 <li><a href="tips.html" class="nav-link">Советы</a></li>
-                <li><a href="add-recipe.html" class="nav-link">Добавить</a></li>
                 <li><a href="about.html" class="nav-link">О проекте</a></li>
                 <li><a href="auth.html" class="nav-link" id="authNavLink">Вход</a></li>
             </ul>
@@ -32,37 +31,31 @@
     </nav>
 
     <div class="breadcrumbs">
-        <a href="index.html">Главная</a> → Калькулятор стоимости
+        <a href="index.html">Главная</a> → Калькулятор
     </div>
 
     <section style="padding-top: 2rem;">
-        <h2 class="section-title">Калькулятор стоимости блюда</h2>
-        
+        <h2 class="section-title">Калькулятор стоимости</h2>
         <div class="calculator-container">
             <div class="form-group">
                 <label>Название блюда</label>
                 <input type="text" id="dishName" placeholder="Например: Паста с тунцом">
             </div>
-
             <h3 style="margin-bottom: 1rem;">Ингредиенты</h3>
             <div id="ingredientsList">
                 <div class="ingredient-row">
                     <input type="text" placeholder="Название" class="ing-name">
-                    <input type="number" placeholder="Количество (г/мл/шт)" class="ing-amount">
+                    <input type="number" placeholder="Количество (г/мл)" class="ing-amount">
                     <input type="number" placeholder="Цена за ед." class="ing-price">
                     <button class="remove-ingredient" style="background: #FF6B6B; color: white; border: none; padding: 0.5rem; border-radius: 5px; cursor: pointer;">✕</button>
                 </div>
             </div>
-
-            <button id="addIngredient" style="background: var(--secondary); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 25px; cursor: pointer; margin-bottom: 1.5rem; font-weight: 500;">+ Добавить ингредиент</button>
-
+            <button id="addIngredient" style="background: #4ECDC4; color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 25px; cursor: pointer; margin-bottom: 1.5rem; font-weight: 500;">+ Добавить</button>
             <div class="form-group">
                 <label>Количество порций</label>
                 <input type="number" id="portions" value="1" min="1">
             </div>
-
             <button onclick="calculate()" class="cta-button" style="width: 100%; justify-content: center;">Рассчитать</button>
-
             <div id="result" class="hidden">
                 <h3 style="text-align: center; margin-top: 2rem;">Результат:</h3>
                 <div class="total-price" id="totalPrice">0 ₽</div>
@@ -76,33 +69,16 @@
 
     <footer class="footer">
         <div class="footer-content">
-            <div class="footer-info">
-                <h3>Кулинария студента</h3>
-                <p>Проект для студентов Якутска. Экономим вместе!</p>
-            </div>
+            <div class="footer-info"><h3>Кулинария студента</h3><p>Проект для студентов Якутска.</p></div>
             <div class="footer-links">
-                <a href="recipes.html">Рецепты</a>
-                <a href="calculator.html">Калькулятор</a>
-                <a href="tips.html">Советы</a>
-                <a href="about.html">О проекте</a>
-                <a href="auth.html">Вход</a>
-            </div>
-            <div class="footer-social">
-                <p>Мы в соцсетях</p>
-                <div class="social-links">
-                    <a href="#" class="social-link">📱</a>
-                    <a href="#" class="social-link">💬</a>
-                    <a href="#" class="social-link">📧</a>
-                </div>
+                <a href="recipes.html">Рецепты</a><a href="calculator.html">Калькулятор</a><a href="tips.html">Советы</a><a href="about.html">О проекте</a><a href="auth.html">Вход</a>
             </div>
         </div>
-        <div class="footer-bottom">
-            <p>© 2026 Кулинария студента | Якутск</p>
-        </div>
+        <div class="footer-bottom"><p>© 2024 Кулинария студента | Якутск</p></div>
     </footer>
 
+    <script src="script.js"></script>
     <script>
-        // Добавление ингредиента
         document.getElementById('addIngredient').addEventListener('click', function() {
             const row = document.createElement('div');
             row.className = 'ingredient-row';
@@ -113,85 +89,43 @@
                 <button class="remove-ingredient" style="background: #FF6B6B; color: white; border: none; padding: 0.5rem; border-radius: 5px; cursor: pointer;">✕</button>
             `;
             document.getElementById('ingredientsList').appendChild(row);
-            
-            row.querySelector('.remove-ingredient').addEventListener('click', function() {
-                row.remove();
-            });
+            row.querySelector('.remove-ingredient').addEventListener('click', function() { row.remove(); });
         });
-
-        // Удаление первого ингредиента
         document.querySelector('.remove-ingredient').addEventListener('click', function() {
-            if (document.querySelectorAll('.ingredient-row').length > 1) {
-                this.parentElement.remove();
-            }
+            if (document.querySelectorAll('.ingredient-row').length > 1) this.parentElement.remove();
         });
-
         function calculate() {
-            const rows = document.querySelectorAll('.ingredient-row');
             let total = 0;
-            
-            rows.forEach(row => {
-                const amount = parseFloat(row.querySelector('.ing-amount').value) || 0;
-                const price = parseFloat(row.querySelector('.ing-price').value) || 0;
-                total += amount * price;
+            document.querySelectorAll('.ingredient-row').forEach(row => {
+                total += (parseFloat(row.querySelector('.ing-amount').value) || 0) * (parseFloat(row.querySelector('.ing-price').value) || 0);
             });
-            
             const portions = parseInt(document.getElementById('portions').value) || 1;
             const perPortion = total / portions;
-            
             document.getElementById('totalPrice').textContent = total.toFixed(0) + ' ₽';
             document.getElementById('pricePerPortion').textContent = 'Цена за порцию: ' + perPortion.toFixed(0) + ' ₽';
-            
-            let tip = '';
-            if (perPortion < 150) {
-                tip = '✅ Отличная цена! Очень бюджетно!';
-            } else if (perPortion < 300) {
-                tip = '👍 Хорошая цена для Якутска.';
-            } else {
-                tip = '💡 Можно сэкономить: замените дорогие ингредиенты или покупайте по акциям.';
-            }
-            document.getElementById('savingTip').textContent = tip;
-            
+            document.getElementById('savingTip').textContent = perPortion < 150 ? '✅ Отличная цена!' : perPortion < 300 ? '👍 Хорошая цена.' : '💡 Можно сэкономить.';
             document.getElementById('result').classList.remove('hidden');
         }
     </script>
-    <!-- Firebase Auth (для отображения профиля в меню) -->
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 
-<script>
-    // Конфиг Firebase (тот же, что везде)
-    const firebaseConfig = {
-        apiKey: "AIzaSyDoE18PySgZcwUSV1zGNU1a4ql9IDxaNGI",
-        authDomain: "kulinariastudenta.firebaseapp.com",
-        projectId: "kulinariastudenta",
-        storageBucket: "kulinariastudenta.firebasestorage.app",
-        messagingSenderId: "712553246230",
-        appId: "1:712553246230:web:6940e365ae83f678270f37"
-    };
-
-    if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
-    }
-
-    // Обновление пункта меню "Вход"
-    firebase.auth().onAuthStateChanged(function(user) {
-        const authLink = document.getElementById('authNavLink');
-        if (!authLink) return;
-
-        if (user) {
-            // Пользователь вошёл — показываем имя и аватар
-            const name = user.displayName || 'Профиль';
-            authLink.innerHTML = '👤 ' + name;
-            authLink.href = 'auth.html';
-            authLink.title = 'Перейти в профиль';
-        } else {
-            // Не вошёл — показываем "Вход"
-            authLink.innerHTML = 'Вход';
-            authLink.href = 'auth.html';
-            authLink.title = 'Войти в аккаунт';
-        }
-    });
-</script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDoE18PySgZcwUSV1zGNU1a4ql9IDxaNGI",
+            authDomain: "kulinariastudenta.firebaseapp.com",
+            projectId: "kulinariastudenta",
+            storageBucket: "kulinariastudenta.firebasestorage.app",
+            messagingSenderId: "712553246230",
+            appId: "1:712553246230:web:6940e365ae83f678270f37"
+        };
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        firebase.auth().onAuthStateChanged(function(user) {
+            const authLink = document.getElementById('authNavLink');
+            if (!authLink) return;
+            if (user) { authLink.innerHTML = '👤 ' + (user.displayName || 'Профиль'); authLink.href = 'profile.html'; }
+            else { authLink.innerHTML = 'Вход'; authLink.href = 'auth.html'; }
+        });
+    </script>
 </body>
 </html>
