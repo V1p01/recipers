@@ -55,19 +55,33 @@
                     Войти
                 </button>
 
-                <div style="display: flex; align-items: center; gap: 1rem; margin: 1rem 0;">
-                    <div style="flex: 1; height: 1px; background: #ddd;"></div>
-                    <span style="color: #999; font-size: 0.9rem;">или</span>
-                    <div style="flex: 1; height: 1px; background: #ddd;"></div>
-                </div>
+                <p style="text-align: center; margin-bottom: 0.5rem;">
+                    <a href="#" id="showForgotLink" style="color: #999; font-size: 0.85rem;">Забыли пароль?</a>
+                </p>
 
-                <button id="googleBtn1" type="button" style="width: 100%; padding: 0.8rem; background: white; border: 2px solid #ddd; border-radius: 25px; cursor: pointer; font-weight: 500; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif; font-size: 0.9rem;">
-                    🟢 Войти через Google
-                </button>
-
-                <p style="text-align: center; color: #666;">
+                <p style="text-align: center; color: #666; margin-top: 1rem;">
                     Нет аккаунта? 
                     <a href="#" id="showRegisterLink" style="color: #FF6B6B; font-weight: 600;">Зарегистрироваться</a>
+                </p>
+            </div>
+
+            <!-- Форма восстановления пароля -->
+            <div id="forgotForm" style="display: none;">
+                <p style="text-align: center; color: #666; margin-bottom: 1.5rem;">
+                    Введите email, и мы отправим ссылку для сброса пароля
+                </p>
+
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="forgotEmail" placeholder="student@example.com">
+                </div>
+
+                <button id="forgotBtn" class="cta-button" style="width: 100%; justify-content: center; margin-bottom: 1rem;">
+                    Отправить ссылку
+                </button>
+
+                <p style="text-align: center;">
+                    <a href="#" id="showLoginFromForgot" style="color: #FF6B6B; font-weight: 600;">← Вернуться ко входу</a>
                 </p>
             </div>
 
@@ -88,18 +102,8 @@
                     <input type="password" id="registerPassword" placeholder="Придумайте пароль">
                 </div>
 
-                <button id="registerBtn" class="cta-button" style="width: 100%; justify-content: center; margin-bottom: 0.5rem;">
+                <button id="registerBtn" class="cta-button" style="width: 100%; justify-content: center; margin-bottom: 1rem;">
                     Зарегистрироваться
-                </button>
-
-                <div style="display: flex; align-items: center; gap: 1rem; margin: 1rem 0;">
-                    <div style="flex: 1; height: 1px; background: #ddd;"></div>
-                    <span style="color: #999; font-size: 0.9rem;">или</span>
-                    <div style="flex: 1; height: 1px; background: #ddd;"></div>
-                </div>
-
-                <button id="googleBtn2" type="button" style="width: 100%; padding: 0.8rem; background: white; border: 2px solid #ddd; border-radius: 25px; cursor: pointer; font-weight: 500; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-bottom: 1rem; font-family: 'Montserrat', sans-serif; font-size: 0.9rem;">
-                    🟢 Войти через Google
                 </button>
 
                 <p style="text-align: center; color: #666;">
@@ -151,7 +155,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 
     <script>
-        // ВАШ КОНФИГ
         const firebaseConfig = {
             apiKey: "AIzaSyCulR0j5GnUxapZ5-1K9wPhN5Mm8nG5XjE",
             authDomain: "kulinariastudenta.firebaseapp.com",
@@ -167,6 +170,7 @@
         function showLogin() {
             document.getElementById('loginForm').style.display = 'block';
             document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('forgotForm').style.display = 'none';
             document.getElementById('userBlock').style.display = 'none';
             document.getElementById('authTitle').textContent = 'Вход в аккаунт';
         }
@@ -174,8 +178,17 @@
         function showRegister() {
             document.getElementById('loginForm').style.display = 'none';
             document.getElementById('registerForm').style.display = 'block';
+            document.getElementById('forgotForm').style.display = 'none';
             document.getElementById('userBlock').style.display = 'none';
             document.getElementById('authTitle').textContent = 'Регистрация';
+        }
+
+        function showForgot() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('forgotForm').style.display = 'block';
+            document.getElementById('userBlock').style.display = 'none';
+            document.getElementById('authTitle').textContent = 'Восстановление пароля';
         }
 
         function showUserBlock() {
@@ -183,6 +196,7 @@
             if (!user) return;
             document.getElementById('loginForm').style.display = 'none';
             document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('forgotForm').style.display = 'none';
             document.getElementById('userBlock').style.display = 'block';
             document.getElementById('authTitle').textContent = 'Мой аккаунт';
             document.getElementById('userName').textContent = user.displayName || 'Студент';
@@ -197,6 +211,7 @@
             msg.textContent = text;
         }
 
+        // Регистрация
         function register() {
             const name = document.getElementById('registerName').value.trim();
             const email = document.getElementById('registerEmail').value.trim();
@@ -217,10 +232,15 @@
                 })
                 .then(() => showUserBlock())
                 .catch((error) => {
-                    showMessage('❌ ' + error.message, 'red');
+                    if (error.code === 'auth/email-already-in-use') {
+                        showMessage('Этот email уже зарегистрирован', 'red');
+                    } else {
+                        showMessage('❌ ' + error.message, 'red');
+                    }
                 });
         }
 
+        // Вход
         function login() {
             const email = document.getElementById('loginEmail').value.trim();
             const password = document.getElementById('loginPassword').value;
@@ -237,16 +257,26 @@
                 });
         }
 
-        function loginWithGoogle() {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            auth.signInWithPopup(provider)
-                .then(() => showUserBlock())
-                .catch((error) => {
-                    console.error('Ошибка:', error);
-                    showMessage('❌ Не удалось войти через Google', 'red');
+        // Восстановление пароля
+        function resetPassword() {
+            const email = document.getElementById('forgotEmail').value.trim();
+
+            if (!email) {
+                showMessage('Введите email', 'red');
+                return;
+            }
+
+            auth.sendPasswordResetEmail(email)
+                .then(() => {
+                    showMessage('✅ Ссылка отправлена на почту! Проверьте email.', 'green');
+                    document.getElementById('forgotEmail').value = '';
+                })
+                .catch(() => {
+                    showMessage('❌ Email не найден', 'red');
                 });
         }
 
+        // Выход
         function logout() {
             auth.signOut().then(() => {
                 showLogin();
@@ -254,12 +284,12 @@
             });
         }
 
+        // Все обработчики
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('loginBtn').addEventListener('click', login);
             document.getElementById('registerBtn').addEventListener('click', register);
+            document.getElementById('forgotBtn').addEventListener('click', resetPassword);
             document.getElementById('logoutBtn').addEventListener('click', logout);
-            document.getElementById('googleBtn1').addEventListener('click', loginWithGoogle);
-            document.getElementById('googleBtn2').addEventListener('click', loginWithGoogle);
             
             document.getElementById('showRegisterLink').addEventListener('click', function(e) {
                 e.preventDefault();
@@ -270,8 +300,19 @@
                 e.preventDefault();
                 showLogin();
             });
+            
+            document.getElementById('showForgotLink').addEventListener('click', function(e) {
+                e.preventDefault();
+                showForgot();
+            });
+            
+            document.getElementById('showLoginFromForgot').addEventListener('click', function(e) {
+                e.preventDefault();
+                showLogin();
+            });
         });
 
+        // Отслеживание входа
         auth.onAuthStateChanged((user) => {
             if (user) {
                 showUserBlock();
