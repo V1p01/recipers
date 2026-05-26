@@ -227,17 +227,31 @@
         }
 
         // Вход через Google
-        function loginWithGoogle() {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            auth.signInWithPopup(provider)
-                .then(() => showUserBlock())
-                .catch((error) => {
-                    const messageDiv = document.getElementById('authMessage');
-                    messageDiv.style.display = 'block';
-                    messageDiv.style.color = '#FF6B6B';
-                    messageDiv.textContent = '❌ Ошибка входа через Google';
-                });
-        }
+       function loginWithGoogle() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    provider.setCustomParameters({
+        prompt: 'select_account'
+    });
+    
+    auth.signInWithPopup(provider)
+        .then((result) => {
+            showUserBlock();
+        })
+        .catch((error) => {
+            console.error('Ошибка Google:', error);
+            const messageDiv = document.getElementById('authMessage');
+            messageDiv.style.display = 'block';
+            messageDiv.style.color = '#FF6B6B';
+            
+            if (error.code === 'auth/popup-closed-by-user') {
+                messageDiv.textContent = 'Окно входа было закрыто';
+            } else if (error.code === 'auth/unauthorized-domain') {
+                messageDiv.textContent = 'Домен не добавлен в Firebase. Добавьте ваш GitHub домен в настройках.';
+            } else {
+                messageDiv.textContent = '❌ Ошибка входа через Google';
+            }
+        });
+}
 
         // Выход
         function logout() {
