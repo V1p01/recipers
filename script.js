@@ -449,3 +449,56 @@ console.log('🍳 Кулинария студента | Якутск');
 console.log('📚 Загружено рецептов:', recipesData.length);
 console.log('📄 Страниц: 6');
 console.log('💰 Все цены актуальны для Якутска');
+// ИЗБРАННОЕ (Firebase)
+// Проверяем, есть ли Firebase
+if (typeof firebase !== 'undefined' && firebase.apps.length > 0) {
+    const db = firebase.firestore();
+    
+    // Добавить в избранное
+    window.toggleFavorite = function(recipeId) {
+        const user = firebase.auth().currentUser;
+        if (!user) {
+            alert('Войдите в аккаунт, чтобы добавлять в избранное!');
+            window.location.href = 'auth.html';
+            return;
+        }
+        
+        const favRef = db.collection('users').doc(user.uid).collection('favorites').doc(recipeId);
+        
+        favRef.get().then((doc) => {
+            if (doc.exists) {
+                // Удаляем из избранного
+                favRef.delete();
+                updateFavButton(recipeId, false);
+            } else {
+                // Добавляем в избранное
+                favRef.set({
+                    recipeId: recipeId,
+                    addedAt: new Date().toISOString()
+                });
+                updateFavButton(recipeId, true);
+            }
+        });
+    };
+    
+    // Обновить вид кнопки
+    function updateFavButton(recipeId, isFav) {
+        const btn = document.querySelector(`[data-fav="${recipeId}"]`);
+        if (btn) {
+            btn.textContent = isFav ? '❤️' : '🤍';
+        }
+    }
+    
+    // Проверить избранное при загрузке
+    window.checkFavorites = function() {
+        const user = firebase.auth().currentUser;
+        if (!user) return;
+        
+        db.collection('users').doc(user.uid).collection('favorites').get()
+            .then((snapshot) => {
+                snapshot.forEach((doc) => {
+                    updateFavButton(doc.id, true);
+                });
+            });
+    };
+}
