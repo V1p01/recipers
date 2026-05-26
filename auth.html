@@ -6,7 +6,132 @@
     <title>Вход | Кулинария студента</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-</head>
+</head><script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+
+<script>
+    const firebaseConfig = {
+        apiKey: "ВАШ_API_KEY",
+        authDomain: "kulinariastudenta.firebaseapp.com",
+        projectId: "kulinariastudenta",
+        storageBucket: "kulinariastudenta.appspot.com",
+        messagingSenderId: "ВАШ_SENDER_ID",
+        appId: "ВАШ_APP_ID"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    function showLogin() {
+        document.getElementById('loginForm').style.display = 'block';
+        document.getElementById('registerForm').style.display = 'none';
+        document.getElementById('userBlock').style.display = 'none';
+        document.getElementById('authTitle').textContent = 'Вход в аккаунт';
+    }
+
+    function showRegister() {
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('registerForm').style.display = 'block';
+        document.getElementById('userBlock').style.display = 'none';
+        document.getElementById('authTitle').textContent = 'Регистрация';
+    }
+
+    function register() {
+        const name = document.getElementById('registerName').value;
+        const email = document.getElementById('registerEmail').value;
+        const password = document.getElementById('registerPassword').value;
+        const messageDiv = document.getElementById('authMessage');
+
+        if (!name || !email || !password) {
+            messageDiv.style.display = 'block';
+            messageDiv.style.color = '#FF6B6B';
+            messageDiv.textContent = 'Заполните все поля';
+            return;
+        }
+
+        if (password.length < 6) {
+            messageDiv.style.display = 'block';
+            messageDiv.style.color = '#FF6B6B';
+            messageDiv.textContent = 'Пароль должен быть не менее 6 символов';
+            return;
+        }
+
+        auth.createUserWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                return userCredential.user.updateProfile({ displayName: name });
+            })
+            .then(() => showUserBlock())
+            .catch((error) => {
+                messageDiv.style.display = 'block';
+                messageDiv.style.color = '#FF6B6B';
+                messageDiv.textContent = '❌ ' + error.message;
+            });
+    }
+
+    function login() {
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+        const messageDiv = document.getElementById('authMessage');
+
+        auth.signInWithEmailAndPassword(email, password)
+            .then(() => showUserBlock())
+            .catch((error) => {
+                messageDiv.style.display = 'block';
+                messageDiv.style.color = '#FF6B6B';
+                messageDiv.textContent = '❌ Неверный email или пароль';
+            });
+    }
+
+    function loginWithGoogle() {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        // Используем redirect — надёжнее
+        auth.signInWithRedirect(provider);
+    }
+
+    function logout() {
+        auth.signOut().then(() => {
+            showLogin();
+            document.getElementById('authMessage').style.display = 'none';
+        });
+    }
+
+    function showUserBlock() {
+        const user = auth.currentUser;
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('registerForm').style.display = 'none';
+        document.getElementById('userBlock').style.display = 'block';
+        document.getElementById('authTitle').textContent = 'Мой аккаунт';
+        document.getElementById('userName').textContent = user.displayName || 'Студент';
+        document.getElementById('userEmail').textContent = user.email;
+        document.getElementById('authMessage').style.display = 'none';
+    }
+
+    // Обработка редиректа после Google-входа
+    auth.getRedirectResult().then((result) => {
+        if (result && result.user) {
+            showUserBlock();
+        }
+    }).catch((error) => {
+        const messageDiv = document.getElementById('authMessage');
+        messageDiv.style.display = 'block';
+        messageDiv.style.color = '#FF6B6B';
+        messageDiv.textContent = '❌ Ошибка входа через Google';
+        console.error(error);
+    });
+
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            showUserBlock();
+        } else {
+            // Проверяем, не после редиректа ли мы
+            auth.getRedirectResult().then((result) => {
+                if (!result || !result.user) {
+                    showLogin();
+                }
+            });
+        }
+    });
+</script>
 <body>
     <nav class="navbar">
         <div class="nav-container">
@@ -146,154 +271,132 @@
         </div>
     </footer>
 
-    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 
-    <script>
-        // ЗАМЕНИТЕ НА СВОЙ КОНФИГ ИЗ FIREBASE
-        const firebaseConfig = {
-            apiKey: "ВАШ_API_KEY",
-            authDomain: "ВАШ_ПРОЕКТ.firebaseapp.com",
-            projectId: "ВАШ_ПРОЕКТ",
-            storageBucket: "ВАШ_ПРОЕКТ.appspot.com",
-            messagingSenderId: "ВАШ_SENDER_ID",
-            appId: "ВАШ_APP_ID"
-        };
+<script>
+    const firebaseConfig = {
+        apiKey: "ВАШ_API_KEY",
+        authDomain: "kulinariastudenta.firebaseapp.com",
+        projectId: "kulinariastudenta",
+        storageBucket: "kulinariastudenta.appspot.com",
+        messagingSenderId: "ВАШ_SENDER_ID",
+        appId: "ВАШ_APP_ID"
+    };
 
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
 
-        function showLogin() {
-            document.getElementById('loginForm').style.display = 'block';
-            document.getElementById('registerForm').style.display = 'none';
-            document.getElementById('userBlock').style.display = 'none';
-            document.getElementById('authTitle').textContent = 'Вход в аккаунт';
-        }
+    function showLogin() {
+        document.getElementById('loginForm').style.display = 'block';
+        document.getElementById('registerForm').style.display = 'none';
+        document.getElementById('userBlock').style.display = 'none';
+        document.getElementById('authTitle').textContent = 'Вход в аккаунт';
+    }
 
-        function showRegister() {
-            document.getElementById('loginForm').style.display = 'none';
-            document.getElementById('registerForm').style.display = 'block';
-            document.getElementById('userBlock').style.display = 'none';
-            document.getElementById('authTitle').textContent = 'Регистрация';
-        }
+    function showRegister() {
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('registerForm').style.display = 'block';
+        document.getElementById('userBlock').style.display = 'none';
+        document.getElementById('authTitle').textContent = 'Регистрация';
+    }
 
-        // Регистрация по email
-        function register() {
-            const name = document.getElementById('registerName').value;
-            const email = document.getElementById('registerEmail').value;
-            const password = document.getElementById('registerPassword').value;
-            const messageDiv = document.getElementById('authMessage');
+    function register() {
+        const name = document.getElementById('registerName').value;
+        const email = document.getElementById('registerEmail').value;
+        const password = document.getElementById('registerPassword').value;
+        const messageDiv = document.getElementById('authMessage');
 
-            if (!name || !email || !password) {
-                messageDiv.style.display = 'block';
-                messageDiv.style.color = '#FF6B6B';
-                messageDiv.textContent = 'Заполните все поля';
-                return;
-            }
-
-            if (password.length < 6) {
-                messageDiv.style.display = 'block';
-                messageDiv.style.color = '#FF6B6B';
-                messageDiv.textContent = 'Пароль должен быть не менее 6 символов';
-                return;
-            }
-
-            auth.createUserWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    return userCredential.user.updateProfile({ displayName: name });
-                })
-                .then(() => showUserBlock())
-                .catch((error) => {
-                    messageDiv.style.display = 'block';
-                    messageDiv.style.color = '#FF6B6B';
-                    messageDiv.textContent = '❌ ' + getErrorMessage(error.code);
-                });
-        }
-
-        // Вход по email
-        function login() {
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            const messageDiv = document.getElementById('authMessage');
-
-            auth.signInWithEmailAndPassword(email, password)
-                .then(() => showUserBlock())
-                .catch((error) => {
-                    messageDiv.style.display = 'block';
-                    messageDiv.style.color = '#FF6B6B';
-                    messageDiv.textContent = '❌ ' + getErrorMessage(error.code);
-                });
-        }
-
-        // Вход через Google
-       function loginWithGoogle() {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    provider.setCustomParameters({
-        prompt: 'select_account'
-    });
-    
-    auth.signInWithPopup(provider)
-        .then((result) => {
-            showUserBlock();
-        })
-        .catch((error) => {
-            console.error('Ошибка Google:', error);
-            const messageDiv = document.getElementById('authMessage');
+        if (!name || !email || !password) {
             messageDiv.style.display = 'block';
             messageDiv.style.color = '#FF6B6B';
-            
-            if (error.code === 'auth/popup-closed-by-user') {
-                messageDiv.textContent = 'Окно входа было закрыто';
-            } else if (error.code === 'auth/unauthorized-domain') {
-                messageDiv.textContent = 'Домен не добавлен в Firebase. Добавьте ваш GitHub домен в настройках.';
-            } else {
-                messageDiv.textContent = '❌ Ошибка входа через Google';
-            }
-        });
-}
+            messageDiv.textContent = 'Заполните все поля';
+            return;
+        }
 
-        // Выход
-        function logout() {
-            auth.signOut().then(() => {
-                showLogin();
-                document.getElementById('authMessage').style.display = 'none';
+        if (password.length < 6) {
+            messageDiv.style.display = 'block';
+            messageDiv.style.color = '#FF6B6B';
+            messageDiv.textContent = 'Пароль должен быть не менее 6 символов';
+            return;
+        }
+
+        auth.createUserWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                return userCredential.user.updateProfile({ displayName: name });
+            })
+            .then(() => showUserBlock())
+            .catch((error) => {
+                messageDiv.style.display = 'block';
+                messageDiv.style.color = '#FF6B6B';
+                messageDiv.textContent = '❌ ' + error.message;
+            });
+    }
+
+    function login() {
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+        const messageDiv = document.getElementById('authMessage');
+
+        auth.signInWithEmailAndPassword(email, password)
+            .then(() => showUserBlock())
+            .catch((error) => {
+                messageDiv.style.display = 'block';
+                messageDiv.style.color = '#FF6B6B';
+                messageDiv.textContent = '❌ Неверный email или пароль';
+            });
+    }
+
+    function loginWithGoogle() {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        // Используем redirect — надёжнее
+        auth.signInWithRedirect(provider);
+    }
+
+    function logout() {
+        auth.signOut().then(() => {
+            showLogin();
+            document.getElementById('authMessage').style.display = 'none';
+        });
+    }
+
+    function showUserBlock() {
+        const user = auth.currentUser;
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('registerForm').style.display = 'none';
+        document.getElementById('userBlock').style.display = 'block';
+        document.getElementById('authTitle').textContent = 'Мой аккаунт';
+        document.getElementById('userName').textContent = user.displayName || 'Студент';
+        document.getElementById('userEmail').textContent = user.email;
+        document.getElementById('authMessage').style.display = 'none';
+    }
+
+    // Обработка редиректа после Google-входа
+    auth.getRedirectResult().then((result) => {
+        if (result && result.user) {
+            showUserBlock();
+        }
+    }).catch((error) => {
+        const messageDiv = document.getElementById('authMessage');
+        messageDiv.style.display = 'block';
+        messageDiv.style.color = '#FF6B6B';
+        messageDiv.textContent = '❌ Ошибка входа через Google';
+        console.error(error);
+    });
+
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            showUserBlock();
+        } else {
+            // Проверяем, не после редиректа ли мы
+            auth.getRedirectResult().then((result) => {
+                if (!result || !result.user) {
+                    showLogin();
+                }
             });
         }
-
-        // Показать блок пользователя
-        function showUserBlock() {
-            const user = auth.currentUser;
-            document.getElementById('loginForm').style.display = 'none';
-            document.getElementById('registerForm').style.display = 'none';
-            document.getElementById('userBlock').style.display = 'block';
-            document.getElementById('authTitle').textContent = 'Мой аккаунт';
-            document.getElementById('userName').textContent = user.displayName || 'Студент';
-            document.getElementById('userEmail').textContent = user.email;
-            document.getElementById('authMessage').style.display = 'none';
-        }
-
-        // Понятные сообщения об ошибках
-        function getErrorMessage(code) {
-            switch(code) {
-                case 'auth/email-already-in-use': return 'Этот email уже зарегистрирован';
-                case 'auth/invalid-email': return 'Некорректный email';
-                case 'auth/weak-password': return 'Слишком слабый пароль';
-                case 'auth/user-not-found': return 'Пользователь не найден';
-                case 'auth/wrong-password': return 'Неверный пароль';
-                default: return 'Произошла ошибка. Попробуйте ещё раз';
-            }
-        }
-
-        // Проверка при загрузке
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                showUserBlock();
-            } else {
-                showLogin();
-            }
-        });
-    </script>
+    });
+</script>
 
     <script src="script.js"></script>
 </body>
