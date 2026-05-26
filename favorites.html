@@ -23,9 +23,7 @@
                 <li><a href="auth.html" class="nav-link" id="authNavLink">Вход</a></li>
             </ul>
             <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
+                <span></span><span></span><span></span>
             </div>
         </div>
     </nav>
@@ -54,21 +52,10 @@
 
     <footer class="footer">
         <div class="footer-content">
-            <div class="footer-info">
-                <h3>Кулинария студента</h3>
-                <p>Проект для студентов Якутска. Экономим вместе!</p>
-            </div>
-            <div class="footer-links">
-                <a href="recipes.html">Рецепты</a>
-                <a href="calculator.html">Калькулятор</a>
-                <a href="tips.html">Советы</a>
-                <a href="about.html">О проекте</a>
-                <a href="auth.html">Вход</a>
-            </div>
+            <div class="footer-info"><h3>Кулинария студента</h3><p>Проект для студентов Якутска.</p></div>
+            <div class="footer-links"><a href="recipes.html">Рецепты</a><a href="calculator.html">Калькулятор</a><a href="tips.html">Советы</a><a href="about.html">О проекте</a><a href="auth.html">Вход</a></div>
         </div>
-        <div class="footer-bottom">
-            <p>© 2024 Кулинария студента | Якутск</p>
-        </div>
+        <div class="footer-bottom"><p>© 2024 Кулинария студента | Якутск</p></div>
     </footer>
 
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -78,39 +65,39 @@
 
     <script>
         const firebaseConfig = {
-            apiKey: "AIzaSyCulR0j5GnUxapZ5-1K9wPhN5Mm8nG5XjE",
+            apiKey: "AIzaSyDoE18PySgZcwUSV1zGNU1a4ql9IDxaNGI",
             authDomain: "kulinariastudenta.firebaseapp.com",
             projectId: "kulinariastudenta",
             storageBucket: "kulinariastudenta.firebasestorage.app",
-            messagingSenderId: "672353646050",
-            appId: "1:672353646050:web:18d23a4df5c6b5b45e58bb"
+            messagingSenderId: "712553246230",
+            appId: "1:712553246230:web:6940e365ae83f678270f37"
         };
-        firebase.initializeApp(firebaseConfig);
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
         firebase.auth().onAuthStateChanged(function(user) {
+            const authLink = document.getElementById('authNavLink');
+            
             if (user) {
                 document.getElementById('needLogin').style.display = 'none';
+                if (authLink) { authLink.innerHTML = '👤 ' + (user.displayName || 'Профиль'); authLink.href = 'profile.html'; }
                 loadFavorites(user.uid);
             } else {
                 document.getElementById('needLogin').style.display = 'block';
+                if (authLink) { authLink.innerHTML = 'Вход'; authLink.href = 'auth.html'; }
             }
         });
 
         async function loadFavorites(uid) {
             const grid = document.getElementById('favoritesGrid');
             grid.innerHTML = '';
-            
             try {
                 const snapshot = await db.collection('users').doc(uid).collection('favorites').get();
-                
                 if (snapshot.empty) {
                     document.getElementById('noFavMessage').style.display = 'block';
                     return;
                 }
-                
                 document.getElementById('noFavMessage').style.display = 'none';
-                
                 snapshot.forEach(function(doc) {
                     const recipe = recipesData.find(r => r.id === doc.id);
                     if (recipe) {
@@ -123,63 +110,21 @@
                                 <button data-fav="${recipe.id}" onclick="toggleFavorite('${recipe.id}')" 
                                     style="position: absolute; top: 1rem; left: 1rem; background: white; border: none; 
                                     border-radius: 50%; width: 40px; height: 40px; font-size: 1.2rem; cursor: pointer;
-                                    box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-                                    ❤️
-                                </button>
+                                    box-shadow: 0 2px 10px rgba(0,0,0,0.1);">❤️</button>
                             </div>
                             <div class="recipe-content">
                                 <h3 class="recipe-title">${recipe.title}</h3>
                                 <p class="recipe-description">${recipe.description}</p>
-                                <div class="recipe-info">
-                                    <span class="recipe-price">~${recipe.price}</span>
-                                </div>
+                                <div class="recipe-info"><span class="recipe-price">~${recipe.price}</span></div>
                             </div>
                         `;
                         grid.appendChild(card);
                     }
                 });
             } catch (error) {
-                console.error('Ошибка загрузки избранного:', error);
+                console.error('Ошибка:', error);
             }
         }
     </script>
-    <!-- Firebase Auth (для отображения профиля в меню) -->
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-
-<script>
-    // Конфиг Firebase (тот же, что везде)
-    const firebaseConfig = {
-        apiKey: "AIzaSyDoE18PySgZcwUSV1zGNU1a4ql9IDxaNGI",
-        authDomain: "kulinariastudenta.firebaseapp.com",
-        projectId: "kulinariastudenta",
-        storageBucket: "kulinariastudenta.firebasestorage.app",
-        messagingSenderId: "712553246230",
-        appId: "1:712553246230:web:6940e365ae83f678270f37"
-    };
-
-    if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
-    }
-
-    // Обновление пункта меню "Вход"
-    firebase.auth().onAuthStateChanged(function(user) {
-        const authLink = document.getElementById('authNavLink');
-        if (!authLink) return;
-
-        if (user) {
-            // Пользователь вошёл — показываем имя и аватар
-            const name = user.displayName || 'Профиль';
-            authLink.innerHTML = '👤 ' + name;
-            authLink.href = 'auth.html';
-            authLink.title = 'Перейти в профиль';
-        } else {
-            // Не вошёл — показываем "Вход"
-            authLink.innerHTML = 'Вход';
-            authLink.href = 'auth.html';
-            authLink.title = 'Войти в аккаунт';
-        }
-    });
-</script>
 </body>
 </html>
