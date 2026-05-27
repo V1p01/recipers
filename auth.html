@@ -30,6 +30,7 @@
     <section style="padding-top:2rem;min-height:70vh;">
         <h2 class="section-title" id="authTitle">Вход в аккаунт</h2>
         <div style="max-width:400px;margin:0 auto;background:white;padding:2rem;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.1);">
+            
             <div id="loginForm">
                 <div class="form-group"><label>Email</label><input type="email" id="loginEmail" placeholder="student@example.com"></div>
                 <div class="form-group"><label>Пароль</label><input type="password" id="loginPassword" placeholder="Введите пароль"></div>
@@ -37,12 +38,14 @@
                 <p style="text-align:center;margin-bottom:0.5rem;"><a href="#" id="showForgotLink" style="color:#999;font-size:0.85rem;">Забыли пароль?</a></p>
                 <p style="text-align:center;color:#666;margin-top:1rem;">Нет аккаунта? <a href="#" id="showRegisterLink" style="color:#FF6B6B;font-weight:600;">Зарегистрироваться</a></p>
             </div>
+
             <div id="forgotForm" style="display:none;">
                 <p style="text-align:center;color:#666;margin-bottom:1.5rem;">Введите email для сброса пароля</p>
                 <div class="form-group"><label>Email</label><input type="email" id="forgotEmail" placeholder="student@example.com"></div>
                 <button id="forgotBtn" class="cta-button" style="width:100%;justify-content:center;margin-bottom:1rem;">Отправить ссылку</button>
                 <p style="text-align:center;"><a href="#" id="showLoginFromForgot" style="color:#FF6B6B;font-weight:600;">← Вернуться ко входу</a></p>
             </div>
+
             <div id="registerForm" style="display:none;">
                 <div class="form-group"><label>Имя</label><input type="text" id="registerName" placeholder="Ваше имя"></div>
                 <div class="form-group"><label>Email</label><input type="email" id="registerEmail" placeholder="student@example.com"></div>
@@ -50,14 +53,17 @@
                 <button id="registerBtn" class="cta-button" style="width:100%;justify-content:center;margin-bottom:1rem;">Зарегистрироваться</button>
                 <p style="text-align:center;color:#666;">Уже есть аккаунт? <a href="#" id="showLoginLink" style="color:#FF6B6B;font-weight:600;">Войти</a></p>
             </div>
+
             <div id="userBlock" style="display:none;text-align:center;">
                 <div style="font-size:4rem;margin-bottom:1rem;">👨‍🍳</div>
                 <h3 style="color:#4ECDC4;">Вы вошли!</h3>
                 <p>Добро пожаловать, <strong id="userName"></strong>!</p>
-                <p style="color:#666;font-size:0.9rem;margin-bottom:1.5rem;" id="userEmail"></p>
+                <p style="color:#666;font-size:0.9rem;margin-bottom:0.5rem;" id="userEmail"></p>
+                <p id="emailNotVerified" style="color:#FF9800;font-size:0.85rem;margin-bottom:1rem;display:none;">⚠️ Email не подтверждён. Проверьте почту!</p>
                 <a href="profile.html" class="cta-button" style="width:100%;justify-content:center;margin-bottom:1rem;display:flex;">👤 Мой профиль</a>
                 <button id="logoutBtn" style="background:#FF6B6B;color:white;border:none;padding:0.8rem 2rem;border-radius:25px;cursor:pointer;font-weight:500;font-family:'Montserrat',sans-serif;">Выйти</button>
             </div>
+
             <div id="authMessage" style="text-align:center;margin-top:1rem;display:none;"></div>
         </div>
     </section>
@@ -67,7 +73,7 @@
             <div class="footer-info"><h3>Кулинария студента</h3><p>Проект для студентов Якутска.</p></div>
             <div class="footer-links"><a href="recipes.html">Рецепты</a><a href="calculator.html">Калькулятор</a><a href="tips.html">Советы</a><a href="add-recipe.html">Добавить</a><a href="about.html">О проекте</a></div>
         </div>
-        <div class="footer-bottom"><p>© 2026 Кулинария студента | Якутск</p></div>
+        <div class="footer-bottom"><p>© 2024 Кулинария студента | Якутск</p></div>
     </footer>
 
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -75,22 +81,111 @@
     <script>
         const fc={apiKey:"AIzaSyDoE18PySgZcwUSV1zGNU1a4ql9IDxaNGI",authDomain:"kulinariastudenta.firebaseapp.com",projectId:"kulinariastudenta",storageBucket:"kulinariastudenta.firebasestorage.app",messagingSenderId:"712553246230",appId:"1:712553246230:web:6940e365ae83f678270f37"};
         firebase.initializeApp(fc);const a=firebase.auth();
-        function sl(){document.getElementById('loginForm').style.display='block';document.getElementById('registerForm').style.display='none';document.getElementById('forgotForm').style.display='none';document.getElementById('userBlock').style.display='none';document.getElementById('authTitle').textContent='Вход в аккаунт';}
-        function sr(){document.getElementById('loginForm').style.display='none';document.getElementById('registerForm').style.display='block';document.getElementById('forgotForm').style.display='none';document.getElementById('userBlock').style.display='none';document.getElementById('authTitle').textContent='Регистрация';}
-        function sf(){document.getElementById('loginForm').style.display='none';document.getElementById('registerForm').style.display='none';document.getElementById('forgotForm').style.display='block';document.getElementById('userBlock').style.display='none';document.getElementById('authTitle').textContent='Восстановление пароля';}
-        function su(){const u=a.currentUser;if(!u)return;document.getElementById('loginForm').style.display='none';document.getElementById('registerForm').style.display='none';document.getElementById('forgotForm').style.display='none';document.getElementById('userBlock').style.display='block';document.getElementById('authTitle').textContent='Мой аккаунт';document.getElementById('userName').textContent=u.displayName||'Студент';document.getElementById('userEmail').textContent=u.email;document.getElementById('authMessage').style.display='none';
-            const l=document.getElementById('authNavLink');if(l){l.innerHTML='👤 '+(u.displayName||'Профиль');l.href='profile.html';}}
-        function sm(t,c){const m=document.getElementById('authMessage');m.style.display='block';m.style.color=c||'#FF6B6B';m.textContent=t;}
-        function reg(){const n=document.getElementById('registerName').value.trim(),e=document.getElementById('registerEmail').value.trim(),p=document.getElementById('registerPassword').value;if(!n||!e||!p){sm('Заполните все поля');return;}if(p.length<6){sm('Пароль не менее 6 символов');return;}a.createUserWithEmailAndPassword(e,p).then(c => {
-    // Отправляем письмо с подтверждением
-    c.user.sendEmailVerification();
-    return c.user.updateProfile({displayName: n});
-}).then(()=>su()).catch(e=>sm('❌ '+(e.code==='auth/email-already-in-use'?'Email уже занят':e.message)));}
-        function login(){const e=document.getElementById('loginEmail').value.trim(),p=document.getElementById('loginPassword').value;if(!e||!p){sm('Заполните все поля');return;}a.signInWithEmailAndPassword(e,p).then(()=>su()).catch(()=>sm('❌ Неверный email или пароль'));}
-        function rp(){const e=document.getElementById('forgotEmail').value.trim();if(!e){sm('Введите email');return;}a.sendPasswordResetEmail(e).then(()=>{sm('✅ Ссылка отправлена!','green');document.getElementById('forgotEmail').value='';}).catch(()=>sm('❌ Email не найден'));}
-        function lo(){a.signOut().then(()=>{sl();document.getElementById('authMessage').style.display='none';});}
-        document.addEventListener('DOMContentLoaded',()=>{document.getElementById('loginBtn').addEventListener('click',login);document.getElementById('registerBtn').addEventListener('click',reg);document.getElementById('forgotBtn').addEventListener('click',rp);document.getElementById('logoutBtn').addEventListener('click',lo);document.getElementById('showRegisterLink').addEventListener('click',e=>{e.preventDefault();sr();});document.getElementById('showLoginLink').addEventListener('click',e=>{e.preventDefault();sl();});document.getElementById('showForgotLink').addEventListener('click',e=>{e.preventDefault();sf();});document.getElementById('showLoginFromForgot').addEventListener('click',e=>{e.preventDefault();sl();});});
-        a.onAuthStateChanged(u=>{if(u)su();else sl();});
+
+        function sl(){
+            document.getElementById('loginForm').style.display='block';
+            document.getElementById('registerForm').style.display='none';
+            document.getElementById('forgotForm').style.display='none';
+            document.getElementById('userBlock').style.display='none';
+            document.getElementById('authTitle').textContent='Вход в аккаунт';
+        }
+        function sr(){
+            document.getElementById('loginForm').style.display='none';
+            document.getElementById('registerForm').style.display='block';
+            document.getElementById('forgotForm').style.display='none';
+            document.getElementById('userBlock').style.display='none';
+            document.getElementById('authTitle').textContent='Регистрация';
+        }
+        function sf(){
+            document.getElementById('loginForm').style.display='none';
+            document.getElementById('registerForm').style.display='none';
+            document.getElementById('forgotForm').style.display='block';
+            document.getElementById('userBlock').style.display='none';
+            document.getElementById('authTitle').textContent='Восстановление пароля';
+        }
+        function su(){
+            const u=a.currentUser;
+            if(!u)return;
+            document.getElementById('loginForm').style.display='none';
+            document.getElementById('registerForm').style.display='none';
+            document.getElementById('forgotForm').style.display='none';
+            document.getElementById('userBlock').style.display='block';
+            document.getElementById('authTitle').textContent='Мой аккаунт';
+            document.getElementById('userName').textContent=u.displayName||'Студент';
+            document.getElementById('userEmail').textContent=u.email;
+            document.getElementById('authMessage').style.display='none';
+            
+            // Проверка подтверждения email
+            if(u.emailVerified){
+                document.getElementById('emailNotVerified').style.display='none';
+            } else {
+                document.getElementById('emailNotVerified').style.display='block';
+            }
+            
+            const l=document.getElementById('authNavLink');
+            if(l){l.innerHTML='👤 '+(u.displayName||'Профиль');l.href='profile.html';}
+        }
+        function sm(t,c){
+            const m=document.getElementById('authMessage');
+            m.style.display='block';
+            m.style.color=c||'#FF6B6B';
+            m.textContent=t;
+        }
+
+        // Регистрация с подтверждением почты
+        function reg(){
+            const n=document.getElementById('registerName').value.trim(),
+                  e=document.getElementById('registerEmail').value.trim(),
+                  p=document.getElementById('registerPassword').value;
+            if(!n||!e||!p){sm('Заполните все поля');return;}
+            if(p.length<6){sm('Пароль не менее 6 символов');return;}
+            a.createUserWithEmailAndPassword(e,p)
+                .then(c => {
+                    // Отправляем письмо с подтверждением
+                    c.user.sendEmailVerification();
+                    return c.user.updateProfile({displayName: n});
+                })
+                .then(() => {
+                    su();
+                    sm('📧 Письмо с подтверждением отправлено! Проверьте почту.', 'green');
+                })
+                .catch(e => sm('❌ '+(e.code==='auth/email-already-in-use'?'Email уже занят':e.message)));
+        }
+
+        function login(){
+            const e=document.getElementById('loginEmail').value.trim(),
+                  p=document.getElementById('loginPassword').value;
+            if(!e||!p){sm('Заполните все поля');return;}
+            a.signInWithEmailAndPassword(e,p)
+                .then(() => su())
+                .catch(() => sm('❌ Неверный email или пароль'));
+        }
+        function rp(){
+            const e=document.getElementById('forgotEmail').value.trim();
+            if(!e){sm('Введите email');return;}
+            a.sendPasswordResetEmail(e)
+                .then(() => {sm('✅ Ссылка отправлена! Проверьте почту.','green');document.getElementById('forgotEmail').value='';})
+                .catch(() => sm('❌ Email не найден'));
+        }
+        function lo(){
+            a.signOut().then(() => {sl();document.getElementById('authMessage').style.display='none';});
+        }
+
+        document.addEventListener('DOMContentLoaded',()=>{
+            document.getElementById('loginBtn').addEventListener('click',login);
+            document.getElementById('registerBtn').addEventListener('click',reg);
+            document.getElementById('forgotBtn').addEventListener('click',rp);
+            document.getElementById('logoutBtn').addEventListener('click',lo);
+            document.getElementById('showRegisterLink').addEventListener('click',e=>{e.preventDefault();sr();});
+            document.getElementById('showLoginLink').addEventListener('click',e=>{e.preventDefault();sl();});
+            document.getElementById('showForgotLink').addEventListener('click',e=>{e.preventDefault();sf();});
+            document.getElementById('showLoginFromForgot').addEventListener('click',e=>{e.preventDefault();sl();});
+        });
+
+        a.onAuthStateChanged(u => {
+            if(u) su();
+            else sl();
+        });
     </script>
 </body>
 </html>
