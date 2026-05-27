@@ -58,7 +58,7 @@
                 <div style="font-size:4rem;margin-bottom:1rem;">👨‍🍳</div>
                 <h3 style="color:#4ECDC4;">Вы вошли!</h3>
                 <p>Добро пожаловать, <strong id="userName"></strong>!</p>
-                <p style="color:#666;font-size:0.9rem;margin-bottom:0.5rem;" id="userEmail"></p>
+                <p style="color:#666;font-size:0.9rem;margin-bottom:1.5rem;" id="userEmail"></p>
                 <a href="profile.html" class="cta-button" style="width:100%;justify-content:center;margin-bottom:1rem;display:flex;">👤 Мой профиль</a>
                 <button id="logoutBtn" style="background:#FF6B6B;color:white;border:none;padding:0.8rem 2rem;border-radius:25px;cursor:pointer;font-weight:500;font-family:'Montserrat',sans-serif;">Выйти</button>
             </div>
@@ -87,6 +87,7 @@
         function su(){const u=a.currentUser;if(!u)return;document.getElementById('loginForm').style.display='none';document.getElementById('registerForm').style.display='none';document.getElementById('forgotForm').style.display='none';document.getElementById('userBlock').style.display='block';document.getElementById('authTitle').textContent='Мой аккаунт';document.getElementById('userName').textContent=u.displayName||'Студент';document.getElementById('userEmail').textContent=u.email;document.getElementById('authMessage').style.display='none';const l=document.getElementById('authNavLink');if(l){l.innerHTML='👤 '+(u.displayName||'Профиль');l.href='profile.html';}}
         function sm(t,c){const m=document.getElementById('authMessage');m.style.display='block';m.style.color=c||'#FF6B6B';m.textContent=t;}
 
+        // Регистрация с отправкой письма
         function reg(){
             const n=document.getElementById('registerName').value.trim();
             const e=document.getElementById('registerEmail').value.trim();
@@ -99,8 +100,9 @@
                     return c.user.updateProfile({displayName:n});
                 })
                 .then(function(){
-                    su();
-                    sm('📧 Письмо с подтверждением отправлено! Проверьте почту.','green');
+                    a.signOut();
+                    sl();
+                    sm('📧 Письмо с подтверждением отправлено! Проверьте почту и перейдите по ссылке.','green');
                 })
                 .catch(function(err){
                     if(err.code==='auth/email-already-in-use') sm('❌ Этот email уже занят');
@@ -108,8 +110,30 @@
                 });
         }
 
-        function login(){const e=document.getElementById('loginEmail').value.trim();const p=document.getElementById('loginPassword').value;if(!e||!p){sm('Заполните все поля');return;}a.signInWithEmailAndPassword(e,p).then(function(){su();}).catch(function(){sm('❌ Неверный email или пароль');});}
-        function rp(){const e=document.getElementById('forgotEmail').value.trim();if(!e){sm('Введите email');return;}a.sendPasswordResetEmail(e).then(function(){sm('✅ Ссылка отправлена!','green');document.getElementById('forgotEmail').value='';}).catch(function(){sm('❌ Email не найден');});}
+        // Вход с проверкой подтверждения почты
+        function login(){
+            const e=document.getElementById('loginEmail').value.trim();
+            const p=document.getElementById('loginPassword').value;
+            if(!e||!p){sm('Заполните все поля');return;}
+            a.signInWithEmailAndPassword(e,p)
+                .then(function(result){
+                    if(result.user.emailVerified){
+                        su();
+                    } else {
+                        sm('❌ Email не подтверждён! Проверьте почту и перейдите по ссылке в письме.');
+                        a.signOut();
+                    }
+                })
+                .catch(function(){sm('❌ Неверный email или пароль');});
+        }
+
+        function rp(){
+            const e=document.getElementById('forgotEmail').value.trim();
+            if(!e){sm('Введите email');return;}
+            a.sendPasswordResetEmail(e)
+                .then(function(){sm('✅ Ссылка отправлена! Проверьте почту.','green');document.getElementById('forgotEmail').value='';})
+                .catch(function(){sm('❌ Email не найден');});
+        }
         function lo(){a.signOut().then(function(){sl();document.getElementById('authMessage').style.display='none';});}
 
         document.addEventListener('DOMContentLoaded',function(){
@@ -123,7 +147,7 @@
             document.getElementById('showLoginFromForgot').addEventListener('click',function(e){e.preventDefault();sl();});
         });
 
-        a.onAuthStateChanged(function(u){if(u)su();else sl();});
+        a.onAuthStateChanged(function(u){if(u&&u.emailVerified)su();else sl();});
     </script>
 </body>
 </html>
