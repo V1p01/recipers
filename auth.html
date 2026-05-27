@@ -131,7 +131,7 @@
             const e=document.getElementById('forgotEmail').value.trim();
             if(!e){sm('Введите email');return;}
             a.sendPasswordResetEmail(e)
-                .then(function(){sm('✅ Ссылка отправлена! Проверьте почту.','green');document.getElementById('forgotEmail').value='';})
+                .then(function(){sm('✅ Ссылка отправлена! Проверьте почту если не видите — проверьте папку Спам.','green');document.getElementById('forgotEmail').value='';})
                 .catch(function(){sm('❌ Email не найден');});
         }
         function lo(){a.signOut().then(function(){sl();document.getElementById('authMessage').style.display='none';});}
