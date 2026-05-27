@@ -81,7 +81,11 @@
         function su(){const u=a.currentUser;if(!u)return;document.getElementById('loginForm').style.display='none';document.getElementById('registerForm').style.display='none';document.getElementById('forgotForm').style.display='none';document.getElementById('userBlock').style.display='block';document.getElementById('authTitle').textContent='Мой аккаунт';document.getElementById('userName').textContent=u.displayName||'Студент';document.getElementById('userEmail').textContent=u.email;document.getElementById('authMessage').style.display='none';
             const l=document.getElementById('authNavLink');if(l){l.innerHTML='👤 '+(u.displayName||'Профиль');l.href='profile.html';}}
         function sm(t,c){const m=document.getElementById('authMessage');m.style.display='block';m.style.color=c||'#FF6B6B';m.textContent=t;}
-        function reg(){const n=document.getElementById('registerName').value.trim(),e=document.getElementById('registerEmail').value.trim(),p=document.getElementById('registerPassword').value;if(!n||!e||!p){sm('Заполните все поля');return;}if(p.length<6){sm('Пароль не менее 6 символов');return;}a.createUserWithEmailAndPassword(e,p).then(c=>c.user.updateProfile({displayName:n})).then(()=>su()).catch(e=>sm('❌ '+(e.code==='auth/email-already-in-use'?'Email уже занят':e.message)));}
+        function reg(){const n=document.getElementById('registerName').value.trim(),e=document.getElementById('registerEmail').value.trim(),p=document.getElementById('registerPassword').value;if(!n||!e||!p){sm('Заполните все поля');return;}if(p.length<6){sm('Пароль не менее 6 символов');return;}a.createUserWithEmailAndPassword(e,p).then(c => {
+    // Отправляем письмо с подтверждением
+    c.user.sendEmailVerification();
+    return c.user.updateProfile({displayName: n});
+}).then(()=>su()).catch(e=>sm('❌ '+(e.code==='auth/email-already-in-use'?'Email уже занят':e.message)));}
         function login(){const e=document.getElementById('loginEmail').value.trim(),p=document.getElementById('loginPassword').value;if(!e||!p){sm('Заполните все поля');return;}a.signInWithEmailAndPassword(e,p).then(()=>su()).catch(()=>sm('❌ Неверный email или пароль'));}
         function rp(){const e=document.getElementById('forgotEmail').value.trim();if(!e){sm('Введите email');return;}a.sendPasswordResetEmail(e).then(()=>{sm('✅ Ссылка отправлена!','green');document.getElementById('forgotEmail').value='';}).catch(()=>sm('❌ Email не найден'));}
         function lo(){a.signOut().then(()=>{sl();document.getElementById('authMessage').style.display='none';});}
