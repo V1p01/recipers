@@ -6,7 +6,7 @@
     <title>Рецепты | Кулинария студента</title>
     <link rel="icon" type="image/png" href="https://em-content.zobj.net/thumbs/120/apple/325/cooking_1f373.png">
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar">
@@ -28,46 +28,46 @@
     <div class="breadcrumbs"><a href="index.html">Главная</a> → Рецепты</div>
 
     <section style="padding-top: 2rem;">
-        <h2 class="section-title">Все рецепты</h2>
+        <h2 class="section-title">📖 Все рецепты</h2>
         <div class="search-box"><input type="text" id="searchInputRecipes" placeholder="🔍 Поиск рецепта..."></div>
         <div class="filter-buttons">
             <button class="filter-btn active" data-filter="all">Все</button>
-            <button class="filter-btn" data-filter="breakfast">Завтраки</button>
-            <button class="filter-btn" data-filter="lunch">Обеды</button>
-            <button class="filter-btn" data-filter="dinner">Ужины</button>
-            <button class="filter-btn" data-filter="snack">Перекусы</button>
-            <button class="filter-btn" data-filter="soup">Супы</button>
-            <button class="filter-btn" data-filter="salad">Салаты</button>
-            <button class="filter-btn" data-filter="favorites" style="background:#FFF3F3;border-color:#FF6B6B;color:#FF6B6B;">❤️ Избранное</button>
+            <button class="filter-btn" data-filter="breakfast">🍳 Завтраки</button>
+            <button class="filter-btn" data-filter="lunch">🍝 Обеды</button>
+            <button class="filter-btn" data-filter="dinner">🌙 Ужины</button>
+            <button class="filter-btn" data-filter="snack">🥨 Перекусы</button>
+            <button class="filter-btn" data-filter="soup">🥣 Супы</button>
+            <button class="filter-btn" data-filter="salad">🥗 Салаты</button>
+            <button class="filter-btn" data-filter="favorites" style="background:rgba(255,107,107,0.15);border-color:#ff6b6b;color:#ff6b6b;">❤️ Избранное</button>
         </div>
         <div class="recipes-grid" id="allRecipesGrid"></div>
-        <div id="noResultsRecipes" class="hidden" style="text-align:center;padding:3rem;color:#666;"><p style="font-size:3rem;">🔍</p><p>Рецепты не найдены</p></div>
+        <div id="noResultsRecipes" class="hidden" style="text-align:center;padding:3rem;color:var(--text-dim);"><p style="font-size:4rem;">🔍</p><p>Рецепты не найдены</p></div>
     </section>
 
-    <div id="recipeModalRecipes" class="modal"><div class="modal-content"><span class="close-modal-recipes">&times;</span><div id="recipeDetailsRecipes"></div></div></div>
+    <div id="recipeModalRecipes" class="modal"><div class="modal-content"><span class="close-modal-recipes close-modal">&times;</span><div id="recipeDetailsRecipes"></div></div></div>
 
     <footer class="footer">
         <div class="footer-content">
-            <div class="footer-info"><h3>Кулинария студента</h3><p>Проект для студентов Якутска.</p></div>
+            <div class="footer-info"><h3>🍳 Кулинария студента</h3><p>Проект для студентов Якутска. Вкусно, быстро, бюджетно.</p></div>
             <div class="footer-links"><a href="recipes.html">Рецепты</a><a href="calculator.html">Калькулятор</a><a href="tips.html">Советы</a><a href="add-recipe.html">Добавить</a><a href="about.html">О проекте</a></div>
         </div>
-        <div class="footer-bottom"><p>© 2026 Кулинария студента | Якутск</p></div>
+        <div class="footer-bottom"><p>© 2026 Кулинария студента | Якутск ❄️</p></div>
     </footer>
 
+    <script src="script.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="script.js"></script>
     <script>
         const fc={apiKey:"AIzaSyDoE18PySgZcwUSV1zGNU1a4ql9IDxaNGI",authDomain:"kulinariastudenta.firebaseapp.com",projectId:"kulinariastudenta",storageBucket:"kulinariastudenta.firebasestorage.app",messagingSenderId:"712553246230",appId:"1:712553246230:web:6940e365ae83f678270f37"};
         if(!firebase.apps.length)firebase.initializeApp(fc);
         let uf=[];
         document.addEventListener('DOMContentLoaded',()=>{
             const g=document.getElementById('allRecipesGrid');
-            if(typeof recipesData==='undefined'){g.innerHTML='<p style="text-align:center;color:red;">Ошибка загрузки</p>';return;}
+            if(typeof recipesData==='undefined'){g.innerHTML='<p style="text-align:center;">Загрузка...</p>';return;}
             recipesData.forEach(r=>{
                 const c=document.createElement('div');c.className='recipe-card';c.setAttribute('data-category',r.category);c.setAttribute('data-recipe-id',r.id);
-                c.innerHTML=`<div class="recipe-image"><span class="recipe-emoji">${r.emoji}</span><div class="recipe-time">⏱️${r.time}</div><button data-fav="${r.id}" onclick="toggleFavorite('${r.id}')" style="position:absolute;top:1rem;left:1rem;background:white;border:none;border-radius:50%;width:40px;height:40px;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,0.1);">🤍</button></div><div class="recipe-content"><h3 class="recipe-title">${r.title}</h3><p class="recipe-description">${r.description}</p><div class="recipe-info"><span class="recipe-price">~${r.price}</span><span class="recipe-difficulty">${r.difficulty}</span></div><button class="recipe-btn" onclick="showRecipeDetail('${r.id}')">Подробнее</button></div>`;
+                c.innerHTML=`<div class="recipe-image"><span class="recipe-emoji">${r.emoji}</span><div class="recipe-time">⏱️${r.time}</div><button data-fav="${r.id}" onclick="toggleFavorite('${r.id}')" style="position:absolute;top:1rem;left:1rem;background:rgba(0,0,0,0.6);backdrop-filter:blur(8px);border:none;border-radius:50%;width:40px;height:40px;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,0.2);">🤍</button></div><div class="recipe-content"><h3 class="recipe-title">${r.title}</h3><p class="recipe-description">${r.description}</p><div class="recipe-info"><span class="recipe-price">~${r.price}</span><span class="recipe-difficulty">${r.difficulty}</span></div><button class="recipe-btn" onclick="showRecipeDetail('${r.id}')">Подробнее</button></div>`;
                 g.appendChild(c);
             });
             firebase.auth().onAuthStateChanged(u=>{const l=document.getElementById('authNavLink');if(u){loadUF(u.uid);if(typeof checkFavorites==='function')checkFavorites();if(l){l.innerHTML='👤 '+(u.displayName||'Профиль');l.href='profile.html';}}else{if(l){l.innerHTML='Вход';l.href='auth.html';}}});
@@ -75,9 +75,9 @@
         async function loadUF(uid){try{const db=firebase.firestore();const s=await db.collection('users').doc(uid).collection('favorites').get();uf=[];s.forEach(d=>uf.push(d.id));}catch(e){console.error(e);}}
         document.getElementById('searchInputRecipes').addEventListener('input',function(){const q=this.value.toLowerCase();let f=false;document.querySelectorAll('.recipe-card').forEach(c=>{if(c.querySelector('.recipe-title').textContent.toLowerCase().includes(q)){c.classList.remove('hidden');f=true;}else{c.classList.add('hidden');}});document.getElementById('noResultsRecipes').classList.toggle('hidden',f);});
         document.querySelectorAll('.filter-btn').forEach(b=>{b.addEventListener('click',function(){document.querySelectorAll('.filter-btn').forEach(x=>x.classList.remove('active'));this.classList.add('active');const f=this.getAttribute('data-filter');document.querySelectorAll('.recipe-card').forEach(c=>{if(f==='all')c.classList.remove('hidden');else if(f==='favorites'){if(uf.includes(c.getAttribute('data-recipe-id')))c.classList.remove('hidden');else c.classList.add('hidden');}else{if(c.getAttribute('data-category')===f)c.classList.remove('hidden');else c.classList.add('hidden');}});});});
-        window.showRecipeDetail=function(id){const r=recipesData.find(x=>x.id===id);if(!r)return;document.getElementById('recipeDetailsRecipes').innerHTML=`<div style="text-align:center;font-size:4rem;">${r.emoji}</div><h2>${r.title}</h2><div style="display:flex;gap:1rem;margin-bottom:1.5rem;color:#666;"><span>⏱️${r.time}</span><span>💰~${r.price}</span></div><h3>📝 Ингредиенты:</h3><ul>${r.ingredients.map(i=>'<li>'+i+'</li>').join('')}</ul><h3>👨‍🍳 Приготовление:</h3><ol>${r.instructions.map(s=>'<li>'+s+'</li>').join('')}</ol>`;document.getElementById('recipeModalRecipes').style.display='block';document.body.style.overflow='hidden';};
-        document.querySelector('.close-modal-recipes').addEventListener('click',()=>{document.getElementById('recipeModalRecipes').style.display='none';document.body.style.overflow='auto';});
-        document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.getElementById('recipeModalRecipes').style.display='none';document.body.style.overflow='auto';}});
+        window.showRecipeDetail=function(id){const r=recipesData.find(x=>x.id===id);if(!r)return;document.getElementById('recipeDetailsRecipes').innerHTML=`<div style="text-align:center;font-size:4rem;">${r.emoji}</div><h2 style="font-family:'Playfair Display';">${r.title}</h2><div style="display:flex;gap:1rem;margin-bottom:1.5rem;color:var(--text-dim);"><span>⏱️${r.time}</span><span>💰~${r.price}</span></div><h3>📝 Ингредиенты:</h3><ul>${r.ingredients.map(i=>'<li>'+i+'</li>').join('')}</ul><h3>👨‍🍳 Приготовление:</h3><ol>${r.instructions.map(s=>'<li>'+s+'</li>').join('')}</ol>`;document.getElementById('recipeModalRecipes').style.display='flex';document.getElementById('recipeModalRecipes').classList.add('show');document.body.style.overflow='hidden';};
+        document.querySelector('.close-modal-recipes').addEventListener('click',()=>{document.getElementById('recipeModalRecipes').style.display='none';document.getElementById('recipeModalRecipes').classList.remove('show');document.body.style.overflow='auto';});
+        document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.getElementById('recipeModalRecipes').style.display='none';document.getElementById('recipeModalRecipes').classList.remove('show');document.body.style.overflow='auto';}});
     </script>
 </body>
 </html>
