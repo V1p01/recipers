@@ -2,85 +2,206 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Кулинария студента | Якутск</title>
-    <link rel="icon" type="image/png" href="https://em-content.zobj.net/thumbs/120/apple/325/cooking_1f373.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="description" content="Кулинарная книга с домашними рецептами. Более 25 рецептов с пошаговыми инструкциями, поиском, фильтрацией и избранным.">
+    <title>Кулинарная книга | Домашние рецепты</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍳</text></svg>">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="index.html" class="logo">
-                <span class="logo-icon">🍳</span>
-                <span class="logo-text">Кулинария студента</span>
-            </a>
-            <ul class="nav-menu">
-                <li><a href="index.html" class="nav-link active">Главная</a></li>
-                <li><a href="recipes.html" class="nav-link">Рецепты</a></li>
-                <li><a href="calculator.html" class="nav-link">Калькулятор</a></li>
-                <li><a href="tips.html" class="nav-link">Советы</a></li>
-                <li><a href="add-recipe.html" class="nav-link">Добавить</a></li>
-                <li><a href="about.html" class="nav-link">О проекте</a></li>
-                <li><a href="auth.html" class="nav-link" id="authNavLink">Вход</a></li>
-            </ul>
-            <div class="hamburger">
-                <span></span><span></span><span></span>
+
+    <!-- ИНДИКАТОР ЗАГРУЗКИ -->
+    <div class="loader" id="loader">
+        <div class="loader__content">
+            <div class="loader__spinner"></div>
+            <p class="loader__text">Приготовление...</p>
+        </div>
+    </div>
+
+    <!-- ФОНОВЫЕ ЭЛЕМЕНТЫ -->
+    <div class="bg-orb"></div>
+    <div class="bg-orb bg-orb--2"></div>
+    <div class="bg-orb bg-orb--3"></div>
+    <div class="bg-grain"></div>
+
+    <!-- ШАПКА -->
+    <header class="header">
+        <div class="container header__container">
+            <div class="logo">
+                <div class="logo__icon">🍳</div>
+                <div class="logo__text">
+                    <h1>Кулинарная книга</h1>
+                    <p>Домашние рецепты с душой</p>
+                </div>
             </div>
+            <div class="search">
+                <input type="text" id="searchInput" class="search__input" placeholder="Поиск рецептов, ингредиентов или тегов...">
+                <button id="searchBtn" class="search__btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- НАВИГАЦИЯ -->
+    <nav class="nav">
+        <div class="container nav__container">
+            <button class="nav__btn active" data-category="all">
+                <span>🏠</span><span>Все</span>
+            </button>
+            <button class="nav__btn" data-category="breakfast">
+                <span>🍳</span><span>Завтраки</span>
+            </button>
+            <button class="nav__btn" data-category="soup">
+                <span>🥣</span><span>Супы</span>
+            </button>
+            <button class="nav__btn" data-category="main">
+                <span>🍝</span><span>Основные</span>
+            </button>
+            <button class="nav__btn" data-category="dessert">
+                <span>🍰</span><span>Десерты</span>
+            </button>
+            <button class="nav__btn" data-category="salad">
+                <span>🥗</span><span>Салаты</span>
+            </button>
+            <button class="nav__btn" data-category="baking">
+                <span>🥖</span><span>Выпечка</span>
+            </button>
+            <button class="nav__btn" data-category="drinks">
+                <span>🥤</span><span>Напитки</span>
+            </button>
+            <button class="nav__btn" id="favoritesBtn">
+                <span>⭐</span><span>Избранное</span>
+            </button>
         </div>
     </nav>
 
-    <section class="hero">
-        <div class="hero-content">
-            <h1 class="hero-title">
-                <span class="title-line">Вкусно</span>
-                <span class="title-line">Быстро</span>
-                <span class="title-line accent">Бюджетно</span>
-            </h1>
-            <p class="hero-subtitle">Рецепты для студентов Якутска. Экономь с умом!</p>
-            <div class="hero-stats">
-                <div class="stat-item"><span class="stat-number">10+</span><span class="stat-label">Рецептов</span></div>
-                <div class="stat-item"><span class="stat-number">350₽</span><span class="stat-label">Средний чек</span></div>
-                <div class="stat-item"><span class="stat-number">15мин</span><span class="stat-label">Готовка</span></div>
-            </div>
-            <div class="hero-buttons">
-                <a href="recipes.html" class="cta-button">Смотреть рецепты →</a>
-                <a href="calculator.html" class="cta-button secondary">Калькулятор</a>
-            </div>
-        </div>
-        <div class="hero-decoration">
-            <span class="floating food-1">🍕</span>
-            <span class="floating food-2">🥑</span>
-            <span class="floating food-3">🍜</span>
-            <span class="floating food-4">🥗</span>
-        </div>
-    </section>
+    <!-- ОСНОВНОЙ КОНТЕНТ -->
+    <main class="main">
+        <div class="container">
+            <!-- Hero секция -->
+            <section class="hero">
+                <div class="hero__content">
+                    <div class="hero__badge">✦ 25+ рецептов ✦</div>
+                    <h2 class="hero__title">
+                        Готовим <span class="hero__accent">с удовольствием</span>
+                    </h2>
+                    <p class="hero__text">
+                        Проверенные рецепты для домашней кухни с пошаговыми инструкциями
+                    </p>
+                    <div class="hero__stats">
+                        <div class="stat">
+                            <span class="stat__number" id="recipeCount">0</span>
+                            <span class="stat__label">рецептов</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat__number" id="favCount">0</span>
+                            <span class="stat__label">в избранном</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat__number">15-90</span>
+                            <span class="stat__label">минут</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero__image">
+                    <div class="hero__floating-card floating-card--1">🍝</div>
+                    <div class="hero__floating-card floating-card--2">🍰</div>
+                    <div class="hero__floating-card floating-card--3">🥗</div>
+                </div>
+            </section>
 
-    <section class="features-section">
-        <h2 class="section-title">Возможности сайта</h2>
-        <div class="features-grid">
-            <a href="recipes.html" class="feature-card"><span class="feature-icon">📖</span><h3>Рецепты</h3><p>12+ проверенных рецептов</p></a>
-            <a href="calculator.html" class="feature-card"><span class="feature-icon">🧮</span><h3>Калькулятор</h3><p>Расчитай стоимость блюда</p></a>
-            <a href="tips.html" class="feature-card"><span class="feature-icon">💡</span><h3>Советы</h3><p>Как экономить в Якутске</p></a>
-            <a href="add-recipe.html" class="feature-card"><span class="feature-icon">✍️</span><h3>Добавить</h3><p>Поделись своим рецептом</p></a>
-        </div>
-    </section>
+            <!-- Управление -->
+            <div class="controls">
+                <div class="controls__left">
+                    <h2 class="section-title" id="categoryTitle">Все рецепты</h2>
+                    <div class="category-chips" id="categoryChips">
+                        <button class="chip active" data-chip="all">Все</button>
+                        <button class="chip" data-chip="breakfast">Завтраки</button>
+                        <button class="chip" data-chip="soup">Супы</button>
+                        <button class="chip" data-chip="main">Основные</button>
+                        <button class="chip" data-chip="dessert">Десерты</button>
+                        <button class="chip" data-chip="salad">Салаты</button>
+                        <button class="chip" data-chip="baking">Выпечка</button>
+                        <button class="chip" data-chip="drinks">Напитки</button>
+                    </div>
+                </div>
+                <div class="controls__right">
+                    <div class="sort">
+                        <span class="sort__label">Сортировать:</span>
+                        <select id="sortSelect" class="sort__select">
+                            <option value="name">По названию</option>
+                            <option value="time-asc">По времени (сначала быстрые)</option>
+                            <option value="time-desc">По времени (сначала долгие)</option>
+                            <option value="calories-asc">По калориям (меньше)</option>
+                            <option value="calories-desc">По калориям (больше)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
 
+            <!-- Сетка рецептов -->
+            <div id="recipesContainer" class="recipes__grid"></div>
+            <div id="emptyState" class="empty-state" style="display: none;">
+                <div class="empty-state__icon">😕</div>
+                <h3>Ничего не найдено</h3>
+                <p>Попробуйте изменить поиск или выберите другую категорию</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- ПОДВАЛ -->
     <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-info"><h3>Кулинария студента</h3><p>Проект для студентов Якутска.</p></div>
-            <div class="footer-links"><a href="recipes.html">Рецепты</a><a href="calculator.html">Калькулятор</a><a href="tips.html">Советы</a><a href="add-recipe.html">Добавить</a><a href="about.html">О проекте</a></div>
+        <div class="container footer__container">
+            <div class="footer__info">
+                <div class="footer__logo">
+                    <span class="footer__logo-icon">🍳</span>
+                    <span>Кулинарная книга</span>
+                </div>
+                <p class="footer__text">Все рецепты проверены на домашней кухне. Готовьте с удовольствием!</p>
+            </div>
+            <div class="footer__links">
+                <div class="footer__col">
+                    <h4>Категории</h4>
+                    <ul>
+                        <li><a href="#" data-category="breakfast">Завтраки</a></li>
+                        <li><a href="#" data-category="soup">Супы</a></li>
+                        <li><a href="#" data-category="main">Основные блюда</a></li>
+                        <li><a href="#" data-category="dessert">Десерты</a></li>
+                    </ul>
+                </div>
+                <div class="footer__col">
+                    <h4>О проекте</h4>
+                    <ul>
+                        <li><a href="#">О нас</a></li>
+                        <li><a href="#">Контакты</a></li>
+                        <li><a href="#">Политика</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
-        <div class="footer-bottom"><p>© 2026 Кулинария студента | Якутск</p></div>
+        <div class="footer__bottom">
+            <div class="container">
+                <p>© 2026 Кулинарная книга. Все права защищены.</p>
+            </div>
+        </div>
     </footer>
 
+    <!-- МОДАЛЬНОЕ ОКНО -->
+    <div id="recipeModal" class="modal">
+        <div class="modal__content">
+            <button class="modal__close" id="closeModalBtn">✕</button>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <!-- ТОСТ УВЕДОМЛЕНИЯ -->
+    <div id="toast" class="toast"></div>
+
     <script src="script.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script>
-        const fc={apiKey:"AIzaSyDoE18PySgZcwUSV1zGNU1a4ql9IDxaNGI",authDomain:"kulinariastudenta.firebaseapp.com",projectId:"kulinariastudenta",storageBucket:"kulinariastudenta.firebasestorage.app",messagingSenderId:"712553246230",appId:"1:712553246230:web:6940e365ae83f678270f37"};
-        if(!firebase.apps.length)firebase.initializeApp(fc);
-        firebase.auth().onAuthStateChanged(u=>{const l=document.getElementById('authNavLink');if(!l)return;if(u){l.innerHTML='👤 '+(u.displayName||'Профиль');l.href='profile.html';}else{l.innerHTML='Вход';l.href='auth.html';}});
-    </script>
 </body>
 </html>
