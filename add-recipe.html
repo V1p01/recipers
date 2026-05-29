@@ -6,7 +6,7 @@
     <title>Добавить рецепт | Кулинария студента</title>
     <link rel="icon" type="image/png" href="https://em-content.zobj.net/thumbs/120/apple/325/cooking_1f373.png">
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar">
@@ -28,8 +28,8 @@
     <div class="breadcrumbs"><a href="index.html">Главная</a> → Добавить рецепт</div>
 
     <section style="padding-top:2rem;">
-        <h2 class="section-title">Поделитесь своим рецептом</h2>
-        <div style="max-width:600px;margin:0 auto;background:white;padding:2rem;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.1);">
+        <h2 class="section-title">✍️ Поделитесь своим рецептом</h2>
+        <div style="max-width:650px;margin:0 auto;background:var(--glass);backdrop-filter:blur(12px);border:1px solid var(--glass-border);border-radius:28px;padding:2rem;">
             <form action="https://formspree.io/f/xaqkpnrk" method="POST">
                 <div class="form-group"><label>Название блюда *</label><input type="text" name="Название блюда" placeholder="Оливье по-студенчески" required></div>
                 <div class="form-group"><label>Категория *</label><select name="Категория" required><option value="">Выберите</option><option>Завтрак</option><option>Обед</option><option>Ужин</option><option>Перекус</option><option>Суп</option><option>Салат</option></select></div>
@@ -42,18 +42,18 @@
                 <div class="form-group"><label>Совет по экономии</label><input type="text" name="Совет" placeholder="Покупайте на рынке..."></div>
                 <div class="form-group"><label>Ваше имя</label><input type="text" name="Имя" placeholder="Студент СВФУ"></div>
                 <div class="form-group"><label>Email</label><input type="email" name="Email" placeholder="student@example.com"></div>
-                <button type="submit" class="cta-button" style="width:100%;justify-content:center;">Отправить рецепт</button>
-                <p style="text-align:center;margin-top:1rem;color:#666;font-size:0.9rem;">* Рецепт будет добавлен после проверки</p>
+                <button type="submit" class="cta-button" style="width:100%;justify-content:center;">✨ Отправить рецепт</button>
+                <p style="text-align:center;margin-top:1rem;color:var(--text-dim);font-size:0.85rem;">* Рецепт будет добавлен после проверки</p>
             </form>
         </div>
     </section>
 
     <footer class="footer">
         <div class="footer-content">
-            <div class="footer-info"><h3>Кулинария студента</h3><p>Проект для студентов Якутска.</p></div>
+            <div class="footer-info"><h3>🍳 Кулинария студента</h3><p>Проект для студентов Якутска. Вкусно, быстро, бюджетно.</p></div>
             <div class="footer-links"><a href="recipes.html">Рецепты</a><a href="calculator.html">Калькулятор</a><a href="tips.html">Советы</a><a href="add-recipe.html">Добавить</a><a href="about.html">О проекте</a></div>
         </div>
-        <div class="footer-bottom"><p>© 2026 Кулинария студента | Якутск</p></div>
+        <div class="footer-bottom"><p>© 2026 Кулинария студента | Якутск ❄️</p></div>
     </footer>
 
     <script src="script.js"></script>
