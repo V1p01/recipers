@@ -62,22 +62,142 @@
         const fc={apiKey:"AIzaSyDoE18PySgZcwUSV1zGNU1a4ql9IDxaNGI",authDomain:"kulinariastudenta.firebaseapp.com",projectId:"kulinariastudenta",storageBucket:"kulinariastudenta.firebasestorage.app",messagingSenderId:"712553246230",appId:"1:712553246230:web:6940e365ae83f678270f37"};
         if(!firebase.apps.length)firebase.initializeApp(fc);
         let uf=[];
-        document.addEventListener('DOMContentLoaded',()=>{
-            const g=document.getElementById('allRecipesGrid');
-            if(typeof recipesData==='undefined'){g.innerHTML='<p style="text-align:center;">Загрузка...</p>';return;}
-            recipesData.forEach(r=>{
-                const c=document.createElement('div');c.className='recipe-card';c.setAttribute('data-category',r.category);c.setAttribute('data-recipe-id',r.id);
-                c.innerHTML=`<div class="recipe-image"><span class="recipe-emoji">${r.emoji}</span><div class="recipe-time">⏱️${r.time}</div><button data-fav="${r.id}" onclick="toggleFavorite('${r.id}')" style="position:absolute;top:1rem;left:1rem;background:rgba(0,0,0,0.6);backdrop-filter:blur(8px);border:none;border-radius:50%;width:40px;height:40px;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,0.2);">🤍</button></div><div class="recipe-content"><h3 class="recipe-title">${r.title}</h3><p class="recipe-description">${r.description}</p><div class="recipe-info"><span class="recipe-price">~${r.price}</span><span class="recipe-difficulty">${r.difficulty}</span></div><button class="recipe-btn" onclick="showRecipeDetail('${r.id}')">Подробнее</button></div>`;
+        let recipesDataGlobal = [];
+
+        // Ждём загрузки script.js
+        function waitForRecipesData() {
+            return new Promise((resolve) => {
+                if (typeof recipesData !== 'undefined') {
+                    resolve(recipesData);
+                } else {
+                    const checkInterval = setInterval(() => {
+                        if (typeof recipesData !== 'undefined') {
+                            clearInterval(checkInterval);
+                            resolve(recipesData);
+                        }
+                    }, 50);
+                }
+            });
+        }
+
+        async function loadRecipes() {
+            const recipesData = await waitForRecipesData();
+            recipesDataGlobal = recipesData;
+            const g = document.getElementById('allRecipesGrid');
+            if (!g) return;
+            g.innerHTML = '';
+            
+            recipesData.forEach(r => {
+                const c = document.createElement('div');
+                c.className = 'recipe-card';
+                c.setAttribute('data-category', r.category);
+                c.setAttribute('data-recipe-id', r.id);
+                c.innerHTML = `<div class="recipe-image"><span class="recipe-emoji">${r.emoji}</span><div class="recipe-time">⏱️${r.time}</div><button data-fav="${r.id}" onclick="toggleFavorite('${r.id}')" style="position:absolute;top:1rem;left:1rem;background:rgba(0,0,0,0.6);backdrop-filter:blur(8px);border:none;border-radius:50%;width:40px;height:40px;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,0.2);">🤍</button></div><div class="recipe-content"><h3 class="recipe-title">${escapeHtml(r.title)}</h3><p class="recipe-description">${escapeHtml(r.description)}</p><div class="recipe-info"><span class="recipe-price">~${r.price}</span><span class="recipe-difficulty">${r.difficulty}</span></div><button class="recipe-btn" onclick="showRecipeDetail('${r.id}')">Подробнее</button></div>`;
                 g.appendChild(c);
             });
-            firebase.auth().onAuthStateChanged(u=>{const l=document.getElementById('authNavLink');if(u){loadUF(u.uid);if(typeof checkFavorites==='function')checkFavorites();if(l){l.innerHTML='👤 '+(u.displayName||'Профиль');l.href='profile.html';}}else{if(l){l.innerHTML='Вход';l.href='auth.html';}}});
+
+            firebase.auth().onAuthStateChanged(u => {
+                const l = document.getElementById('authNavLink');
+                if (u) {
+                    loadUF(u.uid);
+                    if (typeof checkFavorites === 'function') checkFavorites();
+                    if (l) { l.innerHTML = '👤 ' + (u.displayName || 'Профиль'); l.href = 'profile.html'; }
+                } else {
+                    if (l) { l.innerHTML = 'Вход'; l.href = 'auth.html'; }
+                }
+            });
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+
+        async function loadUF(uid) {
+            try {
+                const db = firebase.firestore();
+                const s = await db.collection('users').doc(uid).collection('favorites').get();
+                uf = [];
+                s.forEach(d => uf.push(d.id));
+                updateFavoriteButtons();
+            } catch(e) { console.error(e); }
+        }
+
+        function updateFavoriteButtons() {
+            document.querySelectorAll('[data-fav]').forEach(btn => {
+                const id = btn.getAttribute('data-fav');
+                if (uf.includes(id)) {
+                    btn.textContent = '❤️';
+                } else {
+                    btn.textContent = '🤍';
+                }
+            });
+        }
+
+        document.getElementById('searchInputRecipes').addEventListener('input', function() {
+            const q = this.value.toLowerCase();
+            let f = false;
+            document.querySelectorAll('.recipe-card').forEach(c => {
+                const title = c.querySelector('.recipe-title')?.textContent.toLowerCase() || '';
+                if (title.includes(q)) {
+                    c.classList.remove('hidden');
+                    f = true;
+                } else {
+                    c.classList.add('hidden');
+                }
+            });
+            document.getElementById('noResultsRecipes').classList.toggle('hidden', f);
         });
-        async function loadUF(uid){try{const db=firebase.firestore();const s=await db.collection('users').doc(uid).collection('favorites').get();uf=[];s.forEach(d=>uf.push(d.id));}catch(e){console.error(e);}}
-        document.getElementById('searchInputRecipes').addEventListener('input',function(){const q=this.value.toLowerCase();let f=false;document.querySelectorAll('.recipe-card').forEach(c=>{if(c.querySelector('.recipe-title').textContent.toLowerCase().includes(q)){c.classList.remove('hidden');f=true;}else{c.classList.add('hidden');}});document.getElementById('noResultsRecipes').classList.toggle('hidden',f);});
-        document.querySelectorAll('.filter-btn').forEach(b=>{b.addEventListener('click',function(){document.querySelectorAll('.filter-btn').forEach(x=>x.classList.remove('active'));this.classList.add('active');const f=this.getAttribute('data-filter');document.querySelectorAll('.recipe-card').forEach(c=>{if(f==='all')c.classList.remove('hidden');else if(f==='favorites'){if(uf.includes(c.getAttribute('data-recipe-id')))c.classList.remove('hidden');else c.classList.add('hidden');}else{if(c.getAttribute('data-category')===f)c.classList.remove('hidden');else c.classList.add('hidden');}});});});
-        window.showRecipeDetail=function(id){const r=recipesData.find(x=>x.id===id);if(!r)return;document.getElementById('recipeDetailsRecipes').innerHTML=`<div style="text-align:center;font-size:4rem;">${r.emoji}</div><h2 style="font-family:'Playfair Display';">${r.title}</h2><div style="display:flex;gap:1rem;margin-bottom:1.5rem;color:var(--text-dim);"><span>⏱️${r.time}</span><span>💰~${r.price}</span></div><h3>📝 Ингредиенты:</h3><ul>${r.ingredients.map(i=>'<li>'+i+'</li>').join('')}</ul><h3>👨‍🍳 Приготовление:</h3><ol>${r.instructions.map(s=>'<li>'+s+'</li>').join('')}</ol>`;document.getElementById('recipeModalRecipes').style.display='flex';document.getElementById('recipeModalRecipes').classList.add('show');document.body.style.overflow='hidden';};
-        document.querySelector('.close-modal-recipes').addEventListener('click',()=>{document.getElementById('recipeModalRecipes').style.display='none';document.getElementById('recipeModalRecipes').classList.remove('show');document.body.style.overflow='auto';});
-        document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.getElementById('recipeModalRecipes').style.display='none';document.getElementById('recipeModalRecipes').classList.remove('show');document.body.style.overflow='auto';}});
+
+        document.querySelectorAll('.filter-btn').forEach(b => {
+            b.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(x => x.classList.remove('active'));
+                this.classList.add('active');
+                const f = this.getAttribute('data-filter');
+                document.querySelectorAll('.recipe-card').forEach(c => {
+                    if (f === 'all') c.classList.remove('hidden');
+                    else if (f === 'favorites') {
+                        const id = c.getAttribute('data-recipe-id');
+                        if (uf.includes(id)) c.classList.remove('hidden');
+                        else c.classList.add('hidden');
+                    } else {
+                        if (c.getAttribute('data-category') === f) c.classList.remove('hidden');
+                        else c.classList.add('hidden');
+                    }
+                });
+            });
+        });
+
+        window.showRecipeDetail = function(id) {
+            const r = recipesDataGlobal.find(x => x.id === id);
+            if (!r) return;
+            document.getElementById('recipeDetailsRecipes').innerHTML = `<div style="text-align:center;font-size:4rem;">${r.emoji}</div><h2 style="font-family:'Playfair Display';">${escapeHtml(r.title)}</h2><div style="display:flex;gap:1rem;margin-bottom:1.5rem;color:var(--text-dim);"><span>⏱️${r.time}</span><span>💰~${r.price}</span></div><h3>📝 Ингредиенты:</h3><ul>${r.ingredients.map(i => '<li>' + escapeHtml(i) + '</li>').join('')}</ul><h3>👨‍🍳 Приготовление:</h3><ol>${r.instructions.map(s => '<li>' + escapeHtml(s) + '</li>').join('')}</ol>`;
+            document.getElementById('recipeModalRecipes').style.display = 'flex';
+            document.getElementById('recipeModalRecipes').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        };
+
+        document.querySelector('.close-modal-recipes').addEventListener('click', () => {
+            document.getElementById('recipeModalRecipes').style.display = 'none';
+            document.getElementById('recipeModalRecipes').classList.remove('show');
+            document.body.style.overflow = 'auto';
+        });
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') {
+                document.getElementById('recipeModalRecipes').style.display = 'none';
+                document.getElementById('recipeModalRecipes').classList.remove('show');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Запуск после загрузки
+        document.addEventListener('DOMContentLoaded', loadRecipes);
     </script>
 </body>
 </html>
