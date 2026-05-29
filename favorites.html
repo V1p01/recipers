@@ -29,17 +29,17 @@
 
     <section style="padding-top:2rem;min-height:70vh;">
         <h2 class="section-title">⭐ Избранные рецепты</h2>
-        <div id="needLogin" style="text-align:center;padding:3rem;color:#666;"><p style="font-size:4rem;">🔐</p><p>Войдите, чтобы увидеть избранное</p><a href="auth.html" class="cta-button" style="margin-top:1rem;display:inline-flex;">Войти</a></div>
-        <div id="noFav" style="text-align:center;padding:3rem;color:#666;display:none;"><p style="font-size:4rem;">📭</p><p>У вас пока нет избранных рецептов</p><a href="recipes.html" class="cta-button" style="margin-top:1rem;display:inline-flex;">Перейти к рецептам</a></div>
+        <div id="needLogin" style="text-align:center;padding:3rem;background:var(--glass);backdrop-filter:blur(12px);border:1px solid var(--glass-border);border-radius:28px;max-width:500px;margin:0 auto;"><p style="font-size:4rem;">🔐</p><p>Войдите, чтобы увидеть избранное</p><a href="auth.html" class="cta-button" style="margin-top:1rem;display:inline-flex;">Войти</a></div>
+        <div id="noFav" style="text-align:center;padding:3rem;color:var(--text-dim);display:none;max-width:500px;margin:0 auto;background:var(--glass);backdrop-filter:blur(12px);border:1px solid var(--glass-border);border-radius:28px;"><p style="font-size:4rem;">📭</p><p>У вас пока нет избранных рецептов</p><a href="recipes.html" class="cta-button" style="margin-top:1rem;display:inline-flex;">Перейти к рецептам</a></div>
         <div class="recipes-grid" id="fg" style="max-width:1200px;margin:0 auto;"></div>
     </section>
 
     <footer class="footer">
         <div class="footer-content">
-            <div class="footer-info"><h3>Кулинария студента</h3><p>Проект для студентов Якутска.</p></div>
+            <div class="footer-info"><h3>🍳 Кулинария студента</h3><p>Проект для студентов Якутска. Вкусно, быстро, бюджетно.</p></div>
             <div class="footer-links"><a href="recipes.html">Рецепты</a><a href="calculator.html">Калькулятор</a><a href="tips.html">Советы</a><a href="add-recipe.html">Добавить</a><a href="about.html">О проекте</a></div>
         </div>
-        <div class="footer-bottom"><p>© 2026 Кулинария студента | Якутск</p></div>
+        <div class="footer-bottom"><p>© 2026 Кулинария студента | Якутск ❄️</p></div>
     </footer>
 
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -49,8 +49,8 @@
     <script>
         const fc={apiKey:"AIzaSyDoE18PySgZcwUSV1zGNU1a4ql9IDxaNGI",authDomain:"kulinariastudenta.firebaseapp.com",projectId:"kulinariastudenta",storageBucket:"kulinariastudenta.firebasestorage.app",messagingSenderId:"712553246230",appId:"1:712553246230:web:6940e365ae83f678270f37"};
         if(!firebase.apps.length)firebase.initializeApp(fc);const db=firebase.firestore();
-        firebase.auth().onAuthStateChanged(u=>{const l=document.getElementById('authNavLink');if(u){document.getElementById('needLogin').style.display='none';lf(u.uid);if(l){l.innerHTML='👤 '+(u.displayName||'Профиль');l.href='profile.html';}}else{document.getElementById('needLogin').style.display='block';if(l){l.innerHTML='Вход';l.href='auth.html';}}});
-        async function lf(uid){const g=document.getElementById('fg');g.innerHTML='';try{const s=await db.collection('users').doc(uid).collection('favorites').get();if(s.empty){document.getElementById('noFav').style.display='block';return;}document.getElementById('noFav').style.display='none';s.forEach(d=>{const r=recipesData.find(x=>x.id===d.id);if(r){const c=document.createElement('div');c.className='recipe-card';c.innerHTML=`<div class="recipe-image"><span class="recipe-emoji">${r.emoji}</span><div class="recipe-time">⏱️${r.time}</div><button data-fav="${r.id}" onclick="toggleFavorite('${r.id}')" style="position:absolute;top:1rem;left:1rem;background:white;border:none;border-radius:50%;width:40px;height:40px;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,0.1);">❤️</button></div><div class="recipe-content"><h3 class="recipe-title">${r.title}</h3><p class="recipe-description">${r.description}</p><div class="recipe-info"><span class="recipe-price">~${r.price}</span></div></div>`;g.appendChild(c);}});}catch(e){console.error(e);}}
+        firebase.auth().onAuthStateChanged(u=>{const l=document.getElementById('authNavLink');if(u){document.getElementById('needLogin').style.display='none';lf(u.uid);if(l){l.innerHTML='👤 '+(u.displayName||'Профиль');l.href='profile.html';}}else{document.getElementById('needLogin').style.display='block';document.getElementById('noFav').style.display='none';document.getElementById('fg').style.display='none';if(l){l.innerHTML='Вход';l.href='auth.html';}}});
+        async function lf(uid){const g=document.getElementById('fg');g.innerHTML='';try{const s=await db.collection('users').doc(uid).collection('favorites').get();if(s.empty){document.getElementById('noFav').style.display='block';document.getElementById('fg').style.display='none';return;}document.getElementById('noFav').style.display='none';document.getElementById('fg').style.display='grid';s.forEach(d=>{const r=recipesData.find(x=>x.id===d.id);if(r){const c=document.createElement('div');c.className='recipe-card';c.innerHTML=`<div class="recipe-image"><span class="recipe-emoji">${r.emoji}</span><div class="recipe-time">⏱️${r.time}</div><button data-fav="${r.id}" onclick="toggleFavorite('${r.id}')" style="position:absolute;top:1rem;left:1rem;background:rgba(0,0,0,0.6);backdrop-filter:blur(8px);border:none;border-radius:50%;width:40px;height:40px;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,0.2);">❤️</button></div><div class="recipe-content"><h3 class="recipe-title">${r.title}</h3><p class="recipe-description">${r.description}</p><div class="recipe-info"><span class="recipe-price">~${r.price}</span><span class="recipe-difficulty">${r.difficulty}</span></div><button class="recipe-btn" onclick="showRecipeDetail('${r.id}')">Подробнее</button></div>`;g.appendChild(c);}});}catch(e){console.error(e);}}
     </script>
 </body>
 </html>
