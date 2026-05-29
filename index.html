@@ -6,7 +6,7 @@
     <meta name="description" content="Кулинарная книга с домашними рецептами. Более 25 рецептов с пошаговыми инструкциями, поиском, фильтрацией и избранным.">
     <title>Кулинарная книга | Домашние рецепты</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍳</text></svg>">
 </head>
 <body>
@@ -15,14 +15,13 @@
     <div class="loader" id="loader">
         <div class="loader__content">
             <div class="loader__spinner"></div>
+            <div class="loader__pulse"></div>
             <p class="loader__text">Приготовление...</p>
         </div>
     </div>
 
     <!-- ФОНОВЫЕ ЭЛЕМЕНТЫ -->
-    <div class="bg-orb"></div>
-    <div class="bg-orb bg-orb--2"></div>
-    <div class="bg-orb bg-orb--3"></div>
+    <canvas id="canvasBg" class="canvas-bg"></canvas>
     <div class="bg-grain"></div>
 
     <!-- ШАПКА -->
@@ -36,9 +35,9 @@
                 </div>
             </div>
             <div class="search">
-                <input type="text" id="searchInput" class="search__input" placeholder="Поиск рецептов, ингредиентов или тегов...">
+                <input type="text" id="searchInput" class="search__input" placeholder="Поиск рецептов...">
                 <button id="searchBtn" class="search__btn">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="11" cy="11" r="8"></circle>
                         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                     </svg>
@@ -50,33 +49,15 @@
     <!-- НАВИГАЦИЯ -->
     <nav class="nav">
         <div class="container nav__container">
-            <button class="nav__btn active" data-category="all">
-                <span>🏠</span><span>Все</span>
-            </button>
-            <button class="nav__btn" data-category="breakfast">
-                <span>🍳</span><span>Завтраки</span>
-            </button>
-            <button class="nav__btn" data-category="soup">
-                <span>🥣</span><span>Супы</span>
-            </button>
-            <button class="nav__btn" data-category="main">
-                <span>🍝</span><span>Основные</span>
-            </button>
-            <button class="nav__btn" data-category="dessert">
-                <span>🍰</span><span>Десерты</span>
-            </button>
-            <button class="nav__btn" data-category="salad">
-                <span>🥗</span><span>Салаты</span>
-            </button>
-            <button class="nav__btn" data-category="baking">
-                <span>🥖</span><span>Выпечка</span>
-            </button>
-            <button class="nav__btn" data-category="drinks">
-                <span>🥤</span><span>Напитки</span>
-            </button>
-            <button class="nav__btn" id="favoritesBtn">
-                <span>⭐</span><span>Избранное</span>
-            </button>
+            <button class="nav__btn active" data-category="all">🏠 Все</button>
+            <button class="nav__btn" data-category="breakfast">🍳 Завтраки</button>
+            <button class="nav__btn" data-category="soup">🥣 Супы</button>
+            <button class="nav__btn" data-category="main">🍝 Основные</button>
+            <button class="nav__btn" data-category="dessert">🍰 Десерты</button>
+            <button class="nav__btn" data-category="salad">🥗 Салаты</button>
+            <button class="nav__btn" data-category="baking">🥖 Выпечка</button>
+            <button class="nav__btn" data-category="drinks">🥤 Напитки</button>
+            <button class="nav__btn" id="favoritesBtn">⭐ Избранное</button>
         </div>
     </nav>
 
@@ -86,10 +67,12 @@
             <!-- Hero секция -->
             <section class="hero">
                 <div class="hero__content">
-                    <div class="hero__badge">✦ 25+ рецептов ✦</div>
-                    <h2 class="hero__title">
+                    <div class="hero__badge">
+                        <span>✦</span> 25+ рецептов <span>✦</span>
+                    </div>
+                    <h1 class="hero__title">
                         Готовим <span class="hero__accent">с удовольствием</span>
-                    </h2>
+                    </h1>
                     <p class="hero__text">
                         Проверенные рецепты для домашней кухни с пошаговыми инструкциями
                     </p>
@@ -112,6 +95,7 @@
                     <div class="hero__floating-card floating-card--1">🍝</div>
                     <div class="hero__floating-card floating-card--2">🍰</div>
                     <div class="hero__floating-card floating-card--3">🥗</div>
+                    <div class="hero__floating-card floating-card--4">🍳</div>
                 </div>
             </section>
 
@@ -119,26 +103,16 @@
             <div class="controls">
                 <div class="controls__left">
                     <h2 class="section-title" id="categoryTitle">Все рецепты</h2>
-                    <div class="category-chips" id="categoryChips">
-                        <button class="chip active" data-chip="all">Все</button>
-                        <button class="chip" data-chip="breakfast">Завтраки</button>
-                        <button class="chip" data-chip="soup">Супы</button>
-                        <button class="chip" data-chip="main">Основные</button>
-                        <button class="chip" data-chip="dessert">Десерты</button>
-                        <button class="chip" data-chip="salad">Салаты</button>
-                        <button class="chip" data-chip="baking">Выпечка</button>
-                        <button class="chip" data-chip="drinks">Напитки</button>
-                    </div>
                 </div>
                 <div class="controls__right">
                     <div class="sort">
                         <span class="sort__label">Сортировать:</span>
                         <select id="sortSelect" class="sort__select">
                             <option value="name">По названию</option>
-                            <option value="time-asc">По времени (сначала быстрые)</option>
-                            <option value="time-desc">По времени (сначала долгие)</option>
-                            <option value="calories-asc">По калориям (меньше)</option>
-                            <option value="calories-desc">По калориям (больше)</option>
+                            <option value="time-asc">По времени ↑</option>
+                            <option value="time-desc">По времени ↓</option>
+                            <option value="calories-asc">По калориям ↑</option>
+                            <option value="calories-desc">По калориям ↓</option>
                         </select>
                     </div>
                 </div>
@@ -147,7 +121,7 @@
             <!-- Сетка рецептов -->
             <div id="recipesContainer" class="recipes__grid"></div>
             <div id="emptyState" class="empty-state" style="display: none;">
-                <div class="empty-state__icon">😕</div>
+                <div class="empty-state__icon">🍽️</div>
                 <h3>Ничего не найдено</h3>
                 <p>Попробуйте изменить поиск или выберите другую категорию</p>
             </div>
@@ -170,7 +144,7 @@
                     <ul>
                         <li><a href="#" data-category="breakfast">Завтраки</a></li>
                         <li><a href="#" data-category="soup">Супы</a></li>
-                        <li><a href="#" data-category="main">Основные блюда</a></li>
+                        <li><a href="#" data-category="main">Основные</a></li>
                         <li><a href="#" data-category="dessert">Десерты</a></li>
                     </ul>
                 </div>
@@ -179,7 +153,6 @@
                     <ul>
                         <li><a href="#">О нас</a></li>
                         <li><a href="#">Контакты</a></li>
-                        <li><a href="#">Политика</a></li>
                     </ul>
                 </div>
             </div>
@@ -199,7 +172,7 @@
         </div>
     </div>
 
-    <!-- ТОСТ УВЕДОМЛЕНИЯ -->
+    <!-- ТОСТ -->
     <div id="toast" class="toast"></div>
 
     <script src="script.js"></script>
