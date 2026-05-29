@@ -30,16 +30,16 @@
     <section style="padding-top:2rem;min-height:70vh;">
         <h2 class="section-title">Мой профиль</h2>
         <div style="max-width:500px;margin:0 auto;">
-            <div id="needLogin" style="text-align:center;padding:2rem;background:white;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.1);"><p style="font-size:4rem;">🔐</p><p style="font-size:1.2rem;margin-bottom:1.5rem;">Войдите, чтобы увидеть профиль</p><a href="auth.html" class="cta-button" style="display:inline-flex;">Войти</a></div>
+            <div id="needLogin" style="text-align:center;padding:3rem;background:var(--glass);backdrop-filter:blur(12px);border:1px solid var(--glass-border);border-radius:28px;"><p style="font-size:4rem;">🔐</p><p style="font-size:1.2rem;margin-bottom:1.5rem;">Войдите, чтобы увидеть профиль</p><a href="auth.html" class="cta-button" style="display:inline-flex;">Войти</a></div>
             <div id="profileBlock" style="display:none;">
-                <div style="background:white;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.1);overflow:hidden;">
-                    <div style="background:linear-gradient(135deg,#FF6B6B,#FF8E8E);padding:2rem;text-align:center;color:white;"><div style="font-size:5rem;margin-bottom:0.5rem;">👨‍🍳</div><h2 id="profileName">Студент</h2><p style="opacity:0.9;" id="profileEmail"></p><p style="font-size:0.8rem;opacity:0.7;" id="profileDate"></p></div>
-                    <div style="display:flex;border-bottom:1px solid #eee;"><div style="flex:1;text-align:center;padding:1.5rem;"><div style="font-size:2rem;font-weight:700;color:#FF6B6B;" id="favCount">0</div><div style="font-size:0.8rem;color:#999;">избранных</div></div><div style="flex:1;text-align:center;padding:1.5rem;border-left:1px solid #eee;"><div style="font-size:2rem;font-weight:700;color:#4ECDC4;">1</div><div style="font-size:0.8rem;color:#999;">аккаунт</div></div></div>
+                <div style="background:var(--glass);backdrop-filter:blur(12px);border:1px solid var(--glass-border);border-radius:28px;overflow:hidden;">
+                    <div style="background:linear-gradient(135deg,#ff6b6b,#ff8e8e);padding:2rem;text-align:center;color:white;"><div style="font-size:5rem;margin-bottom:0.5rem;">👨‍🍳</div><h2 id="profileName">Студент</h2><p style="opacity:0.9;" id="profileEmail"></p><p style="font-size:0.8rem;opacity:0.7;" id="profileDate"></p></div>
+                    <div style="display:flex;border-bottom:1px solid var(--glass-border);"><div style="flex:1;text-align:center;padding:1.5rem;"><div style="font-size:2rem;font-weight:700;color:#ff6b6b;" id="favCount">0</div><div style="font-size:0.8rem;color:var(--text-dim);">избранных</div></div><div style="flex:1;text-align:center;padding:1.5rem;border-left:1px solid var(--glass-border);"><div style="font-size:2rem;font-weight:700;color:#4ecdc4;">1</div><div style="font-size:0.8rem;color:var(--text-dim);">аккаунт</div></div></div>
                     <div style="padding:1.5rem;display:flex;flex-direction:column;gap:0.8rem;">
                         <a href="favorites.html" class="cta-button" style="width:100%;justify-content:center;display:flex;">⭐ Избранные рецепты</a>
                         <a href="add-recipe.html" class="cta-button secondary" style="width:100%;justify-content:center;display:flex;">✍️ Добавить рецепт</a>
-                        <button onclick="logout()" style="width:100%;padding:0.8rem;background:#f0f0f0;border:none;border-radius:25px;cursor:pointer;font-weight:500;font-family:'Montserrat',sans-serif;">🚪 Выйти</button>
-                        <button onclick="deleteAccount()" style="width:100%;padding:0.8rem;background:none;border:1px solid #FF6B6B;color:#FF6B6B;border-radius:25px;cursor:pointer;font-weight:500;font-family:'Montserrat',sans-serif;font-size:0.8rem;">🗑️ Удалить аккаунт</button>
+                        <button onclick="logout()" style="width:100%;padding:0.8rem;background:rgba(255,255,255,0.05);border:1px solid var(--glass-border);border-radius:25px;cursor:pointer;font-weight:500;font-family:'Montserrat',sans-serif;color:var(--text);">🚪 Выйти</button>
+                        <button onclick="deleteAccount()" style="width:100%;padding:0.8rem;background:none;border:1px solid #ff6b6b;color:#ff6b6b;border-radius:25px;cursor:pointer;font-weight:500;font-family:'Montserrat',sans-serif;font-size:0.8rem;">🗑️ Удалить аккаунт</button>
                     </div>
                 </div>
             </div>
@@ -48,10 +48,10 @@
 
     <footer class="footer">
         <div class="footer-content">
-            <div class="footer-info"><h3>Кулинария студента</h3><p>Проект для студентов Якутска.</p></div>
+            <div class="footer-info"><h3>🍳 Кулинария студента</h3><p>Проект для студентов Якутска. Вкусно, быстро, бюджетно.</p></div>
             <div class="footer-links"><a href="recipes.html">Рецепты</a><a href="calculator.html">Калькулятор</a><a href="tips.html">Советы</a><a href="add-recipe.html">Добавить</a><a href="about.html">О проекте</a></div>
         </div>
-        <div class="footer-bottom"><p>© 2026 Кулинария студента | Якутск</p></div>
+        <div class="footer-bottom"><p>© 2026 Кулинария студента | Якутск ❄️</p></div>
     </footer>
 
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
