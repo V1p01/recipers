@@ -14,19 +14,6 @@
             min-height: 180px;
             position: relative;
         }
-        .recipe-image::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(0,0,0,0.3), rgba(0,0,0,0.1));
-            border-radius: 28px 28px 0 0;
-        }
-        .recipe-emoji {
-            display: none;
-        }
         .recipe-time {
             background: rgba(0,0,0,0.7);
             backdrop-filter: blur(8px);
@@ -57,7 +44,8 @@
     <div class="breadcrumbs"><a href="index.html">Главная</a> → Рецепты</div>
 
     <section style="padding-top: 2rem;">
-        <h2 class="section-title">📖 Все рецепты</h2>
+        <h2 class="section-title">📖 Студенческие рецепты</h2>
+        <p style="text-align:center; color:var(--text-dim); margin-bottom:2rem;">🍜 Просто, быстро, дёшево — для жизни в общаге</p>
         <div class="search-box"><input type="text" id="searchInputRecipes" placeholder="🔍 Поиск рецепта..."></div>
         <div class="filter-buttons">
             <button class="filter-btn active" data-filter="all">Все</button>
@@ -66,7 +54,6 @@
             <button class="filter-btn" data-filter="dinner">🌙 Ужины</button>
             <button class="filter-btn" data-filter="snack">🥨 Перекусы</button>
             <button class="filter-btn" data-filter="soup">🥣 Супы</button>
-            <button class="filter-btn" data-filter="salad">🥗 Салаты</button>
             <button class="filter-btn" data-filter="favorites" style="background:rgba(255,107,107,0.15);border-color:#ff6b6b;color:#ff6b6b;">❤️ Избранное</button>
         </div>
         <div class="recipes-grid" id="allRecipesGrid"></div>
@@ -86,20 +73,20 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script>
-        // ========== БАЗА РЕЦЕПТОВ С РЕАЛЬНЫМИ URL ФОТО ==========
+        // ========== БАЗА РЕЦЕПТОВ (БЮДЖЕТНЫЕ, ПРОСТЫЕ БЛЮДА) ==========
         const recipesData = [
-            { id: 'lazy-vareniki', title: 'Ленивые вареники', image: 'https://images.unsplash.com/photo-1625938144759-5b7f5e4e8b6c?w=500&h=350&fit=crop', time: '10 мин', price: '180₽', difficulty: 'Легко', category: 'breakfast', description: 'Нежные творожные вареники за 10 минут', ingredients: ['Творог местный - 500 г - 120₽', 'Яйцо - 1 шт - 15₽', 'Мука - 5 ст. ложек - 10₽', 'Сахар - 2 ст. ложки - 5₽', 'Соль - щепотка', 'Масло сливочное - 30 г - 30₽'], instructions: ['Смешайте творог с яйцом, сахаром и солью', 'Добавьте муку и замесите мягкое тесто', 'Раскатайте колбаски и нарежьте кусочками', 'Варите в кипящей воде 2-3 минуты после всплытия', 'Подавайте со сметаной или вареньем'] },
-            { id: 'tuna-pasta', title: 'Паста с тунцом', image: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=500&h=350&fit=crop', time: '20 мин', price: '320₽', difficulty: 'Средне', category: 'lunch', description: 'Сытная паста с консервированным тунцом', ingredients: ['Макароны - 250 г - 45₽', 'Тунец консервированный - 1 банка - 180₽', 'Томатная паста - 2 ст. ложки - 25₽', 'Лук - 1 шт - 10₽', 'Чеснок - 2 зубчика - 10₽', 'Масло растительное - 20₽'], instructions: ['Отварите макароны до готовности', 'Обжарьте мелко нарезанный лук и чеснок', 'Добавьте томатную пасту и тунец, перемешайте', 'Тушите соус 5-7 минут', 'Смешайте с макаронами и прогрейте'] },
-            { id: 'rice-veggies', title: 'Рис с овощами', image: 'https://images.unsplash.com/photo-1512058454902-5fccf6b6d7d9?w=500&h=350&fit=crop', time: '25 мин', price: '230₽', difficulty: 'Легко', category: 'lunch', description: 'Быстрый рис с замороженными овощами', ingredients: ['Рис - 1 стакан - 30₽', 'Замороженные овощи - 300 г - 120₽', 'Соевый соус - 2 ст. ложки - 20₽', 'Яйца - 2 шт - 30₽', 'Масло растительное - 10₽'], instructions: ['Отварите рис до готовности', 'Обжарьте замороженные овощи 5-7 минут', 'Добавьте рис и соевый соус, перемешайте', 'По желанию добавьте яйца и обжарьте', 'Приправьте специями по вкусу'] },
-            { id: 'potato-casserole', title: 'Картофельная запеканка', image: 'https://images.unsplash.com/photo-1639426996593-f9f41b3b4c2a?w=500&h=350&fit=crop', time: '30 мин', price: '380₽', difficulty: 'Средне', category: 'dinner', description: 'Сырная запеканка с картофелем и сосисками', ingredients: ['Картофель - 7 шт - 140₽', 'Сосиски - 4 шт - 120₽', 'Сыр - 150 г - 90₽', 'Яйца - 2 шт - 30₽', 'Молоко - 100 мл - 15₽'], instructions: ['Нарежьте картофель тонкими кружочками', 'Выложите слоями картофель и нарезанные сосиски', 'Залейте смесью яиц и молока', 'Посыпьте тертым сыром', 'Запекайте при 180°C 25-30 минут'] },
-            { id: 'hot-sandwiches', title: 'Горячие бутерброды', image: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=500&h=350&fit=crop', time: '5 мин', price: '140₽', difficulty: 'Легко', category: 'snack', description: 'Хрустящие бутерброды с сыром', ingredients: ['Хлеб - 4 куска - 30₽', 'Сыр - 100 г - 60₽', 'Колбаса - 100 г - 50₽', 'Помидор - 1 шт - 25₽', 'Майонез или кетчуп - 15₽'], instructions: ['Смажьте хлеб соусом', 'Выложите начинку: колбасу, помидоры', 'Сверху положите сыр', 'Разогрейте в микроволновке 1-2 минуты', 'Подавайте горячими'] },
-            { id: 'eggs-tomatoes', title: 'Яичница с помидорами', image: 'https://images.unsplash.com/photo-1510693206979-df09806cb0f9?w=500&h=350&fit=crop', time: '7 мин', price: '120₽', difficulty: 'Легко', category: 'breakfast', description: 'Классическая глазунья с помидорами', ingredients: ['Яйца - 3 шт - 45₽', 'Помидор - 1 шт - 25₽', 'Лук - 1/2 шт - 10₽', 'Масло растительное - 5₽', 'Соль, перец'], instructions: ['Обжарьте нарезанный лук до золотистости', 'Добавьте нарезанный помидор, жарьте 2 минуты', 'Разбейте яйца на сковороду', 'Жарьте на среднем огне до готовности', 'Посолите, поперчите'] },
-            { id: 'pancakes', title: 'Тонкие блины', image: 'https://images.unsplash.com/photo-1578585222961-eeec7f6b6b9d?w=500&h=350&fit=crop', time: '20 мин', price: '130₽', difficulty: 'Средне', category: 'breakfast', description: 'Тонкие блинчики на молоке', ingredients: ['Молоко - 500 мл - 50₽', 'Яйца - 2 шт - 30₽', 'Мука - 200 г - 20₽', 'Сахар - 2 ст. ложки - 5₽', 'Масло растительное - 20₽'], instructions: ['Смешайте яйца с сахаром и солью', 'Добавьте молоко, постепенно всыпайте муку', 'Влейте масло, перемешайте', 'Жарьте на раскаленной сковороде'] },
-            { id: 'buckwheat-meat', title: 'Гречка с мясом', image: 'https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=500&h=350&fit=crop', time: '35 мин', price: '350₽', difficulty: 'Средне', category: 'dinner', description: 'Сытная гречка с мясом и луком', ingredients: ['Гречка - 1 стакан - 40₽', 'Мясо - 300 г - 250₽', 'Лук - 2 шт - 20₽', 'Морковь - 1 шт - 15₽', 'Масло растительное - 15₽'], instructions: ['Отварите гречку до готовности', 'Обжарьте мясо кусочками до румяной корочки', 'Добавьте лук и морковь, жарьте 5 минут', 'Смешайте с гречкой, добавьте специи', 'Тушите под крышкой 5-7 минут'] },
-            { id: 'omelette', title: 'Пышный омлет', image: 'https://images.unsplash.com/photo-1510693206979-df09806cb0f9?w=500&h=350&fit=crop', time: '10 мин', price: '100₽', difficulty: 'Легко', category: 'breakfast', description: 'Воздушный омлет с молоком', ingredients: ['Яйца - 4 шт - 60₽', 'Молоко - 100 мл - 10₽', 'Мука - 1 ст. ложка - 5₽', 'Масло сливочное - 20 г - 20₽'], instructions: ['Взбейте яйца с молоком и мукой', 'Посолите по вкусу', 'Вылейте на разогретую сковороду с маслом', 'Жарьте под крышкой 5-7 минут'] },
-            { id: 'veggie-soup', title: 'Овощной суп', image: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=500&h=350&fit=crop', time: '30 мин', price: '280₽', difficulty: 'Легко', category: 'soup', description: 'Легкий суп с замороженными овощами', ingredients: ['Замороженные овощи - 400 г - 160₽', 'Картофель - 3 шт - 60₽', 'Лук - 1 шт - 10₽', 'Морковь - 1 шт - 15₽'], instructions: ['Нарежьте картофель кубиками, залейте водой', 'Доведите до кипения, варите 10 минут', 'Обжарьте лук с морковью', 'Добавьте замороженные овощи и зажарку', 'Варите еще 10-15 минут'] },
-            { id: 'macaroni-cheese', title: 'Макароны с сыром', image: 'https://images.unsplash.com/photo-1645112411344-6257a9c7c0e3?w=500&h=350&fit=crop', time: '15 мин', price: '200₽', difficulty: 'Легко', category: 'dinner', description: 'Макароны с сыром по-студенчески', ingredients: ['Макароны - 250 г - 45₽', 'Сыр - 150 г - 90₽', 'Молоко - 100 мл - 10₽', 'Масло сливочное - 30 г - 30₽'], instructions: ['Отварите макароны до готовности', 'Смешайте с маслом и молоком', 'Добавьте тертый сыр, перемешайте', 'По желанию запеките 5 минут в духовке'] },
-            { id: 'curd-pancakes', title: 'Сырники', image: 'https://images.unsplash.com/photo-1488477304112-4944851de03d?w=500&h=350&fit=crop', time: '15 мин', price: '170₽', difficulty: 'Средне', category: 'breakfast', description: 'Золотистые сырники из творога', ingredients: ['Творог - 400 г - 100₽', 'Яйцо - 1 шт - 15₽', 'Мука - 3 ст. ложки - 10₽', 'Сахар - 2 ст. ложки - 5₽'], instructions: ['Смешайте творог с яйцом и сахаром', 'Добавьте муку и ванилин, замесите тесто', 'Сформируйте сырники', 'Обваляйте в муке', 'Жарьте на среднем огне до золотистой корочки'] }
+            { id: 'lazy-vareniki', title: 'Ленивые вареники', image: 'https://i.imgur.com/qXZiL8L.jpg', time: '10 мин', price: '180₽', difficulty: 'Легко', category: 'breakfast', description: 'Нежные творожные вареники за 10 минут — идеальный завтрак в общаге', ingredients: ['Творог - 400 г - 100₽', 'Яйцо - 1 шт - 15₽', 'Мука - 5 ст. ложек - 10₽', 'Сахар - 2 ст. ложки - 5₽', 'Соль - щепотка'], instructions: ['Смешайте творог с яйцом, сахаром и солью', 'Добавьте муку и замесите мягкое тесто', 'Сформируйте колбаски и нарежьте кусочками', 'Варите в кипящей воде 2-3 минуты после всплытия', 'Подавайте со сметаной'] },
+            { id: 'dorm-pasta', title: 'Студенческая паста', image: 'https://i.imgur.com/7XCZJ3K.jpg', time: '15 мин', price: '250₽', difficulty: 'Легко', category: 'lunch', description: 'Паста с сосисками и томатным соусом — сытно и дёшево', ingredients: ['Макароны - 300 г - 45₽', 'Сосиски - 4 шт - 100₽', 'Томатная паста - 2 ст. ложки - 15₽', 'Лук - 1 шт - 10₽', 'Масло растительное'], instructions: ['Отварите макароны', 'Обжарьте лук и нарезанные сосиски', 'Добавьте томатную пасту, тушите 2 минуты', 'Смешайте с макаронами'] },
+            { id: 'fried-potato', title: 'Жареная картошка', image: 'https://i.imgur.com/5kMq9Ew.jpg', time: '20 мин', price: '150₽', difficulty: 'Легко', category: 'dinner', description: 'Хрустящая картошечка с луком — классика общежития', ingredients: ['Картофель - 6 шт - 100ₘ', 'Лук - 2 шт - 20₽', 'Масло растительное - 15₽', 'Соль, перец - по вкусу'], instructions: ['Нарежьте картофель соломкой', 'Обжарьте лук до золотистости', 'Добавьте картофель, жарьте до готовности', 'Посолите и поперчите в конце'] },
+            { id: 'sandwich-hot', title: 'Горячие бутерброды', image: 'https://i.imgur.com/HMnTNne.jpg', time: '5 мин', price: '120₽', difficulty: 'Легко', category: 'snack', description: 'Хрустящие бутерброды с сыром в микроволновке', ingredients: ['Хлеб - 4 куска - 20₽', 'Сыр - 100 г - 60₽', 'Колбаса - 100 г - 40₽', 'Майонез или кетчуп'], instructions: ['Смажьте хлеб соусом', 'Выложите начинку', 'Сверху положите сыр', 'Разогрейте в микроволновке 1-2 минуты'] },
+            { id: 'scrambled-eggs', title: 'Яичница по-студенчески', image: 'https://i.imgur.com/JT7ZqPg.jpg', time: '5 мин', price: '100₽', difficulty: 'Легко', category: 'breakfast', description: 'Простая яичница с сосисками и луком', ingredients: ['Яйца - 3 шт - 60₽', 'Сосиска - 2 шт - 30₽', 'Лук - 1/2 шт - 5₽', 'Масло - 5₽'], instructions: ['Нарежьте сосиски и лук', 'Обжарьте на сковороде', 'Разбейте яйца, посолите', 'Жарьте до готовности'] },
+            { id: 'pancakes', title: 'Блины на кипятке', image: 'https://i.imgur.com/vF3cP5L.jpg', time: '15 мин', price: '110₽', difficulty: 'Средне', category: 'breakfast', description: 'Тонкие блины без молока — экономно и вкусно', ingredients: ['Вода - 500 мл - 0₽', 'Мука - 250 г - 25₽', 'Яйца - 2 шт - 30₽', 'Сахар - 2 ст. ложки - 5₽', 'Масло растительное - 20₽'], instructions: ['Смешайте яйца с сахаром и солью', 'Добавьте воду, муку, масло', 'Жарьте на раскаленной сковороде'] },
+            { id: 'buckwheat', title: 'Гречка с тушёнкой', image: 'https://i.imgur.com/w3qX2QZ.jpg', time: '15 мин', price: '280₽', difficulty: 'Легко', category: 'dinner', description: 'Гречка с тушёнкой — еда из общаги на века', ingredients: ['Гречка - 1 стакан - 40₽', 'Тушёнка - 1 банка - 220₽', 'Лук - 1 шт - 10₽', 'Масло - 10₽'], instructions: ['Отварите гречку', 'Обжарьте лук', 'Добавьте тушёнку, прогрейте', 'Смешайте с гречкой'] },
+            { id: 'dorm-soup', title: 'Общажный суп', image: 'https://i.imgur.com/4NxQM7k.jpg', time: '25 мин', price: '180₽', difficulty: 'Легко', category: 'soup', description: 'Простой суп из картошки, вермишели и зажарки', ingredients: ['Картофель - 3 шт - 50₽', 'Вермишель - 50 г - 10₽', 'Лук - 1 шт - 10₽', 'Морковь - 1 шт - 15₽', 'Масло'], instructions: ['Нарежьте картофель, залейте водой', 'Обжарьте лук с морковью', 'Добавьте в бульон зажарку и вермишель', 'Варите 5 минут'] },
+            { id: 'mac-cheese', title: 'Макароны с сыром', image: 'https://i.imgur.com/l7oXkRd.jpg', time: '10 мин', price: '160₽', difficulty: 'Легко', category: 'dinner', description: 'Быстрые макароны с плавленым сыром', ingredients: ['Макароны - 250 г - 35₽', 'Сыр плавленый - 2 шт - 80₽', 'Молоко - 50 мл - 10₽', 'Масло - 15₽'], instructions: ['Отварите макароны', 'Растопите сыр с молоком', 'Смешайте с макаронами'] },
+            { id: 'omelette-dorm', title: 'Омлет с хлебом', image: 'https://i.imgur.com/KpRxPCr.jpg', time: '7 мин', price: '90₽', difficulty: 'Легко', category: 'breakfast', description: 'Омлет с кусочками хлеба — сытный и быстрый', ingredients: ['Яйца - 3 шт - 60₽', 'Хлеб - 2 куска - 10₽', 'Молоко - 2 ст. ложки - 5₽', 'Масло - 5₽'], instructions: ['Нарежьте хлеб кубиками', 'Взбейте яйца с молоком', 'Вылейте на сковороду, добавьте хлеб', 'Жарьте под крышкой'] },
+            { id: 'instant-noodles', title: 'Дошик по-китайски', image: 'https://i.imgur.com/jDrlKBU.jpg', time: '5 мин', price: '90₽', difficulty: 'Легко', category: 'snack', description: 'Лапша быстрого приготовления с яйцом и зеленью', ingredients: ['Лапша быстрого приготовления - 1 пачка - 60₽', 'Яйцо - 1 шт - 15₽', 'Зелень - 10₽', 'Майонез'], instructions: ['Заварите лапшу кипятком', 'Отдельно сварите яйцо', 'Смешайте, добавьте зелень и майонез'] },
+            { id: 'curd-pancakes', title: 'Сырники на сковороде', image: 'https://i.imgur.com/2yZ9cRL.jpg', time: '15 мин', price: '150₽', difficulty: 'Средне', category: 'breakfast', description: 'Золотистые сырники из творога', ingredients: ['Творог - 400 г - 100₽', 'Яйцо - 1 шт - 15₽', 'Мука - 3 ст. ложки - 10₽', 'Сахар - 2 ст. ложки - 5₽'], instructions: ['Смешайте творог с яйцом и сахаром', 'Добавьте муку, замесите тесто', 'Сформируйте сырники', 'Обжарьте до золотистой корочки'] }
         ];
 
         // ========== ПЕРЕМЕННЫЕ ==========
@@ -131,7 +118,7 @@
             localStorage.setItem('favorites', JSON.stringify(favorites));
         }
 
-        function toggleFavorite(recipeId) {
+        window.toggleFavorite = function(recipeId) {
             const idx = favorites.indexOf(recipeId);
             if (idx === -1) {
                 favorites.push(recipeId);
@@ -142,22 +129,10 @@
             }
             saveFavorites();
             renderRecipes();
-            updateFavoriteButtons();
-        }
+        };
 
         function isFavorite(recipeId) {
             return favorites.includes(recipeId);
-        }
-
-        function updateFavoriteButtons() {
-            document.querySelectorAll('[data-fav]').forEach(btn => {
-                const id = btn.getAttribute('data-fav');
-                if (favorites.includes(id)) {
-                    btn.textContent = '❤️';
-                } else {
-                    btn.textContent = '🤍';
-                }
-            });
         }
 
         // ========== ОТОБРАЖЕНИЕ РЕЦЕПТОВ ==========
@@ -192,7 +167,7 @@
                 <div class="recipe-card" data-category="${recipe.category}" data-recipe-id="${recipe.id}">
                     <div class="recipe-image" style="background-image: url('${recipe.image}'); background-size: cover; background-position: center; min-height: 180px; position: relative;">
                         <div class="recipe-time" style="position:absolute;top:1rem;right:1rem;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);padding:0.3rem 0.8rem;border-radius:20px;font-size:0.75rem;z-index:2;">⏱️ ${recipe.time}</div>
-                        <button data-fav="${recipe.id}" onclick="toggleFavorite('${recipe.id}')" style="position:absolute;top:1rem;left:1rem;background:rgba(0,0,0,0.6);backdrop-filter:blur(8px);border:none;border-radius:50%;width:40px;height:40px;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,0.2);z-index:3;">${isFavorite(recipe.id) ? '❤️' : '🤍'}</button>
+                        <button onclick="toggleFavorite('${recipe.id}')" style="position:absolute;top:1rem;left:1rem;background:rgba(0,0,0,0.6);backdrop-filter:blur(8px);border:none;border-radius:50%;width:40px;height:40px;font-size:1.2rem;cursor:pointer;z-index:3;">${isFavorite(recipe.id) ? '❤️' : '🤍'}</button>
                     </div>
                     <div class="recipe-content">
                         <h3 class="recipe-title">${escapeHtml(recipe.title)}</h3>
